@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.5 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.6 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -441,6 +441,14 @@
   <script>
     // --- Config inițial ---
     const werkRates = { werk1: 33.3, werk2: 34.4 };
+    
+    // Helper pentru prevenire XSS
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
 
     const shifts = {
       fruh: {
@@ -542,6 +550,8 @@
 
     function computeEmployeeWorkSeconds(empStartStr, empEndStr, shiftKey) {
       const shift = shifts[shiftKey];
+      if (!shift) return 0; // Validare shift existent
+      
       const shiftStart = timeToSec(shift.start);
       const shiftEnd = timeToSec(shift.end);
       const empStart = timeToSec(empStartStr);
@@ -577,7 +587,7 @@
 
     function attachTimeSanitizer(el) {
       // Handler pentru input - validare strictă și auto-inserare ":"
-      el.addEventListener('input', function(e) {
+      el.addEventListener('input', function() {
         let value = this.value;
         let cursorPos = this.selectionStart;
         
@@ -743,7 +753,7 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">person</span>
-            <input type="text" class="form-control form-control-sm emp-name" value="${defaultName || 'Angajat ' + currentEmployeeNumber}" 
+            <input type="text" class="form-control form-control-sm emp-name" value="${escapeHtml(defaultName) || 'Angajat ' + currentEmployeeNumber}" 
                    style="max-width: 200px; display: inline-block; border: 1px solid transparent; background: transparent; padding: 0.25rem 0.5rem;" 
                    placeholder="Nume angajat" aria-label="Nume angajat">
           </div>
@@ -759,7 +769,7 @@
               <span class="input-group-text">
                 <span class="material-icons-round">schedule</span>
               </span>
-              <input class="form-control emp-start" type="text" inputmode="numeric" pattern="[0-9:]*" value="${defaultStart}" 
+              <input class="form-control emp-start" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(defaultStart)}" 
                     placeholder="00:00:00" aria-label="Ora început">
             </div>
           </div>
@@ -769,7 +779,7 @@
               <span class="input-group-text">
                 <span class="material-icons-round">schedule</span>
               </span>
-              <input class="form-control emp-end" type="text" inputmode="numeric" pattern="[0-9:]*" value="${defaultEnd}" 
+              <input class="form-control emp-end" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(defaultEnd)}" 
                     placeholder="00:00:00" aria-label="Ora sfârșit">
             </div>
           </div>
@@ -886,7 +896,7 @@
       });
       
       const state = {
-        rate: rateInput.value,
+        rate: parseFloat(rateInput.value) || 0,
         activeShift,
         activeWerk,
         employees
@@ -913,7 +923,12 @@
         
         // Restaurare shift activ
         if (state.activeShift) {
-          activeShift = state.activeShift;
+          // Validare shift existent
+          if (!shifts[state.activeShift]) {
+            activeShift = 'fruh'; // Default safe
+          } else {
+            activeShift = state.activeShift;
+          }
           if(activeShift === 'fruh') {
             fruhBtn.classList.add('active', 'btn-primary');
             fruhBtn.classList.remove('btn-outline-primary');
@@ -929,7 +944,12 @@
         
         // Restaurare werk activ (doar UI, rata se restaurează deja de mai sus)
         if (state.activeWerk) {
-          activeWerk = state.activeWerk;
+          // Validare werk existent
+          if (!werkRates[state.activeWerk]) {
+            activeWerk = 'werk1'; // Default safe
+          } else {
+            activeWerk = state.activeWerk;
+          }
           if(activeWerk === 'werk1') {
             werk1Btn.classList.add('btn-primary');
             werk1Btn.classList.remove('btn-outline-primary');
@@ -941,7 +961,7 @@
             werk1Btn.classList.remove('btn-primary');
             werk1Btn.classList.add('btn-outline-primary');
           }
-          // NU modificăm rateInput.value - este deja restaurat la linia 907
+          // NU modificăm rateInput.value - este deja restaurat la linia 911
         }
         
         // NU încărcăm angajații - pagina începe cu 0 angajați
@@ -966,10 +986,12 @@
     addEmpBtn.addEventListener('click', () => createEmployeeBlock());
 
     // Init default
+    let dateTimeInterval = null;
+    
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       updateDateTime();
-      setInterval(updateDateTime, 1000); // Update date and time every second
+      dateTimeInterval = setInterval(updateDateTime, 1000); // Update date and time every second
       
       // Încearcă să încarce starea salvată
       const stateLoaded = loadCalculatorState();
@@ -978,6 +1000,13 @@
       if (!stateLoaded) {
         setActiveWerkUI('werk1');
         setActiveShiftUI('fruh');
+      }
+    });
+    
+    // Cleanup interval la unload pentru a preveni memory leaks
+    window.addEventListener('beforeunload', () => {
+      if (dateTimeInterval) {
+        clearInterval(dateTimeInterval);
       }
     });
   </script>
