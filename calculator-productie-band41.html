@@ -287,24 +287,6 @@
       color: var(--text-secondary);
     }
     
-    /* Stil pentru intrările de timp care au erori */
-    .form-control.is-invalid {
-      border-color: var(--danger-color);
-      background-image: none;
-      padding-right: 1rem;
-    }
-    
-    .invalid-feedback {
-      display: none;
-      color: var(--danger-color);
-      font-size: 0.875rem;
-      margin-top: 0.25rem;
-    }
-    
-    .form-control.is-invalid ~ .invalid-feedback {
-      display: block;
-    }
-
     .time-display {
       font-weight: 500;
       font-size: 1rem;
@@ -316,19 +298,6 @@
     .footer-info {
       display: flex;
       align-items: center;
-    }
-    
-    .alert-time-error {
-      background-color: rgba(239, 68, 68, 0.1);
-      border: 1px solid var(--danger-color);
-      color: var(--danger-color);
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
     
     @media (max-width: 576px) {
@@ -451,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.2 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.3 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -608,68 +577,9 @@
       debounceSaveState();
     }
 
-    function validateTimeInput(el) {
-      const val = el.value.trim();
-      const parent = el.closest('.input-group').parentElement;
-      
-      // Șterge mesaje de eroare anterioare
-      const oldError = parent.querySelector('.alert-time-error');
-      if (oldError) oldError.remove();
-      
-      if (!val) {
-        el.classList.add('is-invalid');
-        return false;
-      }
-      
-      const parts = val.split(':');
-      if (parts.length < 2) {
-        el.classList.add('is-invalid');
-        showTimeError(parent, 'Format invalid. Folosește HH:MM:SS');
-        return false;
-      }
-      
-      const [h, m, s] = parts.map(p => parseInt(p, 10));
-      
-      if (h > 23 || m > 59 || (s && s > 59)) {
-        el.classList.add('is-invalid');
-        showTimeError(parent, 'Ore (0-23), Minute/Secunde (0-59)');
-        return false;
-      }
-      
-      // Validare interval: sfârșitul trebuie să fie după început
-      const card = el.closest('.employee-card');
-      if (card) {
-        const startInput = card.querySelector('.emp-start');
-        const endInput = card.querySelector('.emp-end');
-        
-        if (startInput && endInput && startInput.value && endInput.value) {
-          const startSec = timeToSec(startInput.value);
-          const endSec = timeToSec(endInput.value);
-          
-          if (endSec <= startSec) {
-            endInput.classList.add('is-invalid');
-            const endParent = endInput.closest('.input-group').parentElement;
-            showTimeError(endParent, 'Ora sfârșit trebuie să fie după ora început');
-            return false;
-          }
-        }
-      }
-      
-      el.classList.remove('is-invalid');
-      return true;
-    }
-    
-    function showTimeError(parent, message) {
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'alert-time-error';
-      errorDiv.innerHTML = `<span class="material-icons-round" style="font-size: 16px;">error</span>${message}`;
-      parent.appendChild(errorDiv);
-    }
 
     function attachTimeSanitizer(el) {
-      let lastValue = el.value;
-      
-      // Handler pentru input - validare și auto-inserare ":"
+      // Handler pentru input - validare strictă și auto-inserare ":"
       el.addEventListener('input', function(e) {
         let value = this.value;
         let cursorPos = this.selectionStart;
@@ -680,80 +590,90 @@
         // Limitare la maxim 8 caractere (HH:MM:SS)
         if (value.length > 8) {
           value = value.substring(0, 8);
+          cursorPos = Math.min(cursorPos, 8);
         }
         
-        // Elimină ":" din poziții greșite (doar la poziția 2 și 5 sunt permise)
-        let cleanValue = '';
+        // Procesare caracter cu caracter cu validare strictă
+        let validValue = '';
+        let skipColon = false;
+        
         for (let i = 0; i < value.length; i++) {
-          if (value[i] === ':') {
-            if (i === 2 || i === 5) {
-              cleanValue += ':';
+          const char = value[i];
+          const pos = validValue.length;
+          
+          if (char === ':') {
+            // ":" poate fi doar la poziția 2 sau 5
+            if (pos === 2 || pos === 5) {
+              validValue += ':';
             }
-            // Ignore ":" din alte poziții
-          } else {
-            cleanValue += value[i];
+            continue;
+          }
+          
+          // Validare strictă pentru cifre
+          const digit = parseInt(char);
+          
+          // Poziția 0: Primul H - maxim 2
+          if (pos === 0) {
+            if (digit <= 2) {
+              validValue += char;
+            }
+          }
+          // Poziția 1: Al doilea H - maxim 3 dacă primul H este 2, altfel maxim 9
+          else if (pos === 1) {
+            const firstH = parseInt(validValue[0]);
+            if (firstH === 2) {
+              if (digit <= 3) {
+                validValue += char;
+              }
+            } else {
+              validValue += char;
+            }
+          }
+          // Poziția 2: Auto-inserare ":" după HH
+          else if (pos === 2) {
+            validValue += ':';
+            // Re-validare pentru poziția 3 (primul M)
+            if (digit <= 5) {
+              validValue += char;
+            }
+          }
+          // Poziția 3: Primul M - maxim 5
+          else if (pos === 3) {
+            if (digit <= 5) {
+              validValue += char;
+            }
+          }
+          // Poziția 4: Al doilea M - maxim 9
+          else if (pos === 4) {
+            validValue += char;
+          }
+          // Poziția 5: Auto-inserare ":" după MM
+          else if (pos === 5) {
+            validValue += ':';
+            // Re-validare pentru poziția 6 (primul S)
+            if (digit <= 5) {
+              validValue += char;
+            }
+          }
+          // Poziția 6: Primul S - maxim 5
+          else if (pos === 6) {
+            if (digit <= 5) {
+              validValue += char;
+            }
+          }
+          // Poziția 7: Al doilea S - maxim 9
+          else if (pos === 7) {
+            validValue += char;
           }
         }
-        value = cleanValue;
         
-        // Auto-inserare ":" după HH (poziția 2)
-        if (value.length >= 2 && value[2] !== ':' && /^\d{2}$/.test(value.substring(0, 2))) {
-          // Verifică dacă ora este validă (max 23)
-          const hours = parseInt(value.substring(0, 2));
-          if (hours <= 23) {
-            value = value.substring(0, 2) + ':' + value.substring(2);
-            cursorPos++;
-          } else {
-            // Limitează la 23
-            value = '23' + value.substring(2);
-          }
+        this.value = validValue;
+        
+        // Ajustare cursor
+        if (cursorPos > validValue.length) {
+          cursorPos = validValue.length;
         }
-        
-        // Auto-inserare ":" după MM (poziția 5)
-        if (value.length >= 5 && value[5] !== ':' && /^\d{2}:\d{2}$/.test(value.substring(0, 5))) {
-          // Verifică dacă minutele sunt valide (max 59)
-          const minutes = parseInt(value.substring(3, 5));
-          if (minutes <= 59) {
-            value = value.substring(0, 5) + ':' + value.substring(5);
-            cursorPos++;
-          } else {
-            // Limitează la 59
-            value = value.substring(0, 3) + '59' + value.substring(5);
-          }
-        }
-        
-        // Validare în timp real pentru HH (max 23)
-        if (value.length >= 2) {
-          const hours = parseInt(value.substring(0, 2));
-          if (hours > 23) {
-            value = '23' + value.substring(2);
-          }
-        }
-        
-        // Validare în timp real pentru MM (max 59)
-        if (value.length >= 5) {
-          const minutes = parseInt(value.substring(3, 5));
-          if (minutes > 59) {
-            value = value.substring(0, 3) + '59' + value.substring(5);
-          }
-        }
-        
-        // Validare în timp real pentru SS (max 59)
-        if (value.length >= 8) {
-          const seconds = parseInt(value.substring(6, 8));
-          if (seconds > 59) {
-            value = value.substring(0, 6) + '59';
-          }
-        }
-        
-        this.value = value;
-        lastValue = value;
-        
-        // Restaurează poziția cursorului
         this.setSelectionRange(cursorPos, cursorPos);
-        
-        // Validare vizuală
-        validateTimeInput(el);
       });
       
       // Handler pentru backspace - auto-ștergere ":"
@@ -768,20 +688,17 @@
             e.preventDefault();
             this.value = value.substring(0, cursorPos - 1) + value.substring(cursorPos);
             this.setSelectionRange(cursorPos - 1, cursorPos - 1);
-            validateTimeInput(el);
           }
           // Dacă ștergem ultima cifră dinaintea ":", șterge și ":"
           else if (cursorPos === 3 && value[2] === ':') {
             e.preventDefault();
             this.value = value.substring(0, 1) + value.substring(3);
             this.setSelectionRange(1, 1);
-            validateTimeInput(el);
           }
           else if (cursorPos === 6 && value[5] === ':') {
             e.preventDefault();
             this.value = value.substring(0, 4) + value.substring(6);
             this.setSelectionRange(4, 4);
-            validateTimeInput(el);
           }
         }
         
@@ -792,7 +709,6 @@
             e.preventDefault();
             this.value = value.substring(0, cursorPos) + value.substring(cursorPos + 1);
             this.setSelectionRange(cursorPos, cursorPos);
-            validateTimeInput(el);
           }
         }
       });
@@ -803,7 +719,6 @@
         
         if (value === '') {
           this.value = '00:00:00';
-          validateTimeInput(el);
           recalcTotal();
           return;
         }
@@ -815,13 +730,8 @@
         const seconds = (parts[2] || '00').padStart(2, '0');
         
         this.value = `${hours}:${minutes}:${seconds}`;
-        
-        validateTimeInput(el);
         recalcTotal();
       });
-      
-      // Asigură-te că valoarea inițială este validă
-      validateTimeInput(el);
     }
 
     // Create employee card
@@ -929,8 +839,6 @@
           const e = card.querySelector('.emp-end');
           if(s) s.value = shifts[key].start;
           if(e) e.value = shifts[key].end;
-          validateTimeInput(s);
-          validateTimeInput(e);
         });
       }
       
