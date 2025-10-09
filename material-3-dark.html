@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dark Material - Calculator Producție</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --primary: #BB86FC;
+      --primary-variant: #3700B3;
+      --secondary: #03DAC6;
+      --background: #121212;
+      --surface: #1E1E1E;
+      --surface-variant: #2C2C2C;
+      --error: #CF6679;
+      --on-primary: #000000;
+      --on-background: #E1E1E1;
+      --on-surface: #E1E1E1;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--background);
+      color: var(--on-background);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    
+    /* Dark App Bar */
+    .app-bar {
+      background: var(--surface);
+      color: var(--on-surface);
+      padding: 20px 24px;
+      margin: -24px -24px 24px -24px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    
+    .app-bar h1 {
+      font-size: 1.75rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .app-bar .subtitle {
+      opacity: 0.7;
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+    
+    /* Dark Cards */
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    
+    /* Dark Inputs */
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--surface-variant);
+      border-radius: 4px 4px 0 0;
+      font-size: 1rem;
+      font-family: 'Roboto', sans-serif;
+      color: var(--on-surface);
+      transition: all 0.2s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-bottom: 2px solid var(--primary);
+      background: rgba(187, 134, 252, 0.08);
+    }
+    
+    label {
+      display: block;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Dark Buttons */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      background: var(--primary);
+      color: var(--on-primary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 8px;
+      text-transform: uppercase;
+      font-family: 'Roboto', sans-serif;
+      box-shadow: 0 2px 8px rgba(187, 134, 252, 0.3);
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn:hover {
+      background: #D0ACFF;
+      box-shadow: 0 4px 12px rgba(187, 134, 252, 0.4);
+    }
+    
+    .btn-outlined {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      box-shadow: none;
+    }
+    
+    .btn-outlined:hover {
+      background: rgba(187, 134, 252, 0.12);
+    }
+    
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    
+    /* Chip Dark */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      background: var(--surface-variant);
+      border-radius: 16px;
+      font-size: 0.875rem;
+      margin: 4px;
+      color: var(--secondary);
+      border: 1px solid rgba(3, 218, 198, 0.3);
+    }
+    
+    /* Employee Card Dark */
+    .employee {
+      background: var(--surface-variant);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .employee-name {
+      font-size: 1.1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--on-surface);
+    }
+    
+    .icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--error);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+    
+    .icon-btn:hover {
+      background: rgba(207, 102, 121, 0.12);
+    }
+    
+    .time-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    /* Total Dark */
+    .total {
+      background: linear-gradient(135deg, var(--primary-variant), #6200EE);
+      color: white;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      margin-top: 24px;
+      box-shadow: 0 8px 16px rgba(55, 0, 179, 0.4);
+    }
+    
+    .total-label {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .total-value {
+      font-size: 4.5rem;
+      font-weight: 300;
+    }
+    
+    /* Rate Display Dark */
+    .rate-container {
+      background: var(--surface-variant);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(187, 134, 252, 0.2);
+    }
+    
+    .rate-container input {
+      background: transparent;
+      border-bottom: 2px solid var(--primary);
+      font-size: 2.5rem;
+      font-weight: 300;
+      text-align: center;
+      color: var(--primary);
+    }
+    
+    .rate-unit {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      margin-top: 12px;
+    }
+    
+    /* FAB Dark */
+    .fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: var(--secondary);
+      color: var(--on-primary);
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(3, 218, 198, 0.4);
+      transition: all 0.3s;
+    }
+    
+    .fab:hover {
+      box-shadow: 0 8px 20px rgba(3, 218, 198, 0.5);
+      transform: scale(1.05);
+    }
+    
+    @media (max-width: 768px) {
+      .time-grid { grid-template-columns: 1fr; }
+      .total-value { font-size: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="app-bar">
+      <h1>
+        <span class="material-icons-round">factory</span>
+        Band 41 Calculator
+      </h1>
+      <p class="subtitle">Calculator de producție Dark Theme</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Rată de Producție</div>
+      <div class="rate-container">
+        <input type="number" value="33.3" step="0.1" min="0">
+        <div class="rate-unit">buc/oră</div>
+      </div>
+      <div>
+        <span class="chip">WERK 1 = 33.3</span>
+        <span class="chip">WERK 2 = 34.4</span>
+      </div>
+      <div class="btn-grid" style="margin-top: 20px;">
+        <button class="btn">WERK 1</button>
+        <button class="btn-outlined">WERK 2</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Schimb de Lucru</div>
+      <div class="btn-grid">
+        <button class="btn">
+          <span class="material-icons-round" style="vertical-align: middle; margin-right: 8px; font-size: 18px;">wb_sunny</span>
+          Frühschicht
+        </button>
+        <button class="btn-outlined">
+          <span class="material-icons-round" style="vertical-align: middle; margin-right: 8px; font-size: 18px;">nights_stay</span>
+          Spätschicht
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Angajați</div>
+      
+      <div class="employee">
+        <div class="employee-header">
+          <div class="employee-name">
+            <span class="material-icons-round">person</span>
+            Angajat 1
+          </div>
+          <button class="icon-btn">
+            <span class="material-icons-round">delete</span>
+          </button>
+        </div>
+        <div class="time-grid">
+          <div>
+            <label>Ora început</label>
+            <input type="text" value="05:45:00">
+          </div>
+          <div>
+            <label>Ora sfârșit</label>
+            <input type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" style="width: 100%;">
+        <span class="material-icons-round" style="vertical-align: middle; margin-right: 8px; font-size: 18px;">person_add</span>
+        Adaugă Angajat
+      </button>
+    </div>
+
+    <div class="total">
+      <div class="total-label">Total Bucăți Produse</div>
+      <div class="total-value">264</div>
+    </div>
+  </div>
+
+  <button class="fab">
+    <span class="material-icons-round">add</span>
+  </button>
+</body>
+</html>

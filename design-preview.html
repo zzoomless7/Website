@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Preview - 5 Design-uri Calculator Producție</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>10 Design-uri Calculator Producție - Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
       font-family: 'Inter', sans-serif;
-      background: #0F172A;
-      color: #E2E8F0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #FFFFFF;
       padding: 40px 20px;
+      min-height: 100vh;
     }
     
     .container {
@@ -21,125 +22,134 @@
       margin: 0 auto;
     }
     
-    h1 {
+    header {
       text-align: center;
-      font-size: 3rem;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin-bottom: 60px;
+    }
+    
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
     
     .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      font-weight: 400;
+    }
+    
+    .category-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 60px 0 30px;
       text-align: center;
-      color: #94A3B8;
-      margin-bottom: 50px;
-      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
     
     .design-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 30px;
-      margin-bottom: 50px;
+      margin-bottom: 40px;
     }
     
     .design-card {
-      background: #1E293B;
-      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
       overflow: hidden;
-      border: 1px solid #334155;
+      border: 1px solid rgba(255, 255, 255, 0.3);
       transition: all 0.3s;
     }
     
     .design-card:hover {
-      transform: translateY(-5px);
-      border-color: #3B82F6;
-      box-shadow: 0 20px 50px rgba(59, 130, 246, 0.3);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.6);
     }
     
     .design-preview {
-      width: 100%;
-      height: 300px;
-      background-size: cover;
-      background-position: top center;
+      height: 250px;
       position: relative;
+      overflow: hidden;
     }
     
-    .design-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .design-preview iframe {
       width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, transparent, rgba(0,0,0,0.8));
-      display: flex;
-      align-items: flex-end;
-      padding: 20px;
+      height: 600px;
+      border: none;
+      transform: scale(0.42);
+      transform-origin: 0 0;
+      pointer-events: none;
     }
     
     .design-info {
-      padding: 25px;
+      padding: 24px;
     }
     
     .design-name {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      margin-bottom: 10px;
-      color: #F1F5F9;
+      margin-bottom: 12px;
     }
     
     .design-desc {
-      color: #94A3B8;
-      margin-bottom: 15px;
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin-bottom: 16px;
       line-height: 1.6;
     }
     
     .design-tags {
       display: flex;
       gap: 8px;
-      margin-bottom: 20px;
       flex-wrap: wrap;
+      margin-bottom: 20px;
     }
     
     .tag {
-      padding: 4px 12px;
-      background: rgba(59, 130, 246, 0.2);
-      border: 1px solid rgba(59, 130, 246, 0.4);
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 20px;
       font-size: 0.75rem;
-      color: #60A5FA;
+      font-weight: 600;
     }
     
     .btn-view {
-      display: inline-block;
-      padding: 12px 24px;
-      background: #3B82F6;
+      display: block;
+      padding: 14px 24px;
+      background: rgba(255, 255, 255, 0.25);
       color: white;
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 600;
-      transition: all 0.3s;
-      width: 100%;
       text-align: center;
+      transition: all 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
     
     .btn-view:hover {
-      background: #2563EB;
-      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+      background: rgba(255, 255, 255, 0.35);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
     }
     
-    .comparison-table {
-      background: #1E293B;
-      border-radius: 16px;
-      padding: 30px;
-      border: 1px solid #334155;
-      margin-top: 40px;
+    .comparison {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 40px;
+      margin-top: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
-    .comparison-table h2 {
-      margin-bottom: 25px;
-      color: #F1F5F9;
+    .comparison h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
     }
     
     table {
@@ -148,149 +158,245 @@
     }
     
     th, td {
-      padding: 15px;
+      padding: 16px;
       text-align: left;
-      border-bottom: 1px solid #334155;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     th {
-      color: #60A5FA;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       font-size: 0.85rem;
       letter-spacing: 1px;
     }
     
-    td {
-      color: #E2E8F0;
-    }
-    
-    .rating {
-      color: #FBBF24;
+    .badge {
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-block;
     }
     
     @media (max-width: 768px) {
-      h1 { font-size: 2rem; }
+      h1 { font-size: 2.5rem; }
       .design-grid { grid-template-columns: 1fr; }
+      table { font-size: 0.85rem; }
+      th, td { padding: 12px 8px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🎨 5 Design-uri pentru Calculator Producție</h1>
-    <p class="subtitle">Alege stilul preferat pentru aplicația ta - Band 41</p>
+    <header>
+      <h1>🎨 10 Design-uri Calculator Producție</h1>
+      <p class="subtitle">5 Minimalist + 5 Material Design pentru Band 41</p>
+    </header>
 
+    <!-- MINIMALIST SECTION -->
+    <div class="category-title">✨ MINIMALIST DESIGNS</div>
+    
     <div class="design-grid">
-      <!-- Design 1: Minimalist -->
+      <!-- Design 1: Nordic -->
       <div class="design-card">
-        <div class="design-preview" style="background: linear-gradient(135deg, #F8F9FA, #FFFFFF);">
-          <div class="design-overlay">
-            <div style="color: white; font-size: 2rem; font-weight: 300;">Band 41</div>
-          </div>
+        <div class="design-preview">
+          <iframe src="minimalist-1-nordic.html"></iframe>
         </div>
         <div class="design-info">
-          <div class="design-name">1️⃣ Minimalist Modern</div>
+          <div class="design-name">1. Nordic Clean</div>
           <div class="design-desc">
-            Design curat și elegant cu mult spațiu alb, tipografie mare și elemente simple. Perfect pentru claritate maximă.
+            Design scandinav ultra-minimalist cu mult spațiu alb, tipografie light și border subtile.
           </div>
           <div class="design-tags">
             <span class="tag">Clean</span>
-            <span class="tag">Professional</span>
             <span class="tag">Light</span>
+            <span class="tag">Airy</span>
           </div>
-          <a href="design1-minimalist.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <a href="minimalist-1-nordic.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
         </div>
       </div>
 
-      <!-- Design 2: Glassmorphism -->
+      <!-- Design 2: Swiss -->
       <div class="design-card">
-        <div class="design-preview" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-          <div class="design-overlay">
-            <div style="color: white; font-size: 2rem; font-weight: 700;">🏭 Band 41</div>
-          </div>
+        <div class="design-preview">
+          <iframe src="minimalist-2-swiss.html"></iframe>
         </div>
         <div class="design-info">
-          <div class="design-name">2️⃣ Glassmorphism</div>
+          <div class="design-name">2. Swiss Typography</div>
           <div class="design-desc">
-            Efecte de sticlă transparentă cu blur, background animat colorat și cartonașe semi-transparente moderne.
+            Inspirat de designul elvețian - grid strict, Helvetica, high contrast, bold și geometric.
           </div>
           <div class="design-tags">
-            <span class="tag">Modern</span>
-            <span class="tag">Blur Effect</span>
-            <span class="tag">Colorful</span>
-          </div>
-          <a href="design2-glassmorphism.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Design 3: Neumorphism -->
-      <div class="design-card">
-        <div class="design-preview" style="background: #E0E5EC;">
-          <div class="design-overlay">
-            <div style="color: #5E72E4; font-size: 2rem; font-weight: 800;">🏭 Band 41</div>
-          </div>
-        </div>
-        <div class="design-info">
-          <div class="design-name">3️⃣ Neumorphism (Soft 3D)</div>
-          <div class="design-desc">
-            Design soft cu shadow-uri 3D subtile, butoane raised și input-uri inset pentru un aspect tactil modern.
-          </div>
-          <div class="design-tags">
-            <span class="tag">3D Shadows</span>
-            <span class="tag">Soft UI</span>
-            <span class="tag">Tactile</span>
-          </div>
-          <a href="design3-neumorphism.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Design 4: Material Design -->
-      <div class="design-card">
-        <div class="design-preview" style="background: linear-gradient(135deg, #6750A4, #8774CF);">
-          <div class="design-overlay">
-            <div style="color: white; font-size: 2rem; font-weight: 500;">🏭 Band 41 Calculator</div>
-          </div>
-        </div>
-        <div class="design-info">
-          <div class="design-name">4️⃣ Material Design 3</div>
-          <div class="design-desc">
-            Google-style cu cartonașe elevated, filled buttons, typography sistemă Material și FAB (Floating Action Button).
-          </div>
-          <div class="design-tags">
-            <span class="tag">Google MD3</span>
-            <span class="tag">Elevated</span>
+            <span class="tag">Grid</span>
             <span class="tag">Bold</span>
+            <span class="tag">Contrast</span>
           </div>
-          <a href="design4-material.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <a href="minimalist-2-swiss.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
         </div>
       </div>
 
-      <!-- Design 5: Industrial -->
+      <!-- Design 3: Zen -->
       <div class="design-card">
-        <div class="design-preview" style="background: linear-gradient(135deg, #0A0E27, #1A1F3A);">
-          <div class="design-overlay">
-            <div style="background: linear-gradient(135deg, #00F0FF, #00FF88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; font-weight: 900;">⚡ BAND 41</div>
-          </div>
+        <div class="design-preview">
+          <iframe src="minimalist-3-zen.html"></iframe>
         </div>
         <div class="design-info">
-          <div class="design-name">5️⃣ Industrial Dashboard</div>
+          <div class="design-name">3. Japanese Zen</div>
           <div class="design-desc">
-            Dark theme tehnic cu grid animat, efecte neon cyan/orange, tipografie Orbitron și estetic cyberpunk/industrial.
+            Influențe japoneze cu mult "breathing space", dividers subtile și estetică zen.
           </div>
           <div class="design-tags">
-            <span class="tag">Dark</span>
-            <span class="tag">Neon</span>
-            <span class="tag">Technical</span>
-            <span class="tag">Cyber</span>
+            <span class="tag">Zen</span>
+            <span class="tag">Calm</span>
+            <span class="tag">Centered</span>
           </div>
-          <a href="design5-industrial.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <a href="minimalist-3-zen.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Design 4: Brutalist -->
+      <div class="design-card">
+        <div class="design-preview">
+          <iframe src="minimalist-4-brutalist.html"></iframe>
+        </div>
+        <div class="design-info">
+          <div class="design-name">4. Brutalist Minimal</div>
+          <div class="design-desc">
+            Bold, geometric, high contrast cu accente yellow. Tipografie Space Grotesk și layered shadows.
+          </div>
+          <div class="design-tags">
+            <span class="tag">Bold</span>
+            <span class="tag">Geometric</span>
+            <span class="tag">Edgy</span>
+          </div>
+          <a href="minimalist-4-brutalist.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Design 5: Luxury -->
+      <div class="design-card">
+        <div class="design-preview">
+          <iframe src="minimalist-5-luxury.html"></iframe>
+        </div>
+        <div class="design-info">
+          <div class="design-name">5. Luxury Minimal</div>
+          <div class="design-desc">
+            Elegant și sofisticat cu serif fonts (Cormorant), accente gold și spacing generos.
+          </div>
+          <div class="design-tags">
+            <span class="tag">Elegant</span>
+            <span class="tag">Serif</span>
+            <span class="tag">Premium</span>
+          </div>
+          <a href="minimalist-5-luxury.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
         </div>
       </div>
     </div>
 
-    <!-- Comparison Table -->
-    <div class="comparison-table">
-      <h2>📊 Comparație Design-uri</h2>
+    <!-- MATERIAL DESIGN SECTION -->
+    <div class="category-title">🎯 MATERIAL DESIGN</div>
+    
+    <div class="design-grid">
+      <!-- Material 1: Classic -->
+      <div class="design-card">
+        <div class="design-preview">
+          <iframe src="material-1-classic.html"></iframe>
+        </div>
+        <div class="design-info">
+          <div class="design-name">6. Classic Material</div>
+          <div class="design-desc">
+            Material Design 2 clasic cu culori tradiționale, elevated cards și FAB.
+          </div>
+          <div class="design-tags">
+            <span class="tag">MD2</span>
+            <span class="tag">Classic</span>
+            <span class="tag">Familiar</span>
+          </div>
+          <a href="material-1-classic.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Material 2: Vibrant -->
+      <div class="design-card">
+        <div class="design-preview">
+          <iframe src="material-2-vibrant.html"></iframe>
+        </div>
+        <div class="design-info">
+          <div class="design-name">7. Vibrant Colors</div>
+          <div class="design-desc">
+            Material Design cu palette vibrantă - orange, cyan, green. Energic și colorful.
+          </div>
+          <div class="design-tags">
+            <span class="tag">Colorful</span>
+            <span class="tag">Vibrant</span>
+            <span class="tag">Energic</span>
+          </div>
+          <a href="material-2-vibrant.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Material 3: Dark -->
+      <div class="design-card">
+        <div class="design-preview">
+          <iframe src="material-3-dark.html"></iframe>
+        </div>
+        <div class="design-info">
+          <div class="design-name">8. Dark Material</div>
+          <div class="design-desc">
+            Dark theme Material cu purple primary (#BB86FC) și cyan secondary. Perfect pentru night mode.
+          </div>
+          <div class="design-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">Purple</span>
+            <span class="tag">Night</span>
+          </div>
+          <a href="material-3-dark.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Material 4: Gradient -->
+      <div class="design-card">
+        <div class="design-preview">
+          <iframe src="material-4-gradient.html"></iframe>
+        </div>
+        <div class="design-info">
+          <div class="design-name">9. Gradient Material</div>
+          <div class="design-desc">
+            Material cu gradienti impresionanti, glass effects și shimmer animations.
+          </div>
+          <div class="design-tags">
+            <span class="tag">Gradient</span>
+            <span class="tag">Glass</span>
+            <span class="tag">Animated</span>
+          </div>
+          <a href="material-4-gradient.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Material 5: Material You -->
+      <div class="design-card">
+        <div class="design-preview">
+          <iframe src="material-5-you.html"></iframe>
+        </div>
+        <div class="design-info">
+          <div class="design-name">10. Material You</div>
+          <div class="design-desc">
+            Material Design 3 (Material You) cu dynamic colors, soft palette și modern aesthetics.
+          </div>
+          <div class="design-tags">
+            <span class="tag">MD3</span>
+            <span class="tag">Modern</span>
+            <span class="tag">Soft</span>
+          </div>
+          <a href="material-5-you.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div class="comparison">
+      <h2>📊 Tabel Comparativ</h2>
       <table>
         <thead>
           <tr>
@@ -298,55 +404,78 @@
             <th>Stil</th>
             <th>Complexitate</th>
             <th>Best For</th>
-            <th>Rating</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>1. Minimalist</strong></td>
-            <td>Clean & Simple</td>
-            <td>Simplă</td>
+            <td><strong>1. Nordic Clean</strong></td>
+            <td>Minimalist Scandinav</td>
+            <td><span class="badge">★☆☆</span></td>
             <td>Profesioniști, Claritate</td>
-            <td class="rating">⭐⭐⭐⭐⭐</td>
           </tr>
           <tr>
-            <td><strong>2. Glassmorphism</strong></td>
-            <td>Modern & Blur</td>
-            <td>Medie</td>
-            <td>Prezentări, UI Modern</td>
-            <td class="rating">⭐⭐⭐⭐⭐</td>
+            <td><strong>2. Swiss Typography</strong></td>
+            <td>Minimalist Grid</td>
+            <td><span class="badge">★★☆</span></td>
+            <td>Designers, Bold UI</td>
           </tr>
           <tr>
-            <td><strong>3. Neumorphism</strong></td>
-            <td>Soft 3D</td>
-            <td>Medie</td>
-            <td>UI Tactil, Creativitate</td>
-            <td class="rating">⭐⭐⭐⭐</td>
+            <td><strong>3. Japanese Zen</strong></td>
+            <td>Minimalist Zen</td>
+            <td><span class="badge">★☆☆</span></td>
+            <td>Calm UX, Focus</td>
           </tr>
           <tr>
-            <td><strong>4. Material Design</strong></td>
-            <td>Google MD3</td>
-            <td>Medie-Mare</td>
-            <td>Apps Standard, Enterprise</td>
-            <td class="rating">⭐⭐⭐⭐⭐</td>
+            <td><strong>4. Brutalist Minimal</strong></td>
+            <td>Minimalist Bold</td>
+            <td><span class="badge">★★☆</span></td>
+            <td>Modern, Edgy</td>
           </tr>
           <tr>
-            <td><strong>5. Industrial</strong></td>
-            <td>Dark & Technical</td>
-            <td>Complexă</td>
-            <td>Dashboards, Data Viz</td>
-            <td class="rating">⭐⭐⭐⭐⭐</td>
+            <td><strong>5. Luxury Minimal</strong></td>
+            <td>Minimalist Premium</td>
+            <td><span class="badge">★★☆</span></td>
+            <td>High-end, Elegant</td>
+          </tr>
+          <tr style="border-top: 2px solid rgba(255,255,255,0.4);">
+            <td><strong>6. Classic Material</strong></td>
+            <td>Material Design 2</td>
+            <td><span class="badge">★★☆</span></td>
+            <td>Standard Apps</td>
+          </tr>
+          <tr>
+            <td><strong>7. Vibrant Colors</strong></td>
+            <td>Material Colorful</td>
+            <td><span class="badge">★★★</span></td>
+            <td>Energic, Youth</td>
+          </tr>
+          <tr>
+            <td><strong>8. Dark Material</strong></td>
+            <td>Material Dark</td>
+            <td><span class="badge">★★☆</span></td>
+            <td>Night Mode</td>
+          </tr>
+          <tr>
+            <td><strong>9. Gradient Material</strong></td>
+            <td>Material Glass</td>
+            <td><span class="badge">★★★</span></td>
+            <td>Impressive UI</td>
+          </tr>
+          <tr>
+            <td><strong>10. Material You</strong></td>
+            <td>Material Design 3</td>
+            <td><span class="badge">★★★</span></td>
+            <td>Modern, Android 12+</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div style="text-align: center; margin-top: 60px; padding: 40px; background: rgba(59, 130, 246, 0.1); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.3);">
-      <h3 style="color: #60A5FA; margin-bottom: 15px;">💡 Recomandare</h3>
-      <p style="color: #94A3B8; line-height: 1.8; max-width: 800px; margin: 0 auto;">
-        Pentru un calculator de producție industrial, recomand <strong style="color: #F1F5F9;">Design 5 (Industrial Dashboard)</strong> 
-        pentru impactul vizual maxim, sau <strong style="color: #F1F5F9;">Design 1 (Minimalist)</strong> pentru claritate și 
-        profesionalism maxim. Design 2 și 4 sunt excelente pentru aplicații moderne și prezentări.
+    <div style="text-align: center; margin-top: 60px; padding: 40px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.2);">
+      <h3 style="font-size: 1.8rem; margin-bottom: 20px;">💡 Recomandări</h3>
+      <p style="font-size: 1.1rem; line-height: 1.8; max-width: 900px; margin: 0 auto;">
+        <strong>TOP 3 Minimalist:</strong> Nordic Clean (claritate), Swiss Typography (bold), Luxury Minimal (elegant)<br><br>
+        <strong>TOP 3 Material:</strong> Material You (modern MD3), Gradient Material (impressive), Dark Material (night mode)
       </p>
     </div>
   </div>

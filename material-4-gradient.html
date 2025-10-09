@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gradient Material - Calculator Producție</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #FFFFFF;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0;
+      position: relative;
+    }
+    
+    /* Animated gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 119, 255, 0.3), transparent 50%);
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Glass Header */
+    .header {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #FFFFFF, #F0E5FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .header .subtitle {
+      font-size: 1.05rem;
+      opacity: 0.95;
+    }
+    
+    /* Glass Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s;
+    }
+    
+    .card:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    
+    /* Gradient Inputs */
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 18px 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      font-size: 1.1rem;
+      font-family: 'Roboto', sans-serif;
+      color: #FFFFFF;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Gradient Buttons */
+    .btn {
+      padding: 16px 32px;
+      border: none;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 16px;
+      text-transform: uppercase;
+      font-family: 'Roboto', sans-serif;
+      box-shadow: 0 4px 16px rgba(245, 87, 108, 0.4);
+      transition: all 0.3s;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn:hover {
+      box-shadow: 0 6px 24px rgba(245, 87, 108, 0.5);
+      transform: translateY(-2px);
+    }
+    
+    .btn-outlined {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      box-shadow: none;
+    }
+    
+    .btn-outlined:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    /* Gradient Tags */
+    .tag {
+      display: inline-block;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin: 4px;
+      box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
+    }
+    
+    /* Employee Glass */
+    .employee {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .employee-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .delete-btn {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+      border: none;
+      color: white;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(238, 90, 111, 0.4);
+      transition: all 0.3s;
+    }
+    
+    .delete-btn:hover {
+      transform: rotate(90deg) scale(1.1);
+      box-shadow: 0 6px 16px rgba(238, 90, 111, 0.5);
+    }
+    
+    .time-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    /* Total Gradient */
+    .total {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 24px;
+      padding: 48px;
+      text-align: center;
+      margin-top: 32px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .total::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    .total-label {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .total-value {
+      font-size: 5.5rem;
+      font-weight: 900;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Rate Box */
+    .rate-box {
+      background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2));
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    
+    .rate-box input {
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.6);
+      font-size: 3rem;
+      font-weight: 900;
+      text-align: center;
+      color: #FFFFFF;
+    }
+    
+    .rate-unit {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 12px;
+      opacity: 0.9;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 { font-size: 2rem; }
+      .time-grid { grid-template-columns: 1fr; }
+      .total-value { font-size: 4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏭 Band 41 Calculator</h1>
+      <p class="subtitle">Calculator de producție cu gradienti</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Rată de Producție</div>
+      <div class="rate-box">
+        <input type="number" value="33.3" step="0.1" min="0">
+        <div class="rate-unit">BUC / ORĂ</div>
+      </div>
+      <div>
+        <span class="tag">WERK 1 = 33.3</span>
+        <span class="tag">WERK 2 = 34.4</span>
+      </div>
+      <div class="btn-grid" style="margin-top: 24px;">
+        <button class="btn">WERK 1</button>
+        <button class="btn-outlined">WERK 2</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Schimb de Lucru</div>
+      <div class="btn-grid">
+        <button class="btn">
+          <span class="material-icons-round" style="vertical-align: middle; margin-right: 8px;">wb_sunny</span>
+          FRÜHSCHICHT
+        </button>
+        <button class="btn-outlined">
+          <span class="material-icons-round" style="vertical-align: middle; margin-right: 8px;">nights_stay</span>
+          SPÄTSCHICHT
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Angajați</div>
+      
+      <div class="employee">
+        <div class="employee-header">
+          <div class="employee-name">
+            <span class="material-icons-round">person</span>
+            Angajat 1
+          </div>
+          <button class="delete-btn">
+            <span class="material-icons-round">close</span>
+          </button>
+        </div>
+        <div class="time-grid">
+          <div>
+            <label>Ora Început</label>
+            <input type="text" value="05:45:00">
+          </div>
+          <div>
+            <label>Ora Sfârșit</label>
+            <input type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" style="width: 100%;">
+        <span class="material-icons-round" style="vertical-align: middle; margin-right: 8px;">person_add</span>
+        ADAUGĂ ANGAJAT
+      </button>
+    </div>
+
+    <div class="total">
+      <div class="total-label">TOTAL BUCĂȚI PRODUSE</div>
+      <div class="total-value">264</div>
+    </div>
+  </div>
+</body>
+</html>

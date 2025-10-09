@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Swiss Typography - Calculator Producție</title>
+  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #FFFFFF;
+      color: #000000;
+      line-height: 1.4;
+      min-height: 100vh;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+    
+    /* Swiss Grid System */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    
+    .col-12 { grid-column: span 12; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+    
+    /* Swiss Header */
+    header {
+      border-bottom: 3px solid #000000;
+      padding-bottom: 30px;
+      margin-bottom: 60px;
+    }
+    
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      letter-spacing: -2px;
+      margin-bottom: 8px;
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Section Title */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Swiss Inputs */
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 16px;
+      border: 2px solid #000000;
+      background: #FFFFFF;
+      font-size: 1.1rem;
+      font-family: 'Helvetica Neue', sans-serif;
+      font-weight: 500;
+      color: #000000;
+    }
+    
+    input:focus {
+      outline: 4px solid #FFCC00;
+      outline-offset: 2px;
+    }
+    
+    /* Swiss Buttons */
+    .btn {
+      padding: 18px 24px;
+      border: 2px solid #000000;
+      background: #FFFFFF;
+      color: #000000;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.1s;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+    
+    .btn:hover {
+      background: #000000;
+      color: #FFFFFF;
+    }
+    
+    .btn.active {
+      background: #FF0000;
+      color: #FFFFFF;
+      border-color: #FF0000;
+    }
+    
+    /* Employee Card Swiss */
+    .employee {
+      border: 3px solid #000000;
+      padding: 24px;
+      margin-bottom: 20px;
+      background: #F5F5F5;
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #000000;
+    }
+    
+    .employee-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .delete-btn {
+      background: #FF0000;
+      border: none;
+      color: #FFFFFF;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .delete-btn:hover {
+      background: #000000;
+    }
+    
+    .input-group {
+      margin-bottom: 16px;
+    }
+    
+    .input-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    /* Total Swiss */
+    .total {
+      background: #000000;
+      color: #FFFFFF;
+      padding: 40px;
+      margin-top: 60px;
+    }
+    
+    .total-label {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .total-value {
+      font-size: 6rem;
+      font-weight: 700;
+      letter-spacing: -4px;
+    }
+    
+    /* Rate Display */
+    .rate-box {
+      background: #FFCC00;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .rate-box input {
+      background: #FFCC00;
+      border: none;
+      border-bottom: 3px solid #000000;
+      font-size: 3rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 8px;
+    }
+    
+    .rate-unit {
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 8px;
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      .col-6 { grid-column: span 12; }
+      .total-value { font-size: 4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>BAND 41</h1>
+      <p class="subtitle">CALCULATOR DE PRODUCȚIE</p>
+    </header>
+
+    <div class="grid">
+      <div class="col-12">
+        <div class="section-title">RATĂ</div>
+        <div class="rate-box">
+          <input type="number" value="33.3" step="0.1" min="0">
+          <div class="rate-unit">BUC/ORĂ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="col-6">
+        <button class="btn active" style="width: 100%;">WERK 1</button>
+      </div>
+      <div class="col-6">
+        <button class="btn" style="width: 100%;">WERK 2</button>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top: 40px;">
+      <div class="col-12">
+        <div class="section-title">SCHIMB</div>
+      </div>
+      <div class="col-6">
+        <button class="btn active" style="width: 100%;">FRÜHSCHICHT</button>
+      </div>
+      <div class="col-6">
+        <button class="btn" style="width: 100%;">SPÄTSCHICHT</button>
+      </div>
+    </div>
+
+    <div style="margin-top: 60px;">
+      <div class="section-title">ANGAJAȚI</div>
+      
+      <div class="employee">
+        <div class="employee-header">
+          <div class="employee-name">ANGAJAT 01</div>
+          <button class="delete-btn">×</button>
+        </div>
+        <div class="grid">
+          <div class="col-6">
+            <div class="input-group">
+              <label>ÎNCEPUT</label>
+              <input type="text" value="05:45:00">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="input-group">
+              <label>SFÂRȘIT</label>
+              <input type="text" value="14:00:00">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" style="width: 100%;">+ ADAUGĂ ANGAJAT</button>
+    </div>
+
+    <div class="total">
+      <div class="total-label">TOTAL BUCĂȚI</div>
+      <div class="total-value">264</div>
+    </div>
+  </div>
+</body>
+</html>
