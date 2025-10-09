@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculator Producție - Minimalist Design</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --primary: #000000;
+      --secondary: #666666;
+      --accent: #0066FF;
+      --bg: #FFFFFF;
+      --card: #F8F9FA;
+      --border: #E5E7EB;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+    
+    /* Header Minimalist */
+    header {
+      text-align: center;
+      margin-bottom: 80px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    h1 {
+      font-size: 3rem;
+      font-weight: 300;
+      letter-spacing: -2px;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      color: var(--secondary);
+      font-size: 1rem;
+      font-weight: 400;
+    }
+    
+    /* Cards Ultra Clean */
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 30px rgba(0, 102, 255, 0.1);
+    }
+    
+    /* Section Title */
+    .section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--secondary);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    
+    /* Inputs Minimalist */
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+      background: white;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    }
+    
+    /* Buttons Clean */
+    .btn {
+      padding: 14px 28px;
+      border: 2px solid var(--primary);
+      background: white;
+      color: var(--primary);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .btn-group .btn {
+      flex: 1;
+    }
+    
+    /* Employee Card Minimalist */
+    .employee-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .employee-name {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+    
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--secondary);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 8px;
+      transition: color 0.2s;
+    }
+    
+    .delete-btn:hover {
+      color: #EF4444;
+    }
+    
+    .time-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .input-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--secondary);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    /* Total Box Minimal */
+    .total-box {
+      background: var(--primary);
+      color: white;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    
+    .total-label {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 10px;
+    }
+    
+    .total-value {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: -2px;
+    }
+    
+    /* Rate Input Special */
+    .rate-display {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    
+    .rate-display input {
+      flex: 1;
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .rate-unit {
+      color: var(--secondary);
+      font-size: 1rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .container { padding: 30px 15px; }
+      .card { padding: 25px; }
+      .time-inputs { grid-template-columns: 1fr; }
+      .total-value { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>Band 41</h1>
+      <p class="subtitle">Calculator de producție</p>
+    </header>
+
+    <!-- Rate Card -->
+    <div class="card">
+      <div class="section-title">Rată de Producție</div>
+      <div class="rate-display">
+        <input type="number" value="33.3" step="0.1" min="0">
+        <span class="rate-unit">buc/oră</span>
+      </div>
+      <div class="btn-group">
+        <button class="btn">WERK 1 (33.3)</button>
+        <button class="btn">WERK 2 (34.4)</button>
+      </div>
+    </div>
+
+    <!-- Shift Card -->
+    <div class="card">
+      <div class="section-title">Schimb de Lucru</div>
+      <div class="btn-group">
+        <button class="btn btn-primary">Frühschicht</button>
+        <button class="btn">Spätschicht</button>
+      </div>
+    </div>
+
+    <!-- Employees -->
+    <div class="card">
+      <div class="section-title">Angajați</div>
+      
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-name">Angajat 1</div>
+          <button class="delete-btn">✕</button>
+        </div>
+        <div class="time-inputs">
+          <div class="input-group">
+            <label>Ora început</label>
+            <input type="text" value="05:45:00">
+          </div>
+          <div class="input-group">
+            <label>Ora sfârșit</label>
+            <input type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">+ Adaugă Angajat</button>
+    </div>
+
+    <!-- Total -->
+    <div class="total-box">
+      <div class="total-label">Total bucăți produse</div>
+      <div class="total-value">264</div>
+    </div>
+  </div>
+</body>
+</html>

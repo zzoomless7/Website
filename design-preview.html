@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Preview - 5 Design-uri Calculator Producție</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0F172A;
+      color: #E2E8F0;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #94A3B8;
+      margin-bottom: 50px;
+      font-size: 1.1rem;
+    }
+    
+    .design-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+    
+    .design-card {
+      background: #1E293B;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      transition: all 0.3s;
+    }
+    
+    .design-card:hover {
+      transform: translateY(-5px);
+      border-color: #3B82F6;
+      box-shadow: 0 20px 50px rgba(59, 130, 246, 0.3);
+    }
+    
+    .design-preview {
+      width: 100%;
+      height: 300px;
+      background-size: cover;
+      background-position: top center;
+      position: relative;
+    }
+    
+    .design-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,0.8));
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+    }
+    
+    .design-info {
+      padding: 25px;
+    }
+    
+    .design-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #F1F5F9;
+    }
+    
+    .design-desc {
+      color: #94A3B8;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    
+    .design-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      padding: 4px 12px;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: #60A5FA;
+    }
+    
+    .btn-view {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #3B82F6;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .btn-view:hover {
+      background: #2563EB;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+    }
+    
+    .comparison-table {
+      background: #1E293B;
+      border-radius: 16px;
+      padding: 30px;
+      border: 1px solid #334155;
+      margin-top: 40px;
+    }
+    
+    .comparison-table h2 {
+      margin-bottom: 25px;
+      color: #F1F5F9;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #334155;
+    }
+    
+    th {
+      color: #60A5FA;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+    
+    td {
+      color: #E2E8F0;
+    }
+    
+    .rating {
+      color: #FBBF24;
+    }
+    
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .design-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 5 Design-uri pentru Calculator Producție</h1>
+    <p class="subtitle">Alege stilul preferat pentru aplicația ta - Band 41</p>
+
+    <div class="design-grid">
+      <!-- Design 1: Minimalist -->
+      <div class="design-card">
+        <div class="design-preview" style="background: linear-gradient(135deg, #F8F9FA, #FFFFFF);">
+          <div class="design-overlay">
+            <div style="color: white; font-size: 2rem; font-weight: 300;">Band 41</div>
+          </div>
+        </div>
+        <div class="design-info">
+          <div class="design-name">1️⃣ Minimalist Modern</div>
+          <div class="design-desc">
+            Design curat și elegant cu mult spațiu alb, tipografie mare și elemente simple. Perfect pentru claritate maximă.
+          </div>
+          <div class="design-tags">
+            <span class="tag">Clean</span>
+            <span class="tag">Professional</span>
+            <span class="tag">Light</span>
+          </div>
+          <a href="design1-minimalist.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Design 2: Glassmorphism -->
+      <div class="design-card">
+        <div class="design-preview" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+          <div class="design-overlay">
+            <div style="color: white; font-size: 2rem; font-weight: 700;">🏭 Band 41</div>
+          </div>
+        </div>
+        <div class="design-info">
+          <div class="design-name">2️⃣ Glassmorphism</div>
+          <div class="design-desc">
+            Efecte de sticlă transparentă cu blur, background animat colorat și cartonașe semi-transparente moderne.
+          </div>
+          <div class="design-tags">
+            <span class="tag">Modern</span>
+            <span class="tag">Blur Effect</span>
+            <span class="tag">Colorful</span>
+          </div>
+          <a href="design2-glassmorphism.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Design 3: Neumorphism -->
+      <div class="design-card">
+        <div class="design-preview" style="background: #E0E5EC;">
+          <div class="design-overlay">
+            <div style="color: #5E72E4; font-size: 2rem; font-weight: 800;">🏭 Band 41</div>
+          </div>
+        </div>
+        <div class="design-info">
+          <div class="design-name">3️⃣ Neumorphism (Soft 3D)</div>
+          <div class="design-desc">
+            Design soft cu shadow-uri 3D subtile, butoane raised și input-uri inset pentru un aspect tactil modern.
+          </div>
+          <div class="design-tags">
+            <span class="tag">3D Shadows</span>
+            <span class="tag">Soft UI</span>
+            <span class="tag">Tactile</span>
+          </div>
+          <a href="design3-neumorphism.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Design 4: Material Design -->
+      <div class="design-card">
+        <div class="design-preview" style="background: linear-gradient(135deg, #6750A4, #8774CF);">
+          <div class="design-overlay">
+            <div style="color: white; font-size: 2rem; font-weight: 500;">🏭 Band 41 Calculator</div>
+          </div>
+        </div>
+        <div class="design-info">
+          <div class="design-name">4️⃣ Material Design 3</div>
+          <div class="design-desc">
+            Google-style cu cartonașe elevated, filled buttons, typography sistemă Material și FAB (Floating Action Button).
+          </div>
+          <div class="design-tags">
+            <span class="tag">Google MD3</span>
+            <span class="tag">Elevated</span>
+            <span class="tag">Bold</span>
+          </div>
+          <a href="design4-material.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Design 5: Industrial -->
+      <div class="design-card">
+        <div class="design-preview" style="background: linear-gradient(135deg, #0A0E27, #1A1F3A);">
+          <div class="design-overlay">
+            <div style="background: linear-gradient(135deg, #00F0FF, #00FF88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2rem; font-weight: 900;">⚡ BAND 41</div>
+          </div>
+        </div>
+        <div class="design-info">
+          <div class="design-name">5️⃣ Industrial Dashboard</div>
+          <div class="design-desc">
+            Dark theme tehnic cu grid animat, efecte neon cyan/orange, tipografie Orbitron și estetic cyberpunk/industrial.
+          </div>
+          <div class="design-tags">
+            <span class="tag">Dark</span>
+            <span class="tag">Neon</span>
+            <span class="tag">Technical</span>
+            <span class="tag">Cyber</span>
+          </div>
+          <a href="design5-industrial.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="comparison-table">
+      <h2>📊 Comparație Design-uri</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Design</th>
+            <th>Stil</th>
+            <th>Complexitate</th>
+            <th>Best For</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Minimalist</strong></td>
+            <td>Clean & Simple</td>
+            <td>Simplă</td>
+            <td>Profesioniști, Claritate</td>
+            <td class="rating">⭐⭐⭐⭐⭐</td>
+          </tr>
+          <tr>
+            <td><strong>2. Glassmorphism</strong></td>
+            <td>Modern & Blur</td>
+            <td>Medie</td>
+            <td>Prezentări, UI Modern</td>
+            <td class="rating">⭐⭐⭐⭐⭐</td>
+          </tr>
+          <tr>
+            <td><strong>3. Neumorphism</strong></td>
+            <td>Soft 3D</td>
+            <td>Medie</td>
+            <td>UI Tactil, Creativitate</td>
+            <td class="rating">⭐⭐⭐⭐</td>
+          </tr>
+          <tr>
+            <td><strong>4. Material Design</strong></td>
+            <td>Google MD3</td>
+            <td>Medie-Mare</td>
+            <td>Apps Standard, Enterprise</td>
+            <td class="rating">⭐⭐⭐⭐⭐</td>
+          </tr>
+          <tr>
+            <td><strong>5. Industrial</strong></td>
+            <td>Dark & Technical</td>
+            <td>Complexă</td>
+            <td>Dashboards, Data Viz</td>
+            <td class="rating">⭐⭐⭐⭐⭐</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align: center; margin-top: 60px; padding: 40px; background: rgba(59, 130, 246, 0.1); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.3);">
+      <h3 style="color: #60A5FA; margin-bottom: 15px;">💡 Recomandare</h3>
+      <p style="color: #94A3B8; line-height: 1.8; max-width: 800px; margin: 0 auto;">
+        Pentru un calculator de producție industrial, recomand <strong style="color: #F1F5F9;">Design 5 (Industrial Dashboard)</strong> 
+        pentru impactul vizual maxim, sau <strong style="color: #F1F5F9;">Design 1 (Minimalist)</strong> pentru claritate și 
+        profesionalism maxim. Design 2 și 4 sunt excelente pentru aplicații moderne și prezentări.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculator Producție - Industrial Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg-dark: #0A0E27;
+      --bg-card: #1A1F3A;
+      --accent-cyan: #00F0FF;
+      --accent-orange: #FF6B35;
+      --accent-green: #00FF88;
+      --text-primary: #E0E6ED;
+      --text-secondary: #8B95A5;
+      --border: #2A3142;
+      --glow: rgba(0, 240, 255, 0.5);
+    }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Animated Grid Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    @keyframes gridMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(50px); }
+    }
+    
+    /* Glowing Orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--accent-cyan);
+      top: -200px;
+      right: -200px;
+      animation: pulse 8s infinite;
+    }
+    
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--accent-orange);
+      bottom: -150px;
+      left: -150px;
+      animation: pulse 6s infinite reverse;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.3; }
+      50% { transform: scale(1.2); opacity: 0.5; }
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Industrial Header */
+    header {
+      background: linear-gradient(135deg, var(--bg-card), rgba(26, 31, 58, 0.8));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-orange), var(--accent-green));
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px var(--glow);
+    }
+    
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.9rem;
+      color: var(--accent-green);
+    }
+    
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 20px var(--accent-green);
+      animation: blink 2s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Tech Cards */
+    .tech-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 25px;
+      position: relative;
+      transition: all 0.3s;
+    }
+    
+    .tech-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent-cyan), transparent);
+    }
+    
+    .tech-card:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+      transform: translateX(5px);
+    }
+    
+    /* Section Title */
+    .section-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent-cyan);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title::before {
+      content: '▶';
+      font-size: 0.7rem;
+    }
+    
+    /* Tech Inputs */
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      background: rgba(0, 240, 255, 0.05);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    }
+    
+    /* Tech Buttons */
+    .tech-btn {
+      padding: 14px 28px;
+      background: transparent;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tech-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: var(--accent-cyan);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    .tech-btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .tech-btn:hover {
+      border-color: var(--accent-cyan);
+      color: var(--bg-dark);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+    }
+    
+    .tech-btn span {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .tech-btn.active {
+      background: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      color: var(--bg-dark);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+    }
+    
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    /* Employee Tech Card */
+    .employee-tech-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    
+    .employee-tech-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .employee-id {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-orange);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .employee-id::before {
+      content: '#';
+      color: var(--accent-cyan);
+    }
+    
+    .delete-tech-btn {
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid var(--accent-orange);
+      color: var(--accent-orange);
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+      font-weight: 700;
+    }
+    
+    .delete-tech-btn:hover {
+      background: var(--accent-orange);
+      color: var(--bg-dark);
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+    }
+    
+    .time-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .input-label {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+    
+    /* Dashboard Total */
+    .dashboard-total {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(0, 255, 136, 0.1));
+      border: 2px solid var(--accent-cyan);
+      border-radius: 20px;
+      padding: 50px;
+      text-align: center;
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .dashboard-total::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(0, 240, 255, 0.1),
+        transparent
+      );
+      animation: scan 3s linear infinite;
+    }
+    
+    @keyframes scan {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    .total-label {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.9rem;
+      color: var(--accent-cyan);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .total-display {
+      font-family: 'Orbitron', monospace;
+      font-size: 6rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 50px var(--glow);
+    }
+    
+    /* Rate Tech Display */
+    .rate-tech {
+      background: rgba(0, 240, 255, 0.05);
+      border: 2px solid var(--accent-cyan);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .rate-tech input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      font-family: 'Orbitron', monospace;
+      font-size: 2.8rem;
+      font-weight: 900;
+      text-align: center;
+      color: var(--accent-cyan);
+      text-shadow: 0 0 20px var(--glow);
+    }
+    
+    .rate-unit {
+      font-family: 'Orbitron', monospace;
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .time-grid { grid-template-columns: 1fr; }
+      .total-display { font-size: 4rem; }
+      .btn-grid { grid-template-columns: 1fr; }
+      .header-content { flex-direction: column; gap: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="header-content">
+        <div>
+          <h1>⚡ BAND 41</h1>
+          <p style="color: var(--text-secondary); margin-top: 8px; font-weight: 500;">
+            INDUSTRIAL PRODUCTION CALCULATOR
+          </p>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span>SYSTEM ONLINE</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Rate Section -->
+    <div class="tech-card">
+      <div class="section-title">PRODUCTION RATE</div>
+      <div class="rate-tech">
+        <input type="number" value="33.3" step="0.1" min="0">
+        <span class="rate-unit">PCS/HR</span>
+      </div>
+      <div class="btn-grid">
+        <button class="tech-btn active">
+          <span>⚙️ WERK 1 [33.3]</span>
+        </button>
+        <button class="tech-btn">
+          <span>⚙️ WERK 2 [34.4]</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Shift Section -->
+    <div class="tech-card">
+      <div class="section-title">WORK SHIFT</div>
+      <div class="btn-grid">
+        <button class="tech-btn active">
+          <span>☀️ FRÜHSCHICHT</span>
+        </button>
+        <button class="tech-btn">
+          <span>🌙 SPÄTSCHICHT</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Employees Section -->
+    <div class="tech-card">
+      <div class="section-title">WORKFORCE UNITS</div>
+      
+      <div class="employee-tech-card">
+        <div class="employee-header">
+          <div class="employee-id">001 EMPLOYEE</div>
+          <button class="delete-tech-btn">×</button>
+        </div>
+        <div class="time-grid">
+          <div>
+            <label class="input-label">⏰ Start Time</label>
+            <input type="text" value="05:45:00">
+          </div>
+          <div>
+            <label class="input-label">⏰ End Time</label>
+            <input type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="tech-btn" style="width: 100%; margin-top: 15px;">
+        <span>+ ADD WORKFORCE UNIT</span>
+      </button>
+    </div>
+
+    <!-- Total Dashboard -->
+    <div class="dashboard-total">
+      <div class="total-label">📦 TOTAL PRODUCTION OUTPUT</div>
+      <div class="total-display">264</div>
+    </div>
+  </div>
+</body>
+</html>
