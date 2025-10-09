@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.8 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.9 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -591,100 +591,104 @@
 
 
     function attachTimeSanitizer(el) {
-      // Handler pentru input - validare strictă și auto-inserare ":"
-      el.addEventListener('input', function() {
-        let value = this.value;
-        let cursorPos = this.selectionStart;
+      let lastValue = el.value;
+      
+      // Handler pentru keypress - validare înainte de inserare
+      el.addEventListener('keypress', function(e) {
+        // Permite doar cifre (0-9)
+        if (!/^[0-9]$/.test(e.key)) {
+          e.preventDefault();
+          return;
+        }
         
-        // Permite doar cifre și :
+        const cursorPos = this.selectionStart;
+        const currentValue = this.value;
+        const digit = parseInt(e.key, 10);
+        
+        // Determină poziția în formatul HH:MM:SS
+        // Poziții: 0=H1, 1=H2, 2=:, 3=M1, 4=M2, 5=:, 6=S1, 7=S2
+        let position = cursorPos;
+        
+        // Validări stricte bazate pe poziție
+        if (position === 0) {
+          // Prima cifră oră: maxim 2
+          if (digit > 2) {
+            e.preventDefault();
+            return;
+          }
+        } else if (position === 1) {
+          // A doua cifră oră: maxim 3 dacă H1=2, altfel maxim 9
+          const firstHour = parseInt(currentValue[0] || '0', 10);
+          if (firstHour === 2 && digit > 3) {
+            e.preventDefault();
+            return;
+          }
+        } else if (position === 2) {
+          // După HH, auto-inserează ":"
+          e.preventDefault();
+          this.value = currentValue.substring(0, 2) + ':' + e.key + currentValue.substring(3);
+          this.setSelectionRange(4, 4); // Cursor după cifra inserată
+          this.dispatchEvent(new Event('input', { bubbles: true }));
+          return;
+        } else if (position === 3) {
+          // Prima cifră minute: maxim 5
+          if (digit > 5) {
+            e.preventDefault();
+            return;
+          }
+        } else if (position === 4) {
+          // A doua cifră minute: maxim 9 (orice cifră OK)
+          // Nu e nevoie de validare
+        } else if (position === 5) {
+          // După MM, auto-inserează ":"
+          e.preventDefault();
+          this.value = currentValue.substring(0, 5) + ':' + e.key + currentValue.substring(7);
+          this.setSelectionRange(7, 7); // Cursor după cifra inserată
+          this.dispatchEvent(new Event('input', { bubbles: true }));
+          return;
+        } else if (position === 6) {
+          // Prima cifră secunde: maxim 5
+          if (digit > 5) {
+            e.preventDefault();
+            return;
+          }
+        } else if (position === 7) {
+          // A doua cifră secunde: maxim 9 (orice cifră OK)
+          // Nu e nevoie de validare
+        } else if (position >= 8) {
+          // Depășit limita de 8 caractere
+          e.preventDefault();
+          return;
+        }
+      });
+      
+      // Handler pentru input - cleanup și auto-format
+      el.addEventListener('input', function(e) {
+        let value = this.value;
+        
+        // Elimină caractere non-valide
         value = value.replace(/[^0-9:]/g, '');
         
-        // Limitare la maxim 8 caractere (HH:MM:SS)
+        // Auto-inserare ":" la pozițiile corecte dacă lipsesc
+        if (value.length >= 2 && value[2] !== ':') {
+          value = value.substring(0, 2) + ':' + value.substring(2);
+        }
+        if (value.length >= 5 && value[5] !== ':') {
+          value = value.substring(0, 5) + ':' + value.substring(5);
+        }
+        
+        // Limitare la 8 caractere
         if (value.length > 8) {
           value = value.substring(0, 8);
-          cursorPos = Math.min(cursorPos, 8);
         }
         
-        // Procesare caracter cu caracter cu validare strictă
-        let validValue = '';
-        
-        for (let i = 0; i < value.length; i++) {
-          const char = value[i];
-          const pos = validValue.length;
-          
-          if (char === ':') {
-            // ":" poate fi doar la poziția 2 sau 5
-            if (pos === 2 || pos === 5) {
-              validValue += ':';
-            }
-            continue;
-          }
-          
-          // Validare strictă pentru cifre
-          const digit = parseInt(char);
-          
-          // Poziția 0: Primul H - maxim 2
-          if (pos === 0) {
-            if (digit <= 2) {
-              validValue += char;
-            }
-          }
-          // Poziția 1: Al doilea H - maxim 3 dacă primul H este 2, altfel maxim 9
-          else if (pos === 1) {
-            const firstH = parseInt(validValue[0]);
-            if (firstH === 2) {
-              if (digit <= 3) {
-                validValue += char;
-              }
-            } else {
-              validValue += char;
-            }
-          }
-          // Poziția 2: Auto-inserare ":" după HH
-          else if (pos === 2) {
-            validValue += ':';
-            // Re-validare pentru poziția 3 (primul M)
-            if (digit <= 5) {
-              validValue += char;
-            }
-          }
-          // Poziția 3: Primul M - maxim 5
-          else if (pos === 3) {
-            if (digit <= 5) {
-              validValue += char;
-            }
-          }
-          // Poziția 4: Al doilea M - maxim 9
-          else if (pos === 4) {
-            validValue += char;
-          }
-          // Poziția 5: Auto-inserare ":" după MM
-          else if (pos === 5) {
-            validValue += ':';
-            // Re-validare pentru poziția 6 (primul S)
-            if (digit <= 5) {
-              validValue += char;
-            }
-          }
-          // Poziția 6: Primul S - maxim 5
-          else if (pos === 6) {
-            if (digit <= 5) {
-              validValue += char;
-            }
-          }
-          // Poziția 7: Al doilea S - maxim 9
-          else if (pos === 7) {
-            validValue += char;
-          }
+        if (this.value !== value) {
+          const cursorPos = this.selectionStart;
+          this.value = value;
+          this.setSelectionRange(cursorPos, cursorPos);
         }
         
-        this.value = validValue;
-        
-        // Ajustare cursor
-        if (cursorPos > validValue.length) {
-          cursorPos = validValue.length;
-        }
-        this.setSelectionRange(cursorPos, cursorPos);
+        lastValue = value;
       });
       
       // Handler pentru backspace - auto-ștergere ":"
