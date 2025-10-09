@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="ro" data-bs-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculator producție - Band</title>
+
+  <!-- Google Material Icons & Fonts -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #3b82f6;
+      --primary-hover: #2563eb;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --body-bg: #f9fafb;
+      --input-bg: #ffffff;
+      --input-border: #d1d5db;
+      --input-focus: rgba(59, 130, 246, 0.15);
+      --border-radius: 0.75rem;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --transition: all 0.2s ease;
+      --header-bg: #2563eb;
+      --header-text: #ffffff;
+      --footer-bg: #f1f5f9;
+      --footer-text: #64748b;
+    }
+    
+    [data-bs-theme="dark"] {
+      --primary-color: #3b82f6;
+      --primary-hover: #60a5fa;
+      --success-color: #10b981;
+      --danger-color: #f87171;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --body-bg: #0f172a;
+      --input-bg: #1e293b;
+      --input-border: #475569;
+      --input-focus: rgba(59, 130, 246, 0.2);
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      --header-bg: #1e293b;
+      --header-text: #f1f5f9;
+      --footer-bg: #0f172a;
+      --footer-text: #94a3b8;
+    }
+    
+    body { 
+      background: var(--body-bg); 
+      font-family: 'Inter', system-ui, sans-serif; 
+      color: var(--text-primary);
+      transition: var(--transition);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .app-header {
+      background-color: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem;
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .app-footer {
+      background-color: var(--footer-bg);
+      color: var(--footer-text);
+      padding: 1rem;
+      margin-top: auto;
+      font-size: 0.875rem;
+      transition: var(--transition);
+    }
+    
+    .main-content {
+      flex: 1;
+      padding: 1.5rem 1rem;
+    }
+    
+    .card { 
+      background: var(--card-bg);
+      border-color: var(--card-border);
+      border-radius: var(--border-radius); 
+      box-shadow: var(--shadow); 
+      transition: var(--transition);
+    }
+    
+    .logo-square { 
+      width: 44px; 
+      height: 44px; 
+      border-radius: 12px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: 700; 
+      color: #fff; 
+      background: linear-gradient(135deg, var(--primary-color), #0ea5a4);
+      transition: var(--transition);
+    }
+    
+    .form-control, .form-select {
+      background-color: var(--input-bg);
+      border-color: var(--input-border);
+      color: var(--text-primary);
+      border-radius: 0.5rem;
+      padding: 0.6rem 1rem;
+      transition: var(--transition);
+    }
+    
+    .form-control:focus, .form-select:focus { 
+      box-shadow: 0 0 0 0.25rem var(--input-focus); 
+      border-color: var(--primary-color); 
+    }
+    
+    .btn {
+      border-radius: 0.5rem;
+      padding: 0.6rem 1rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    
+    .btn-primary:hover, .btn-primary:focus {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+    
+    .btn-outline-primary {
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    
+    .btn-outline-primary:hover,
+    .btn-outline-primary.active {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      color: #fff;
+    }
+    
+    .btn-outline-secondary {
+      color: var(--text-secondary);
+      border-color: var(--input-border);
+    }
+    
+    .btn-outline-secondary:hover,
+    .btn-outline-secondary.active {
+      background-color: var(--text-secondary);
+      border-color: var(--text-secondary);
+      color: var(--card-bg);
+    }
+    
+    .btn-outline-danger {
+      color: var(--danger-color);
+      border-color: var(--danger-color);
+    }
+    
+    .btn-outline-danger:hover {
+      background-color: var(--danger-color);
+      border-color: var(--danger-color);
+    }
+    
+    .employee-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--border-radius);
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+    
+    .employee-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+    
+    .form-label {
+      color: var(--text-secondary);
+      margin-bottom: 0.3rem;
+    }
+    
+    .small-note { 
+      color: var(--text-secondary); 
+      font-size: 0.875rem;
+    }
+    
+    .total-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--border-radius);
+      padding: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .theme-switch {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1000;
+    }
+    
+    .btn-icon {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Animații */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.3s ease forwards;
+    }
+    
+    .material-icons-round {
+      font-size: 20px;
+    }
+    
+    .input-group-text {
+      background-color: var(--input-bg);
+      border-color: var(--input-border);
+      color: var(--text-secondary);
+    }
+    
+    /* Stil pentru intrările de timp care au erori */
+    .form-control.is-invalid {
+      border-color: var(--danger-color);
+      background-image: none;
+      padding-right: 1rem;
+    }
+
+    .time-display {
+      font-weight: 500;
+      font-size: 1rem;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.375rem;
+    }
+    
+    .footer-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .invalid-feedback {
+      display: none;
+      color: var(--danger-color);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    
+    .form-control.is-invalid ~ .invalid-feedback {
+      display: block;
+    }
+    
+    @media (max-width: 576px) {
+      .main-content {
+        padding: 1rem 0.5rem;
+      }
+      
+      .total-box {
+        font-size: 1rem;
+      }
+      
+      .btn {
+        font-size: 0.9rem;
+      }
+      
+      .app-header h2 {
+        font-size: 1.5rem;
+      }
+      
+      .time-display {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="logo-square me-3">🏭</div>
+          <div>
+            <h2 class="mb-0">Band 41 Calculator</h2>
+            <p class="mb-0 header-info">Calculează producția</p>
+          </div>
+        </div>
+        <!-- Theme Toggle Button -->
+        <button id="themeToggle" class="btn btn-light btn-icon theme-switch" aria-label="Schimbă tema">
+          <span class="material-icons-round" id="themeIcon">dark_mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <div class="card mx-auto" style="max-width:720px;">
+        <div class="card-body">
+          <!-- Rate + Werk buttons -->
+          <div class="mb-3">
+            <label class="form-label fw-medium">Rată de producție</label>
+            <div class="row g-2 align-items-center">
+              <div class="col-sm-5 mb-2 mb-sm-0">
+                <div class="input-group">
+                  <input id="rateInput" class="form-control" type="number" step="0.1" min="0" value="33.3">
+                  <span class="input-group-text">buc/oră</span>
+                </div>
+                <div class="small-note mt-1">
+                  <span class="badge bg-light text-dark">WERK 1 = 33.3</span>
+                  <span class="badge bg-light text-dark ms-1">WERK 2 = 34.4</span>
+                </div>
+              </div>
+
+              <div class="col-sm-7">
+                <div class="d-flex gap-2">
+                  <button id="werk1" class="btn btn-outline-primary flex-grow-1">
+                    <span class="material-icons-round me-1">factory</span> WERK 1
+                  </button>
+                  <button id="werk2" class="btn btn-outline-primary flex-grow-1">
+                    <span class="material-icons-round me-1">factory</span> WERK 2
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shift buttons -->
+          <div class="mb-3">
+            <label class="form-label fw-medium">Schimb de lucru</label>
+            <div class="d-flex gap-2">
+              <button id="fruhBtn" class="btn btn-outline-primary flex-fill">
+                <span class="material-icons-round me-1">wb_sunny</span> Frühschicht
+              </button>
+              <button id="spatBtn" class="btn btn-outline-primary flex-fill">
+                <span class="material-icons-round me-1">nights_stay</span> Spätschicht
+              </button>
+            </div>
+          </div>
+
+          <!-- Add employee -->
+          <div class="mb-3">
+            <button id="addEmp" class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2">
+              <span class="material-icons-round">person_add</span> Adaugă angajat
+            </button>
+          </div>
+
+          <!-- Employees list -->
+          <div id="employeesList" class="mb-3">
+            <!-- injected employee cards -->
+          </div>
+
+          <!-- Total -->
+          <div class="d-flex justify-content-between align-items-center">
+            <div id="totalBox" class="total-box w-100">
+              <span class="material-icons-round me-1">inventory</span>
+              Total bucăți produse: 0
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer mt-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="d-flex align-items-center">
+            <span class="material-icons-round me-2">info</span>
+            <span>Calculator producție v1.3 &copy; <span id="currentYear">2023</span></span>
+          </div>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <div class="footer-info justify-content-md-end">
+            <div class="d-flex align-items-center">
+              <span class="material-icons-round me-2">calendar_today</span>
+              <span class="time-display" id="currentDateTime">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // --- Constante ---
+    const PRECISION_DECIMALS = 100; // Pentru rotunjire la 2 zecimale
+    const SECONDS_PER_HOUR = 3600;
+    
+    // --- Config inițial ---
+    const werkRates = { werk1: 33.3, werk2: 34.4 };
+
+    const shifts = {
+      fruh: {
+        start: '05:45:00',
+        end:   '14:00:00',
+        pauses: [
+          ['07:30:00','07:45:00'],
+          ['09:30:00','09:45:00'],
+          ['11:45:00','12:00:00']
+        ]
+      },
+      spat: {
+        start: '14:00:00',
+        end:   '22:15:00',
+        pauses: [
+          ['16:00:00','16:15:00'],
+          ['18:15:00','18:30:00'],
+          ['20:30:00','20:45:00']
+        ]
+      }
+    };
+
+    let activeShift = 'fruh';
+    let activeWerk = 'werk1';
+    let nextEmployeeId = 1; // Pentru tracking ID-uri unice
+
+    // DOM refs
+    const rateInput = document.getElementById('rateInput');
+    const werk1Btn = document.getElementById('werk1');
+    const werk2Btn = document.getElementById('werk2');
+    const fruhBtn = document.getElementById('fruhBtn');
+    const spatBtn = document.getElementById('spatBtn');
+    const addEmpBtn = document.getElementById('addEmp');
+    const employeesList = document.getElementById('employeesList');
+    const totalBox = document.getElementById('totalBox');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const currentDateTimeEl = document.getElementById('currentDateTime');
+    const currentYearEl = document.getElementById('currentYear');
+
+    // Update date and time in footer
+    function updateDateTime() {
+      const now = new Date();
+      
+      // Numele zilelor în română
+      const zile = ['duminică', 'luni', 'marți', 'miercuri', 'joi', 'vineri', 'sâmbătă'];
+      // Numele lunilor în română
+      const luni = ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 
+                    'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'];
+      
+      // Format ca "miercuri, 9 octombrie 2025 16:53:40"
+      const ziua = zile[now.getDay()];
+      const data = now.getDate();
+      const luna = luni[now.getMonth()];
+      const anul = now.getFullYear();
+      const ora = String(now.getHours()).padStart(2, '0');
+      const minute = String(now.getMinutes()).padStart(2, '0');
+      const secunde = String(now.getSeconds()).padStart(2, '0');
+      
+      const formattedDateTime = `${ziua}, ${data} ${luna} ${anul} ${ora}:${minute}:${secunde}`;
+      currentDateTimeEl.textContent = formattedDateTime;
+      
+      currentYearEl.textContent = anul;
+    }
+    
+    // Theme toggle system
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+
+    function updateThemeIcon(theme) {
+      themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-bs-theme', newTheme);
+      safeLocalStorageSet('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+
+    // Safe localStorage helper functions
+    function safeLocalStorageSet(key, value) {
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch (e) {
+        console.warn('LocalStorage not available:', e);
+        return false;
+      }
+    }
+
+    function safeLocalStorageGet(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (e) {
+        console.warn('LocalStorage not available:', e);
+        return null;
+      }
+    }
+
+    // Helpers: time parsing & overlap
+    function timeToSec(t) {
+      if(!t) return 0;
+      const parts = t.split(':').map(p => parseInt(p,10) || 0);
+      if(parts.length === 2) parts.push(0);
+      const [h,m,s] = parts;
+      return (h||0)*3600 + (m||0)*60 + (s||0);
+    }
+    
+    function overlapSec(a1, a2, b1, b2) {
+      const s = Math.max(a1, b1);
+      const e = Math.min(a2, b2);
+      return Math.max(0, e - s);
+    }
+
+    // FIXED: Calculul corect al orelor de lucru cu scăderea pauzelor doar în overlap
+    function computeEmployeeWorkSeconds(empStartStr, empEndStr, shiftKey) {
+      const shift = shifts[shiftKey];
+      const shiftStart = timeToSec(shift.start);
+      const shiftEnd = timeToSec(shift.end);
+      const empStart = timeToSec(empStartStr);
+      const empEnd = timeToSec(empEndStr);
+      
+      // Validare: sfârșitul trebuie să fie după început
+      if(empEnd <= empStart) return 0;
+      
+      // Calculează overlap-ul dintre orele angajatului și schimb
+      let workSec = overlapSec(empStart, empEnd, shiftStart, shiftEnd);
+      
+      // FIXED: Scade doar pauzele care se suprapun cu orele efectiv lucrate de angajat
+      for(const p of shift.pauses) {
+        const pauseStart = timeToSec(p[0]);
+        const pauseEnd = timeToSec(p[1]);
+        // Calculăm overlap-ul dintre pauză și intervalul în care angajatul lucrează efectiv
+        const pauseOverlap = overlapSec(
+          Math.max(empStart, shiftStart), 
+          Math.min(empEnd, shiftEnd), 
+          pauseStart, 
+          pauseEnd
+        );
+        workSec -= pauseOverlap;
+      }
+      
+      return Math.max(0, workSec);
+    }
+
+    // FIXED: Optimizat pentru a nu salva de fiecare dată
+    function recalcTotal(shouldSave = true) {
+      const rate = parseFloat(rateInput.value) || 0;
+      let totalPieces = 0;
+      const blocks = employeesList.querySelectorAll('.employee-card');
+      
+      blocks.forEach(block => {
+        const start = block.querySelector('.emp-start').value;
+        const end = block.querySelector('.emp-end').value;
+        const sec = computeEmployeeWorkSeconds(start, end, activeShift);
+        totalPieces += (sec / SECONDS_PER_HOUR) * rate;
+      });
+      
+      const rounded = Math.round(totalPieces * PRECISION_DECIMALS) / PRECISION_DECIMALS;
+      totalBox.innerHTML = `<span class="material-icons-round me-2">inventory</span>Total bucăți produse: <span class="text-primary">${rounded}</span>`;
+      
+      if (shouldSave) {
+        saveCalculatorState();
+      }
+    }
+
+    // FIXED: Validare îmbunătățită
+    function validateTimeInput(el) {
+      const val = el.value.trim();
+      const container = el.closest('.col-12');
+      let feedbackEl = container.querySelector('.invalid-feedback');
+      
+      if (!feedbackEl) {
+        feedbackEl = document.createElement('div');
+        feedbackEl.className = 'invalid-feedback';
+        container.appendChild(feedbackEl);
+      }
+      
+      if (!val) {
+        el.classList.add('is-invalid');
+        feedbackEl.textContent = 'Câmpul este obligatoriu';
+        return false;
+      }
+      
+      const parts = val.split(':');
+      if (parts.length < 2 || parts.length > 3) {
+        el.classList.add('is-invalid');
+        feedbackEl.textContent = 'Format invalid (folosește HH:MM sau HH:MM:SS)';
+        return false;
+      }
+      
+      const [h, m, s] = parts;
+      const hours = parseInt(h);
+      const minutes = parseInt(m);
+      const seconds = s ? parseInt(s) : 0;
+      
+      if (isNaN(hours) || isNaN(minutes) || (s && isNaN(seconds))) {
+        el.classList.add('is-invalid');
+        feedbackEl.textContent = 'Valorile trebuie să fie numere';
+        return false;
+      }
+      
+      if (hours > 23 || minutes > 59 || seconds > 59 || hours < 0 || minutes < 0 || seconds < 0) {
+        el.classList.add('is-invalid');
+        feedbackEl.textContent = 'Valori invalide (ore: 0-23, minute/secunde: 0-59)';
+        return false;
+      }
+      
+      el.classList.remove('is-invalid');
+      return true;
+    }
+
+    // FIXED: Validare cross-field pentru început și sfârșit
+    function validateTimeRange(startEl, endEl) {
+      const container = endEl.closest('.col-12');
+      let feedbackEl = container.querySelector('.invalid-feedback');
+      
+      if (!feedbackEl) {
+        feedbackEl = document.createElement('div');
+        feedbackEl.className = 'invalid-feedback';
+        container.appendChild(feedbackEl);
+      }
+      
+      if (!validateTimeInput(startEl) || !validateTimeInput(endEl)) {
+        return false;
+      }
+      
+      const startSec = timeToSec(startEl.value);
+      const endSec = timeToSec(endEl.value);
+      
+      if (endSec <= startSec) {
+        endEl.classList.add('is-invalid');
+        feedbackEl.textContent = 'Ora de sfârșit trebuie să fie după ora de început';
+        return false;
+      }
+      
+      endEl.classList.remove('is-invalid');
+      return true;
+    }
+
+    // FIXED: Validare și auto-formatare îmbunătățită
+    function attachTimeSanitizer(el, otherEl = null) {
+      el.addEventListener('input', function() {
+        // Elimină caracterele invalide în timp real
+        const cursorPos = this.selectionStart;
+        const oldValue = this.value;
+        const newValue = oldValue.replace(/[^0-9:]/g, '');
+        
+        if (oldValue !== newValue) {
+          this.value = newValue;
+          this.setSelectionRange(cursorPos - 1, cursorPos - 1);
+        }
+      });
+
+      el.addEventListener('blur', function() {
+        const value = this.value.trim();
+        
+        if (value === '') {
+          // FIXED: Nu mai forțează 00:00:00, lasă gol și marchează invalid
+          validateTimeInput(this);
+          if (otherEl) validateTimeRange(el, otherEl);
+          recalcTotal();
+          return;
+        }
+        
+        // FIXED: Parsare îmbunătățită
+        let formattedTime = '';
+        
+        if (!value.includes(':')) {
+          // Doar cifre fără :
+          const digits = value.replace(/\D/g, '');
+          
+          if (digits.length <= 2) {
+            const hours = Math.min(parseInt(digits), 23);
+            formattedTime = `${hours.toString().padStart(2, '0')}:00:00`;
+          } else if (digits.length <= 4) {
+            const hours = Math.min(parseInt(digits.substring(0, 2)), 23);
+            const minutes = Math.min(parseInt(digits.substring(2)), 59);
+            formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+          } else {
+            const hours = Math.min(parseInt(digits.substring(0, 2)), 23);
+            const minutes = Math.min(parseInt(digits.substring(2, 4)), 59);
+            const seconds = Math.min(parseInt(digits.substring(4, 6)), 59);
+            formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          }
+        } else {
+          // Conține :
+          const parts = value.split(':');
+          const hours = Math.min(Math.max(parseInt(parts[0] || '0'), 0), 23);
+          const minutes = Math.min(Math.max(parseInt(parts[1] || '0'), 0), 59);
+          const seconds = parts[2] !== undefined ? Math.min(Math.max(parseInt(parts[2] || '0'), 0), 59) : 0;
+          
+          formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        this.value = formattedTime;
+        validateTimeInput(this);
+        
+        // Validare cross-field dacă avem pereche
+        if (otherEl) {
+          if (this.classList.contains('emp-start')) {
+            validateTimeRange(this, otherEl);
+          } else {
+            validateTimeRange(otherEl, this);
+          }
+        }
+        
+        recalcTotal();
+      });
+    }
+
+    // Create employee card - FIXED: Numerotare corectă
+    function createEmployeeBlock(defaultStart = shifts[activeShift].start, defaultEnd = shifts[activeShift].end) {
+      const empId = nextEmployeeId++;
+      const wrap = document.createElement('div');
+      wrap.className = 'employee-card p-3 fade-in';
+      wrap.dataset.empId = empId;
+      wrap.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex align-items-center">
+            <span class="material-icons-round me-2">person</span>
+            <span class="fw-medium emp-label">Angajat ${empId}</span>
+          </div>
+          <button class="btn btn-outline-danger btn-sm delete-btn d-flex align-items-center">
+            <span class="material-icons-round">delete</span>
+          </button>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label">Ora început</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <span class="material-icons-round">schedule</span>
+              </span>
+              <input class="form-control emp-start" type="text" value="${defaultStart}" 
+                    placeholder="HH:MM:SS" aria-label="Ora început">
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Ora sfârșit</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <span class="material-icons-round">schedule</span>
+              </span>
+              <input class="form-control emp-end" type="text" value="${defaultEnd}" 
+                    placeholder="HH:MM:SS" aria-label="Ora sfârșit">
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Delete employee button
+      const delBtn = wrap.querySelector('.delete-btn');
+      delBtn.addEventListener('click', () => {
+        wrap.remove();
+        renumberEmployees(); // FIXED: Renumerotează după ștergere
+        recalcTotal();
+      });
+
+      // Time inputs - FIXED: Validare cross-field
+      const startInput = wrap.querySelector('.emp-start');
+      const endInput = wrap.querySelector('.emp-end');
+      attachTimeSanitizer(startInput, endInput);
+      attachTimeSanitizer(endInput, startInput);
+
+      employeesList.appendChild(wrap);
+      recalcTotal(false); // Nu salva încă
+      return wrap;
+    }
+
+    // FIXED: Renumerotare angajați după ștergere
+    function renumberEmployees() {
+      const cards = employeesList.querySelectorAll('.employee-card');
+      cards.forEach((card, index) => {
+        const label = card.querySelector('.emp-label');
+        if (label) {
+          label.textContent = `Angajat ${index + 1}`;
+        }
+      });
+    }
+
+    // FIXED: Dialog de confirmare la schimbarea schimbului
+    function setActiveShiftUI(key) {
+      const cards = document.querySelectorAll('.employee-card');
+      
+      // Dacă există angajați și schimbul este diferit, cere confirmare
+      if (cards.length > 0 && key !== activeShift) {
+        const confirmChange = confirm(
+          'Schimbarea schimbului va actualiza orele tuturor angajaților la orele implicite ale schimbului nou.\n\n' +
+          'Dorești să continui?'
+        );
+        
+        if (!confirmChange) {
+          return; // Anulează schimbarea
+        }
+      }
+      
+      activeShift = key;
+      
+      if(key === 'fruh') {
+        fruhBtn.classList.add('active', 'btn-primary');
+        fruhBtn.classList.remove('btn-outline-primary');
+        spatBtn.classList.remove('active', 'btn-primary');
+        spatBtn.classList.add('btn-outline-primary');
+      } else {
+        spatBtn.classList.add('active', 'btn-primary');
+        spatBtn.classList.remove('btn-outline-primary');
+        fruhBtn.classList.remove('active', 'btn-primary');
+        fruhBtn.classList.add('btn-outline-primary');
+      }
+
+      // Actualizare ore pentru toți angajații
+      if (cards.length > 0) {
+        cards.forEach(card => {
+          const s = card.querySelector('.emp-start');
+          const e = card.querySelector('.emp-end');
+          if(s) s.value = shifts[key].start;
+          if(e) e.value = shifts[key].end;
+          validateTimeInput(s);
+          validateTimeInput(e);
+          validateTimeRange(s, e);
+        });
+      }
+      
+      recalcTotal();
+    }
+
+    function setActiveWerkUI(werk) {
+      activeWerk = werk;
+      
+      if(werk === 'werk1') {
+        rateInput.value = werkRates.werk1;
+        werk1Btn.classList.add('btn-primary');
+        werk1Btn.classList.remove('btn-outline-primary');
+        werk2Btn.classList.remove('btn-primary');
+        werk2Btn.classList.add('btn-outline-primary');
+      } else {
+        rateInput.value = werkRates.werk2;
+        werk2Btn.classList.add('btn-primary');
+        werk2Btn.classList.remove('btn-outline-primary');
+        werk1Btn.classList.remove('btn-primary');
+        werk1Btn.classList.add('btn-outline-primary');
+      }
+      
+      recalcTotal();
+    }
+    
+    // LocalStorage management - FIXED: Safe operations
+    function saveCalculatorState() {
+      const employees = [];
+      document.querySelectorAll('.employee-card').forEach(card => {
+        employees.push({
+          start: card.querySelector('.emp-start').value,
+          end: card.querySelector('.emp-end').value
+        });
+      });
+      
+      const state = {
+        rate: rateInput.value,
+        activeShift,
+        activeWerk,
+        employees,
+        nextEmployeeId
+      };
+      
+      safeLocalStorageSet('calculatorState', JSON.stringify(state));
+    }
+    
+    function loadCalculatorState() {
+      const savedState = safeLocalStorageGet('calculatorState');
+      if (!savedState) return false;
+      
+      try {
+        const state = JSON.parse(savedState);
+        
+        // Restaurare rate
+        if (state.rate) {
+          rateInput.value = state.rate;
+        }
+        
+        // Restaurare ID-uri
+        if (state.nextEmployeeId) {
+          nextEmployeeId = state.nextEmployeeId;
+        }
+        
+        // Restaurare shift activ
+        if (state.activeShift) {
+          activeShift = state.activeShift;
+          if(activeShift === 'fruh') {
+            fruhBtn.classList.add('active', 'btn-primary');
+            fruhBtn.classList.remove('btn-outline-primary');
+            spatBtn.classList.remove('active', 'btn-primary');
+            spatBtn.classList.add('btn-outline-primary');
+          } else {
+            spatBtn.classList.add('active', 'btn-primary');
+            spatBtn.classList.remove('btn-outline-primary');
+            fruhBtn.classList.remove('active', 'btn-primary');
+            fruhBtn.classList.add('btn-outline-primary');
+          }
+        }
+        
+        // Restaurare werk activ
+        if (state.activeWerk) {
+          activeWerk = state.activeWerk;
+          if(activeWerk === 'werk1') {
+            werk1Btn.classList.add('btn-primary');
+            werk1Btn.classList.remove('btn-outline-primary');
+            werk2Btn.classList.remove('btn-primary');
+            werk2Btn.classList.add('btn-outline-primary');
+          } else {
+            werk2Btn.classList.add('btn-primary');
+            werk2Btn.classList.remove('btn-outline-primary');
+            werk1Btn.classList.remove('btn-primary');
+            werk1Btn.classList.add('btn-outline-primary');
+          }
+        }
+        
+        // Restaurare angajați
+        if (state.employees && state.employees.length) {
+          // Curăță lista existentă
+          employeesList.innerHTML = '';
+          
+          // Resetează ID-ul temporar
+          const tempNextId = nextEmployeeId;
+          nextEmployeeId = 1;
+          
+          // Recrează angajații salvați
+          state.employees.forEach(emp => {
+            createEmployeeBlock(emp.start, emp.end);
+          });
+          
+          // Restaurează ID-ul corect
+          nextEmployeeId = tempNextId;
+        }
+        
+        return true;
+      } catch (e) {
+        console.error('Eroare la încărcarea stării salvate:', e);
+        return false;
+      }
+    }
+
+    // Bind events
+    werk1Btn.addEventListener('click', () => setActiveWerkUI('werk1'));
+    werk2Btn.addEventListener('click', () => setActiveWerkUI('werk2'));
+    fruhBtn.addEventListener('click', () => setActiveShiftUI('fruh'));
+    spatBtn.addEventListener('click', () => setActiveShiftUI('spat'));
+    rateInput.addEventListener('input', () => {
+      recalcTotal();
+    });
+    addEmpBtn.addEventListener('click', () => createEmployeeBlock());
+
+    // Init default
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      updateDateTime();
+      setInterval(updateDateTime, 1000); // Update date and time every second
+      
+      // Încearcă să încarce starea salvată
+      const stateLoaded = loadCalculatorState();
+      
+      // Dacă nu există stare salvată, setează configurația implicită
+      if (!stateLoaded) {
+        setActiveWerkUI('werk1');
+        setActiveShiftUI('fruh');
+      }
+    });
+  </script>
+</body>
+</html>
