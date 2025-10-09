@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v3.3 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v3.4 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -701,37 +701,43 @@
         
         // Reconstruiește formatul corect bazat pe numărul de cifre
         let formatted = '';
+        let newCursorPos = cursorPos;
         
         if (digits.length === 1) {
           // Doar 1 cifră: "5" → "5"
           formatted = digits;
+          newCursorPos = 1;
         } else if (digits.length === 2) {
           // 2 cifre: "09" → "09:"
           formatted = digits + ':';
+          newCursorPos = 3; // După ":"
         } else if (digits.length === 3) {
           // 3 cifre: "093" → "09:3"
           formatted = digits.substring(0, 2) + ':' + digits.substring(2);
+          newCursorPos = 4; // După "3"
         } else if (digits.length === 4) {
           // 4 cifre: "0930" → "09:30:"
           formatted = digits.substring(0, 2) + ':' + digits.substring(2) + ':';
-        } else if (digits.length >= 5) {
-          // 5+ cifre: "093045" → "09:30:45"
+          newCursorPos = 6; // După al doilea ":"
+        } else if (digits.length === 5) {
+          // 5 cifre: "09304" → "09:30:4"
+          formatted = digits.substring(0, 2) + ':' + digits.substring(2, 4) + ':' + digits.substring(4);
+          newCursorPos = 7; // După "4"
+        } else if (digits.length >= 6) {
+          // 6 cifre: "093045" → "09:30:45"
           formatted = digits.substring(0, 2) + ':' + digits.substring(2, 4) + ':' + digits.substring(4, 6);
+          newCursorPos = 8; // La final
         }
         
         // Limitare 8 caractere
         if (formatted.length > 8) {
           formatted = formatted.substring(0, 8);
+          newCursorPos = 8;
         }
         
         if (this.value !== formatted) {
           this.value = formatted;
-          
-          // Ajustare cursor: plasează la final dacă nu specificat altfel
-          if (cursorPos > formatted.length) {
-            cursorPos = formatted.length;
-          }
-          this.setSelectionRange(cursorPos, cursorPos);
+          this.setSelectionRange(newCursorPos, newCursorPos);
         }
         
         // Recalculează LIVE totalul la fiecare modificare
