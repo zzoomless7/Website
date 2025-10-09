@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.4 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.5 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -716,6 +716,7 @@
         if (value === '') {
           this.value = '00:00:00';
           recalcTotal();
+          debounceSaveState();
           return;
         }
         
@@ -727,6 +728,7 @@
         
         this.value = `${hours}:${minutes}:${seconds}`;
         recalcTotal();
+        debounceSaveState();
       });
     }
 
@@ -779,6 +781,7 @@
       delBtn.addEventListener('click', () => {
         wrap.remove();
         recalcTotal();
+        debounceSaveState();
       });
 
       // Time inputs
@@ -806,6 +809,7 @@
 
       employeesList.appendChild(wrap);
       recalcTotal();
+      debounceSaveState();
       return wrap;
     }
 
@@ -937,7 +941,7 @@
             werk1Btn.classList.remove('btn-primary');
             werk1Btn.classList.add('btn-outline-primary');
           }
-          // NU modificăm rateInput.value - este deja restaurat la linia 913
+          // NU modificăm rateInput.value - este deja restaurat la linia 907
         }
         
         // NU încărcăm angajații - pagina începe cu 0 angajați
