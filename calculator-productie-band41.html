@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v3.0 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v3.1 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -679,7 +679,7 @@
         }
       });
       
-      // Handler pentru cleanup (paste, etc)
+      // Handler pentru cleanup (paste, etc) și recalcul LIVE
       el.addEventListener('input', function(e) {
         let value = this.value;
         
@@ -705,6 +705,9 @@
           this.value = value;
           this.setSelectionRange(cursorPos, cursorPos);
         }
+        
+        // Recalculează LIVE totalul la fiecare modificare
+        recalcTotal();
       });
 
       // Auto-formatare când câmpul pierde focus-ul
