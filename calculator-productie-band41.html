@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v3.6 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v3.7 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -608,9 +608,11 @@
         let cursorPos = this.selectionStart;
         
         // Detectează dacă e ștergere sau introducere
+        // Folosim lungimea TOTALĂ (cu ":") pentru detectare mai precisă
+        const isDeleting = value.length < lastValue.length;
+        
         const lastDigits = lastValue.replace(/[^0-9]/g, '');
         const currentDigitsTemp = value.replace(/[^0-9]/g, '');
-        const isDeleting = currentDigitsTemp.length < lastDigits.length;
         
         // Elimină caractere invalide
         value = value.replace(/[^0-9:]/g, '');
