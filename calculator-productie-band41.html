@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v3.1 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v3.2 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -686,8 +686,19 @@
         // Elimină caractere invalide
         value = value.replace(/[^0-9:]/g, '');
         
-        // Auto-inserare ":" dacă lipsesc
+        // Extrage doar cifrele
         const digits = value.replace(/:/g, '');
+        
+        // Dacă nu sunt cifre, golește câmpul complet
+        if (digits.length === 0) {
+          if (this.value !== '') {
+            this.value = '';
+          }
+          recalcTotal();
+          return;
+        }
+        
+        // Auto-inserare ":" DOAR dacă sunt suficiente cifre
         if (digits.length >= 2 && value[2] !== ':') {
           value = digits.substring(0, 2) + ':' + digits.substring(2);
         }
