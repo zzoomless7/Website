@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v3.5 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v3.6 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -591,6 +591,8 @@
 
 
     function attachTimeSanitizer(el) {
+      let lastValue = el.value || '';
+      
       // Validare simplă - permite doar cifre
       el.addEventListener('keypress', function(e) {
         // Permite doar cifre 0-9
@@ -604,6 +606,11 @@
       el.addEventListener('input', function(e) {
         let value = this.value;
         let cursorPos = this.selectionStart;
+        
+        // Detectează dacă e ștergere sau introducere
+        const lastDigits = lastValue.replace(/[^0-9]/g, '');
+        const currentDigitsTemp = value.replace(/[^0-9]/g, '');
+        const isDeleting = currentDigitsTemp.length < lastDigits.length;
         
         // Elimină caractere invalide
         value = value.replace(/[^0-9:]/g, '');
@@ -659,14 +666,26 @@
           formatted = validDigits;
           newCursorPos = 1;
         } else if (validDigits.length === 2) {
-          formatted = validDigits + ':';
-          newCursorPos = 3;
+          // Adaugă ":" DOAR la introducere, NU la ștergere
+          if (isDeleting) {
+            formatted = validDigits; // "09" (fără ":")
+            newCursorPos = 2;
+          } else {
+            formatted = validDigits + ':'; // "09:"
+            newCursorPos = 3;
+          }
         } else if (validDigits.length === 3) {
           formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2);
           newCursorPos = 4;
         } else if (validDigits.length === 4) {
-          formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2) + ':';
-          newCursorPos = 6;
+          // Adaugă ":" DOAR la introducere, NU la ștergere
+          if (isDeleting) {
+            formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2); // "09:30" (fără ":")
+            newCursorPos = 5;
+          } else {
+            formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2) + ':'; // "09:30:"
+            newCursorPos = 6;
+          }
         } else if (validDigits.length === 5) {
           formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2, 4) + ':' + validDigits.substring(4);
           newCursorPos = 7;
@@ -685,6 +704,9 @@
           this.value = formatted;
           this.setSelectionRange(newCursorPos, newCursorPos);
         }
+        
+        // Actualizează lastValue pentru următoarea detectare
+        lastValue = formatted;
         
         // Recalculează LIVE totalul la fiecare modificare
         recalcTotal();
