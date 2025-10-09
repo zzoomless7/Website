@@ -202,6 +202,23 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     }
     
+    .emp-name {
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+    
+    .emp-name:hover {
+      border-color: var(--input-border) !important;
+      background: var(--input-bg) !important;
+      cursor: text;
+    }
+    
+    .emp-name:focus {
+      outline: none;
+      box-shadow: 0 0 0 0.25rem var(--input-focus);
+    }
+    
     .form-label {
       color: var(--text-secondary);
       margin-bottom: 0.3rem;
@@ -434,7 +451,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.1 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.2 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -809,7 +826,7 @@
 
     // Create employee card
     let employeeCounter = 0;
-    function createEmployeeBlock(defaultStart = shifts[activeShift].start, defaultEnd = shifts[activeShift].end) {
+    function createEmployeeBlock(defaultStart = shifts[activeShift].start, defaultEnd = shifts[activeShift].end, defaultName = null) {
       employeeCounter++;
       // Calculează numărul real al angajatului bazat pe numărul de carduri existente
       const currentEmployeeNumber = employeesList.querySelectorAll('.employee-card').length + 1;
@@ -820,7 +837,9 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">person</span>
-            <span class="fw-medium">Angajat ${currentEmployeeNumber}</span>
+            <input type="text" class="form-control form-control-sm emp-name" value="${defaultName || 'Angajat ' + currentEmployeeNumber}" 
+                   style="max-width: 200px; display: inline-block; border: 1px solid transparent; background: transparent; padding: 0.25rem 0.5rem;" 
+                   placeholder="Nume angajat" aria-label="Nume angajat">
           </div>
           <button class="btn btn-outline-danger btn-sm delete-btn d-flex align-items-center">
             <span class="material-icons-round">delete</span>
@@ -834,7 +853,7 @@
               <span class="input-group-text">
                 <span class="material-icons-round">schedule</span>
               </span>
-              <input class="form-control emp-start" type="text" value="${defaultStart}" 
+              <input class="form-control emp-start" type="text" inputmode="numeric" pattern="[0-9:]*" value="${defaultStart}" 
                     placeholder="00:00:00" aria-label="Ora început">
             </div>
           </div>
@@ -844,7 +863,7 @@
               <span class="input-group-text">
                 <span class="material-icons-round">schedule</span>
               </span>
-              <input class="form-control emp-end" type="text" value="${defaultEnd}" 
+              <input class="form-control emp-end" type="text" inputmode="numeric" pattern="[0-9:]*" value="${defaultEnd}" 
                     placeholder="00:00:00" aria-label="Ora sfârșit">
             </div>
           </div>
@@ -855,7 +874,6 @@
       const delBtn = wrap.querySelector('.delete-btn');
       delBtn.addEventListener('click', () => {
         wrap.remove();
-        renumberEmployees(); // Renumerotează angajații după ștergere
         recalcTotal();
       });
 
@@ -864,21 +882,27 @@
       const endInput = wrap.querySelector('.emp-end');
       attachTimeSanitizer(startInput);
       attachTimeSanitizer(endInput);
+      
+      // Name input - save on change
+      const nameInput = wrap.querySelector('.emp-name');
+      nameInput.addEventListener('input', () => {
+        debounceSaveState();
+      });
+      
+      // Add focus/blur effects for name input
+      nameInput.addEventListener('focus', function() {
+        this.style.borderColor = 'var(--primary-color)';
+        this.style.background = 'var(--input-bg)';
+      });
+      
+      nameInput.addEventListener('blur', function() {
+        this.style.borderColor = 'transparent';
+        this.style.background = 'transparent';
+      });
 
       employeesList.appendChild(wrap);
       recalcTotal();
       return wrap;
-    }
-    
-    // Renumerotează toți angajații
-    function renumberEmployees() {
-      const cards = employeesList.querySelectorAll('.employee-card');
-      cards.forEach((card, index) => {
-        const nameSpan = card.querySelector('.fw-medium');
-        if (nameSpan) {
-          nameSpan.textContent = `Angajat ${index + 1}`;
-        }
-      });
     }
 
     // Shift/werk UI handlers
@@ -949,6 +973,7 @@
       const employees = [];
       document.querySelectorAll('.employee-card').forEach(card => {
         employees.push({
+          name: card.querySelector('.emp-name').value,
           start: card.querySelector('.emp-start').value,
           end: card.querySelector('.emp-end').value
         });
@@ -1012,17 +1037,8 @@
           }
         }
         
-        // Restaurare angajați
-        if (state.employees && state.employees.length) {
-          // Curăță lista existentă
-          employeesList.innerHTML = '';
-          employeeCounter = 0;
-          
-          // Recreează angajații salvați
-          state.employees.forEach(emp => {
-            createEmployeeBlock(emp.start, emp.end);
-          });
-        }
+        // NU încărcăm angajații - pagina începe cu 0 angajați
+        // Utilizatorul va adăuga manual angajații
         
         return true;
       } catch (e) {
