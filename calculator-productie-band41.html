@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v3.2 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v3.3 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -658,7 +658,7 @@
           return;
         }
         
-        // Înlocuiește caracterul curent (dacă există)
+        // Înlocuiește caracterul curent (dacă există) SAU inserează dacă e la final
         if (cursorPos < value.length && value[cursorPos] !== ':') {
           e.preventDefault();
           
@@ -673,8 +673,8 @@
           
           // Trigger input event pentru recalcul
           this.dispatchEvent(new Event('input', { bubbles: true }));
-        } else {
-          // Permite inserarea normală doar dacă nu există caracter
+        } else if (cursorPos >= value.length || value[cursorPos] === ':') {
+          // La final sau pe ":" - permite inserare normală (va fi handled de input event)
           return;
         }
       });
@@ -682,6 +682,7 @@
       // Handler pentru cleanup (paste, etc) și recalcul LIVE
       el.addEventListener('input', function(e) {
         let value = this.value;
+        let cursorPos = this.selectionStart;
         
         // Elimină caractere invalide
         value = value.replace(/[^0-9:]/g, '');
@@ -698,22 +699,38 @@
           return;
         }
         
-        // Auto-inserare ":" DOAR dacă sunt suficiente cifre
-        if (digits.length >= 2 && value[2] !== ':') {
-          value = digits.substring(0, 2) + ':' + digits.substring(2);
-        }
-        if (digits.length >= 4 && value[5] !== ':') {
-          value = value.substring(0, 5) + ':' + value.substring(5);
+        // Reconstruiește formatul corect bazat pe numărul de cifre
+        let formatted = '';
+        
+        if (digits.length === 1) {
+          // Doar 1 cifră: "5" → "5"
+          formatted = digits;
+        } else if (digits.length === 2) {
+          // 2 cifre: "09" → "09:"
+          formatted = digits + ':';
+        } else if (digits.length === 3) {
+          // 3 cifre: "093" → "09:3"
+          formatted = digits.substring(0, 2) + ':' + digits.substring(2);
+        } else if (digits.length === 4) {
+          // 4 cifre: "0930" → "09:30:"
+          formatted = digits.substring(0, 2) + ':' + digits.substring(2) + ':';
+        } else if (digits.length >= 5) {
+          // 5+ cifre: "093045" → "09:30:45"
+          formatted = digits.substring(0, 2) + ':' + digits.substring(2, 4) + ':' + digits.substring(4, 6);
         }
         
         // Limitare 8 caractere
-        if (value.length > 8) {
-          value = value.substring(0, 8);
+        if (formatted.length > 8) {
+          formatted = formatted.substring(0, 8);
         }
         
-        if (this.value !== value) {
-          const cursorPos = this.selectionStart;
-          this.value = value;
+        if (this.value !== formatted) {
+          this.value = formatted;
+          
+          // Ajustare cursor: plasează la final dacă nu specificat altfel
+          if (cursorPos > formatted.length) {
+            cursorPos = formatted.length;
+          }
           this.setSelectionRange(cursorPos, cursorPos);
         }
         
