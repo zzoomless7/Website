@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.3 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.4 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -572,9 +572,6 @@
       
       const rounded = Math.round(totalPieces * 100) / 100;
       totalBox.innerHTML = `<span class="material-icons-round me-2">inventory</span>Total bucăți produse: <span class="text-primary">${rounded}</span>`;
-      
-      // Salvare automată în localStorage cu debounce
-      debounceSaveState();
     }
 
 
@@ -595,7 +592,6 @@
         
         // Procesare caracter cu caracter cu validare strictă
         let validValue = '';
-        let skipColon = false;
         
         for (let i = 0; i < value.length; i++) {
           const char = value[i];
@@ -735,9 +731,7 @@
     }
 
     // Create employee card
-    let employeeCounter = 0;
     function createEmployeeBlock(defaultStart = shifts[activeShift].start, defaultEnd = shifts[activeShift].end, defaultName = null) {
-      employeeCounter++;
       // Calculează numărul real al angajatului bazat pe numărul de carduri existente
       const currentEmployeeNumber = employeesList.querySelectorAll('.employee-card').length + 1;
       
@@ -929,7 +923,7 @@
           }
         }
         
-        // Restaurare werk activ
+        // Restaurare werk activ (doar UI, rata se restaurează deja de mai sus)
         if (state.activeWerk) {
           activeWerk = state.activeWerk;
           if(activeWerk === 'werk1') {
@@ -943,6 +937,7 @@
             werk1Btn.classList.remove('btn-primary');
             werk1Btn.classList.add('btn-outline-primary');
           }
+          // NU modificăm rateInput.value - este deja restaurat la linia 913
         }
         
         // NU încărcăm angajații - pagina începe cu 0 angajați
