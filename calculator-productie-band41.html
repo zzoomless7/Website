@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.7 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.8 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -574,10 +574,15 @@
       const blocks = employeesList.querySelectorAll('.employee-card');
       
       blocks.forEach(block => {
-        const start = block.querySelector('.emp-start').value;
-        const end = block.querySelector('.emp-end').value;
-        const sec = computeEmployeeWorkSeconds(start, end, activeShift);
-        totalPieces += (sec/3600) * rate;
+        const startEl = block.querySelector('.emp-start');
+        const endEl = block.querySelector('.emp-end');
+        
+        if (startEl && endEl) {
+          const start = startEl.value;
+          const end = endEl.value;
+          const sec = computeEmployeeWorkSeconds(start, end, activeShift);
+          totalPieces += (sec/3600) * rate;
+        }
       });
       
       const rounded = Math.round(totalPieces * 100) / 100;
@@ -743,7 +748,11 @@
     }
 
     // Create employee card
-    function createEmployeeBlock(defaultStart = shifts[activeShift].start, defaultEnd = shifts[activeShift].end, defaultName = null) {
+    function createEmployeeBlock(defaultStart = null, defaultEnd = null, defaultName = null) {
+      // Calculează valori default safe în interiorul funcției
+      const safeShift = shifts[activeShift] || shifts.fruh;
+      const finalStart = defaultStart || safeShift.start;
+      const finalEnd = defaultEnd || safeShift.end;
       // Calculează numărul real al angajatului bazat pe numărul de carduri existente
       const currentEmployeeNumber = employeesList.querySelectorAll('.employee-card').length + 1;
       
@@ -769,7 +778,7 @@
               <span class="input-group-text">
                 <span class="material-icons-round">schedule</span>
               </span>
-              <input class="form-control emp-start" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(defaultStart)}" 
+              <input class="form-control emp-start" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(finalStart)}" 
                     placeholder="00:00:00" aria-label="Ora început">
             </div>
           </div>
@@ -779,7 +788,7 @@
               <span class="input-group-text">
                 <span class="material-icons-round">schedule</span>
               </span>
-              <input class="form-control emp-end" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(defaultEnd)}" 
+              <input class="form-control emp-end" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(finalEnd)}" 
                     placeholder="00:00:00" aria-label="Ora sfârșit">
             </div>
           </div>
@@ -841,7 +850,7 @@
 
       // Actualizare directa a timpilor pentru toti angajatii
       const cards = document.querySelectorAll('.employee-card');
-      if (cards.length > 0) {
+      if (cards.length > 0 && shifts[key]) {
         cards.forEach(card => {
           const s = card.querySelector('.emp-start');
           const e = card.querySelector('.emp-end');
@@ -888,11 +897,17 @@
     function saveCalculatorState() {
       const employees = [];
       document.querySelectorAll('.employee-card').forEach(card => {
-        employees.push({
-          name: card.querySelector('.emp-name').value,
-          start: card.querySelector('.emp-start').value,
-          end: card.querySelector('.emp-end').value
-        });
+        const nameEl = card.querySelector('.emp-name');
+        const startEl = card.querySelector('.emp-start');
+        const endEl = card.querySelector('.emp-end');
+        
+        if (nameEl && startEl && endEl) {
+          employees.push({
+            name: nameEl.value,
+            start: startEl.value,
+            end: endEl.value
+          });
+        }
       });
       
       const state = {
