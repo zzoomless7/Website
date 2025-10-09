@@ -16,9 +16,7 @@
     :root {
       --primary-color: #3b82f6;
       --primary-hover: #2563eb;
-      --success-color: #10b981;
       --danger-color: #ef4444;
-      --warning-color: #f59e0b;
       --card-bg: #ffffff;
       --card-border: #e5e7eb;
       --text-primary: #1e293b;
@@ -42,9 +40,7 @@
     [data-bs-theme="dark"] {
       --primary-color: #3b82f6;
       --primary-hover: #60a5fa;
-      --success-color: #10b981;
       --danger-color: #f87171;
-      --warning-color: #fbbf24;
       --card-bg: #1e293b;
       --card-border: #334155;
       --text-primary: #f1f5f9;
@@ -350,11 +346,11 @@
         <div class="card-body">
           <!-- Rate + Werk buttons -->
           <div class="mb-3">
-            <label class="form-label fw-medium">Rată de producție</label>
+            <label class="form-label fw-medium" for="rateInput">Rată de producție</label>
             <div class="row g-2 align-items-center">
               <div class="col-sm-5 mb-2 mb-sm-0">
                 <div class="input-group">
-                  <input id="rateInput" class="form-control" type="number" step="0.1" min="0" value="33.3">
+                  <input id="rateInput" class="form-control" type="number" step="0.1" min="0" max="1000" value="33.3">
                   <span class="input-group-text">buc/oră</span>
                 </div>
                 <div class="small-note mt-1">
@@ -420,7 +416,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v3.7 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v3.8 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -499,7 +495,7 @@
       const luni = ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 
                     'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'];
       
-      // Format ca "miercuri, 8 octombrie 2025 16:53:40"
+      // Format: "ziua, DD luna AAAA HH:MM:SS"
       const ziua = zile[now.getDay()];
       const data = now.getDate();
       const luna = luni[now.getMonth()];
@@ -610,9 +606,6 @@
         // Detectează dacă e ștergere sau introducere
         // Folosim lungimea TOTALĂ (cu ":") pentru detectare mai precisă
         const isDeleting = value.length < lastValue.length;
-        
-        const lastDigits = lastValue.replace(/[^0-9]/g, '');
-        const currentDigitsTemp = value.replace(/[^0-9]/g, '');
         
         // Elimină caractere invalide
         value = value.replace(/[^0-9:]/g, '');
@@ -966,7 +959,7 @@
             werk1Btn.classList.remove('btn-primary');
             werk1Btn.classList.add('btn-outline-primary');
           }
-          // NU modificăm rateInput.value - este deja restaurat la linia 921
+          // NU modificăm rateInput.value - este deja restaurat la linia 924
         }
         
         // NU încărcăm angajații - pagina începe cu 0 angajați
