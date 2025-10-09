@@ -420,7 +420,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.6 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.7 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -917,7 +917,7 @@
         const state = JSON.parse(savedState);
         
         // Restaurare rate
-        if (state.rate) {
+        if (state.rate !== undefined && state.rate !== null) {
           rateInput.value = state.rate;
         }
         
@@ -961,7 +961,7 @@
             werk1Btn.classList.remove('btn-primary');
             werk1Btn.classList.add('btn-outline-primary');
           }
-          // NU modificăm rateInput.value - este deja restaurat la linia 911
+          // NU modificăm rateInput.value - este deja restaurat la linia 921
         }
         
         // NU încărcăm angajații - pagina începe cu 0 angajați
