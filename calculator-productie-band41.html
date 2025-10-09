@@ -434,7 +434,7 @@
         <div class="col-md-6">
           <div class="d-flex align-items-center">
             <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v2.0 &copy; <span id="currentYear"></span></span>
+            <span>Calculator producție v2.1 &copy; <span id="currentYear"></span></span>
           </div>
         </div>
         <div class="col-md-6 text-md-end">
@@ -650,15 +650,133 @@
     }
 
     function attachTimeSanitizer(el) {
-      // Simplificat: folosim un input text normal cu validare la blur
-      el.addEventListener('input', function() {
-        // Permite doar cifre și :
-        this.value = this.value.replace(/[^0-9:]/g, '');
+      let lastValue = el.value;
+      
+      // Handler pentru input - validare și auto-inserare ":"
+      el.addEventListener('input', function(e) {
+        let value = this.value;
+        let cursorPos = this.selectionStart;
         
-        // Previne mai mult de 2 caractere ":"
-        const colonCount = (this.value.match(/:/g) || []).length;
-        if (colonCount > 2) {
-          this.value = this.value.substring(0, this.value.lastIndexOf(':'));
+        // Permite doar cifre și :
+        value = value.replace(/[^0-9:]/g, '');
+        
+        // Limitare la maxim 8 caractere (HH:MM:SS)
+        if (value.length > 8) {
+          value = value.substring(0, 8);
+        }
+        
+        // Elimină ":" din poziții greșite (doar la poziția 2 și 5 sunt permise)
+        let cleanValue = '';
+        for (let i = 0; i < value.length; i++) {
+          if (value[i] === ':') {
+            if (i === 2 || i === 5) {
+              cleanValue += ':';
+            }
+            // Ignore ":" din alte poziții
+          } else {
+            cleanValue += value[i];
+          }
+        }
+        value = cleanValue;
+        
+        // Auto-inserare ":" după HH (poziția 2)
+        if (value.length >= 2 && value[2] !== ':' && /^\d{2}$/.test(value.substring(0, 2))) {
+          // Verifică dacă ora este validă (max 23)
+          const hours = parseInt(value.substring(0, 2));
+          if (hours <= 23) {
+            value = value.substring(0, 2) + ':' + value.substring(2);
+            cursorPos++;
+          } else {
+            // Limitează la 23
+            value = '23' + value.substring(2);
+          }
+        }
+        
+        // Auto-inserare ":" după MM (poziția 5)
+        if (value.length >= 5 && value[5] !== ':' && /^\d{2}:\d{2}$/.test(value.substring(0, 5))) {
+          // Verifică dacă minutele sunt valide (max 59)
+          const minutes = parseInt(value.substring(3, 5));
+          if (minutes <= 59) {
+            value = value.substring(0, 5) + ':' + value.substring(5);
+            cursorPos++;
+          } else {
+            // Limitează la 59
+            value = value.substring(0, 3) + '59' + value.substring(5);
+          }
+        }
+        
+        // Validare în timp real pentru HH (max 23)
+        if (value.length >= 2) {
+          const hours = parseInt(value.substring(0, 2));
+          if (hours > 23) {
+            value = '23' + value.substring(2);
+          }
+        }
+        
+        // Validare în timp real pentru MM (max 59)
+        if (value.length >= 5) {
+          const minutes = parseInt(value.substring(3, 5));
+          if (minutes > 59) {
+            value = value.substring(0, 3) + '59' + value.substring(5);
+          }
+        }
+        
+        // Validare în timp real pentru SS (max 59)
+        if (value.length >= 8) {
+          const seconds = parseInt(value.substring(6, 8));
+          if (seconds > 59) {
+            value = value.substring(0, 6) + '59';
+          }
+        }
+        
+        this.value = value;
+        lastValue = value;
+        
+        // Restaurează poziția cursorului
+        this.setSelectionRange(cursorPos, cursorPos);
+        
+        // Validare vizuală
+        validateTimeInput(el);
+      });
+      
+      // Handler pentru backspace - auto-ștergere ":"
+      el.addEventListener('keydown', function(e) {
+        const cursorPos = this.selectionStart;
+        const value = this.value;
+        
+        // Detectare backspace
+        if (e.key === 'Backspace' && cursorPos > 0) {
+          // Dacă cursorul este imediat după ":", șterge și ":"
+          if (value[cursorPos - 1] === ':') {
+            e.preventDefault();
+            this.value = value.substring(0, cursorPos - 1) + value.substring(cursorPos);
+            this.setSelectionRange(cursorPos - 1, cursorPos - 1);
+            validateTimeInput(el);
+          }
+          // Dacă ștergem ultima cifră dinaintea ":", șterge și ":"
+          else if (cursorPos === 3 && value[2] === ':') {
+            e.preventDefault();
+            this.value = value.substring(0, 1) + value.substring(3);
+            this.setSelectionRange(1, 1);
+            validateTimeInput(el);
+          }
+          else if (cursorPos === 6 && value[5] === ':') {
+            e.preventDefault();
+            this.value = value.substring(0, 4) + value.substring(6);
+            this.setSelectionRange(4, 4);
+            validateTimeInput(el);
+          }
+        }
+        
+        // Detectare delete
+        if (e.key === 'Delete' && cursorPos < value.length) {
+          // Dacă cursorul este imediat înainte de ":", șterge și ":"
+          if (value[cursorPos] === ':') {
+            e.preventDefault();
+            this.value = value.substring(0, cursorPos) + value.substring(cursorPos + 1);
+            this.setSelectionRange(cursorPos, cursorPos);
+            validateTimeInput(el);
+          }
         }
       });
 
@@ -673,32 +791,13 @@
           return;
         }
         
-        // Dacă utilizatorul a introdus doar cifre fără :
-        if (!value.includes(':')) {
-          let formattedTime = '';
-          if (value.length <= 2) { // Doar ore
-            const hours = Math.min(parseInt(value) || 0, 23);
-            formattedTime = `${hours.toString().padStart(2, '0')}:00:00`;
-          } else if (value.length <= 4) { // Ore și minute
-            const hours = Math.min(parseInt(value.substring(0, 2)) || 0, 23);
-            const minutes = Math.min(parseInt(value.substring(2)) || 0, 59);
-            formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
-          } else { // Ore, minute și secunde
-            const hours = Math.min(parseInt(value.substring(0, 2)) || 0, 23);
-            const minutes = Math.min(parseInt(value.substring(2, 4)) || 0, 59);
-            const seconds = Math.min(parseInt(value.substring(4)) || 0, 59);
-            formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-          }
-          this.value = formattedTime;
-        } else {
-          // Asigură-te că avem un format complet HH:MM:SS
-          const parts = value.split(':');
-          const hours = Math.min(parseInt(parts[0] || '0') || 0, 23);
-          const minutes = Math.min(parseInt(parts[1] || '0') || 0, 59);
-          const seconds = Math.min(parseInt(parts[2] || '0') || 0, 59);
-          
-          this.value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
+        // Completare automată cu 0-uri dacă e nevoie
+        const parts = value.split(':');
+        const hours = (parts[0] || '00').padStart(2, '0');
+        const minutes = (parts[1] || '00').padStart(2, '0');
+        const seconds = (parts[2] || '00').padStart(2, '0');
+        
+        this.value = `${hours}:${minutes}:${seconds}`;
         
         validateTimeInput(el);
         recalcTotal();
