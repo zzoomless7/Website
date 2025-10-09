@@ -1,0 +1,34 @@
+{
+  "name": "production-calculator",
+  "version": "1.2.0",
+  "description": "Production calculator web app for Band 41 - tracks employee work hours and calculates production output",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8080 -o",
+    "serve": "npx serve .",
+    "dev": "npx live-server --port=8080"
+  },
+  "keywords": [
+    "production",
+    "calculator",
+    "manufacturing",
+    "shift",
+    "werk",
+    "band"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2",
+    "serve": "^14.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

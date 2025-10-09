@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Calculator Tests</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .pass {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .fail {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        h1 {
+            color: #333;
+        }
+        .summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Production Calculator - Unit Tests</h1>
+    <div id="test-results"></div>
+    <div id="summary" class="summary"></div>
+
+    <script>
+        // Test framework
+        const tests = [];
+        const results = [];
+
+        function test(name, fn) {
+            tests.push({ name, fn });
+        }
+
+        function assert(condition, message) {
+            if (!condition) {
+                throw new Error(message || 'Assertion failed');
+            }
+        }
+
+        function runTests() {
+            const resultsDiv = document.getElementById('test-results');
+            let passed = 0;
+            let failed = 0;
+
+            tests.forEach(test => {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'test-result';
+                
+                try {
+                    test.fn();
+                    resultDiv.className += ' pass';
+                    resultDiv.innerHTML = `✅ ${test.name}`;
+                    passed++;
+                    results.push({ name: test.name, status: 'pass' });
+                } catch (error) {
+                    resultDiv.className += ' fail';
+                    resultDiv.innerHTML = `❌ ${test.name}<br><small>${error.message}</small>`;
+                    failed++;
+                    results.push({ name: test.name, status: 'fail', error: error.message });
+                }
+                
+                resultsDiv.appendChild(resultDiv);
+            });
+
+            // Summary
+            const summaryDiv = document.getElementById('summary');
+            summaryDiv.innerHTML = `
+                <h2>Test Summary</h2>
+                <p>Total Tests: ${tests.length}</p>
+                <p>✅ Passed: ${passed}</p>
+                <p>❌ Failed: ${failed}</p>
+                <p>Success Rate: ${((passed / tests.length) * 100).toFixed(1)}%</p>
+            `;
+        }
+
+        // Copy the functions from the main app for testing
+        function timeToSec(t) {
+            if(!t) return 0;
+            const parts = t.split(':').map(p => parseInt(p,10) || 0);
+            if(parts.length === 2) parts.push(0);
+            const [h,m,s] = parts;
+            return (h||0)*3600 + (m||0)*60 + (s||0);
+        }
+        
+        function overlapSec(a1, a2, b1, b2) {
+            const s = Math.max(a1, b1);
+            const e = Math.min(a2, b2);
+            return Math.max(0, e - s);
+        }
+
+        function computeEmployeeWorkSeconds(empStartStr, empEndStr, shiftKey) {
+            const shifts = {
+                fruh: {
+                    start: '05:45:00',
+                    end:   '14:00:00',
+                    pauses: [
+                        ['07:30:00','07:45:00'],
+                        ['09:30:00','09:45:00'],
+                        ['11:45:00','12:00:00']
+                    ]
+                },
+                spat: {
+                    start: '14:00:00',
+                    end:   '22:15:00',
+                    pauses: [
+                        ['16:00:00','16:15:00'],
+                        ['18:15:00','18:30:00'],
+                        ['20:30:00','20:45:00']
+                    ]
+                }
+            };
+            
+            const shift = shifts[shiftKey];
+            const shiftStart = timeToSec(shift.start);
+            const shiftEnd = timeToSec(shift.end);
+            const empStart = timeToSec(empStartStr);
+            const empEnd = timeToSec(empEndStr);
+            
+            if(empEnd <= empStart) return 0;
+            
+            let workSec = overlapSec(empStart, empEnd, shiftStart, shiftEnd);
+            
+            for(const p of shift.pauses) {
+                workSec -= overlapSec(empStart, empEnd, timeToSec(p[0]), timeToSec(p[1]));
+            }
+            
+            return Math.max(0, workSec);
+        }
+
+        // Tests
+        test('timeToSec: converts time strings to seconds', () => {
+            assert(timeToSec('01:00:00') === 3600, 'One hour should be 3600 seconds');
+            assert(timeToSec('00:01:00') === 60, 'One minute should be 60 seconds');
+            assert(timeToSec('00:00:01') === 1, 'One second should be 1 second');
+            assert(timeToSec('01:30:45') === 5445, 'Combined time calculation');
+            assert(timeToSec('') === 0, 'Empty string should return 0');
+        });
+
+        test('overlapSec: calculates overlap correctly', () => {
+            assert(overlapSec(0, 100, 50, 150) === 50, 'Partial overlap');
+            assert(overlapSec(0, 100, 100, 200) === 0, 'No overlap (adjacent)');
+            assert(overlapSec(0, 100, 200, 300) === 0, 'No overlap (separate)');
+            assert(overlapSec(50, 150, 0, 100) === 50, 'Partial overlap reversed');
+            assert(overlapSec(0, 200, 50, 150) === 100, 'Full containment');
+        });
+
+        test('computeEmployeeWorkSeconds: full shift work', () => {
+            // Full Frühschicht: 8h 15m - 45m breaks = 7h 30m = 27000 seconds
+            const seconds = computeEmployeeWorkSeconds('05:45:00', '14:00:00', 'fruh');
+            assert(seconds === 27000, `Expected 27000 seconds, got ${seconds}`);
+        });
+
+        test('computeEmployeeWorkSeconds: partial shift work', () => {
+            // Working 08:00 to 12:00 in Frühschicht
+            // Total: 4 hours = 14400 seconds
+            // Minus break 09:30-09:45 (15 min) = 900 seconds
+            // Minus break 11:45-12:00 (15 min, but only 15 min overlap) = 900 seconds
+            // Result: 14400 - 900 - 900 = 12600 seconds
+            const seconds = computeEmployeeWorkSeconds('08:00:00', '12:00:00', 'fruh');
+            assert(seconds === 12600, `Expected 12600 seconds, got ${seconds}`);
+        });
+
+        test('computeEmployeeWorkSeconds: work outside shift returns 0', () => {
+            const seconds = computeEmployeeWorkSeconds('15:00:00', '17:00:00', 'fruh');
+            assert(seconds === 0, 'Work outside shift should return 0');
+        });
+
+        test('computeEmployeeWorkSeconds: späts shift calculation', () => {
+            // Full Spätschicht: 8h 15m - 45m breaks = 7h 30m = 27000 seconds
+            const seconds = computeEmployeeWorkSeconds('14:00:00', '22:15:00', 'spat');
+            assert(seconds === 27000, `Expected 27000 seconds, got ${seconds}`);
+        });
+
+        test('Production calculation with rate', () => {
+            const workSeconds = 27000; // 7.5 hours
+            const rate = 33.3;
+            const production = (workSeconds / 3600) * rate;
+            const rounded = Math.round(production * 100) / 100;
+            assert(rounded === 249.75, `Expected 249.75 pieces, got ${rounded}`);
+        });
+
+        test('Production calculation with WERK 2 rate', () => {
+            const workSeconds = 27000; // 7.5 hours
+            const rate = 34.4;
+            const production = (workSeconds / 3600) * rate;
+            const rounded = Math.round(production * 100) / 100;
+            assert(rounded === 258, `Expected 258 pieces, got ${rounded}`);
+        });
+
+        test('Invalid time handling', () => {
+            const seconds = computeEmployeeWorkSeconds('14:00:00', '08:00:00', 'fruh');
+            assert(seconds === 0, 'End before start should return 0');
+        });
+
+        test('Edge case: work spans across break', () => {
+            // Working 09:00 to 10:00 in Frühschicht
+            // Total: 1 hour = 3600 seconds
+            // Minus break 09:30-09:45 (15 min) = 900 seconds
+            // Result: 3600 - 900 = 2700 seconds
+            const seconds = computeEmployeeWorkSeconds('09:00:00', '10:00:00', 'fruh');
+            assert(seconds === 2700, `Expected 2700 seconds, got ${seconds}`);
+        });
+
+        // Run all tests
+        window.addEventListener('DOMContentLoaded', () => {
+            runTests();
+        });
+    </script>
+</body>
+</html>
