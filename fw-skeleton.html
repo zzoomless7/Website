@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Skeleton - Calculator Producție Band 41</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,300,600">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  <style>
+    body { background: #f5f5f5; }
+    .header { background: #33C3F0; color: white; padding: 4rem 0; text-align: center; margin-bottom: 3rem; }
+    .card { background: white; padding: 2.5rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .card-title { font-size: 2rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .rate-box { background: #f0f9ff; padding: 2.5rem; border-radius: 8px; text-align: center; margin-bottom: 1.5rem; border: 2px solid #33C3F0; }
+    .rate-input { font-size: 3.5rem; font-weight: 700; text-align: center; border: none; border-bottom: 4px solid #33C3F0; background: transparent; width: 100%; }
+    .badge { display: inline-block; padding: 0.6rem 1.2rem; background: #f0f9ff; color: #33C3F0; border: 1px solid #33C3F0; border-radius: 4px; font-size: 1rem; margin-right: 0.8rem; }
+    .employee-box { background: #fafafa; padding: 2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #ddd; }
+    .total-box { background: linear-gradient(135deg, #33C3F0, #2ba8d0); color: white; padding: 4rem; border-radius: 8px; text-align: center; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="container">
+      <h1>🏭 Band 41 Calculator</h1>
+      <p style="font-size: 1.6rem; margin-top: 1rem;">Calculator de producție - Skeleton</p>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="container">
+    
+    <!-- Rate Card -->
+    <div class="card">
+      <div class="card-title">Rată de Producție</div>
+      <div class="rate-box">
+        <input class="rate-input" type="number" value="33.3" step="0.1">
+        <p style="margin-top: 1rem; font-size: 1.4rem; color: #666;">buc/oră</p>
+      </div>
+      <div style="margin-bottom: 2rem;">
+        <span class="badge">WERK 1 = 33.3</span>
+        <span class="badge">WERK 2 = 34.4</span>
+      </div>
+      <div class="row">
+        <div class="six columns">
+          <button class="button-primary u-full-width">WERK 1</button>
+        </div>
+        <div class="six columns">
+          <button class="button u-full-width">WERK 2</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shift Card -->
+    <div class="card">
+      <div class="card-title">Schimb de Lucru</div>
+      <div class="row">
+        <div class="six columns">
+          <button class="button-primary u-full-width">☀️ Frühschicht</button>
+        </div>
+        <div class="six columns">
+          <button class="button u-full-width">🌙 Spätschicht</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employees Card -->
+    <div class="card">
+      <div class="card-title">Angajați</div>
+      
+      <div class="employee-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+          <h4 style="margin: 0;">👤 Angajat 1</h4>
+          <button class="button" style="background: #e74c3c; color: white; border-color: #e74c3c;">Șterge</button>
+        </div>
+        <div class="row">
+          <div class="six columns">
+            <label>Ora început</label>
+            <input class="u-full-width" type="text" value="05:45:00">
+          </div>
+          <div class="six columns">
+            <label>Ora sfârșit</label>
+            <input class="u-full-width" type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="button-primary u-full-width">+ Adaugă Angajat</button>
+    </div>
+
+    <!-- Total Box -->
+    <div class="total-box">
+      <p style="text-transform: uppercase; letter-spacing: 3px; margin-bottom: 2rem; font-size: 1.2rem;">📦 Total Bucăți Produse</p>
+      <h1 style="font-size: 7rem; font-weight: 700; margin: 0;">264</h1>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: #33C3F0; color: white; padding: 3rem 0; margin-top: 4rem; text-align: center;">
+    <div class="container">
+      <p style="font-size: 1.4rem;">Calculator Producție v1.0 - Skeleton</p>
+    </div>
+  </footer>
+</body>
+</html>

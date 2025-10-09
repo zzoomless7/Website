@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Foundation - Calculator Producție Band 41</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/css/foundation.min.css">
+  <style>
+    .header { background: #2c3e50; color: white; padding: 2rem 0; }
+    .card { margin-bottom: 1.5rem; }
+    .total-card { background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 3rem; text-align: center; }
+    .total-value { font-size: 4rem; font-weight: 700; }
+    .employee-card { background: #f4f4f4; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="grid-container">
+      <h1>🏭 Band 41 Calculator</h1>
+      <p class="lead">Calculator de producție - Foundation (Zurb)</p>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="grid-container" style="margin-top: 2rem;">
+    <div class="grid-x grid-margin-x">
+      <div class="cell large-8 large-offset-2">
+        
+        <!-- Rate Card -->
+        <div class="card">
+          <div class="card-section">
+            <h3>Rată de Producție</h3>
+            <div class="callout primary" style="text-align: center;">
+              <input type="number" value="33.3" step="0.1" style="text-align: center; font-size: 2.5rem; font-weight: bold; border: none; border-bottom: 2px solid #1779ba; background: transparent; margin-bottom: 0.5rem;">
+              <p style="margin: 0;">buc/oră</p>
+            </div>
+            <div class="label-group" style="margin-bottom: 1rem;">
+              <span class="label secondary">WERK 1 = 33.3</span>
+              <span class="label secondary">WERK 2 = 34.4</span>
+            </div>
+            <div class="button-group expanded">
+              <a class="button primary">WERK 1</a>
+              <a class="button secondary">WERK 2</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shift Card -->
+        <div class="card">
+          <div class="card-section">
+            <h3>Schimb de Lucru</h3>
+            <div class="button-group expanded">
+              <a class="button success">☀️ Frühschicht</a>
+              <a class="button hollow success">🌙 Spätschicht</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employees Card -->
+        <div class="card">
+          <div class="card-section">
+            <h3>Angajați</h3>
+            
+            <div class="employee-card">
+              <div class="grid-x grid-margin-x align-middle" style="margin-bottom: 1rem;">
+                <div class="cell auto">
+                  <h4 style="margin: 0;">👤 Angajat 1</h4>
+                </div>
+                <div class="cell shrink">
+                  <button class="button alert small">Șterge</button>
+                </div>
+              </div>
+              <div class="grid-x grid-margin-x">
+                <div class="cell medium-6">
+                  <label>Ora început
+                    <input type="text" value="05:45:00">
+                  </label>
+                </div>
+                <div class="cell medium-6">
+                  <label>Ora sfârșit
+                    <input type="text" value="14:00:00">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <button class="button expanded primary">+ Adaugă Angajat</button>
+          </div>
+        </div>
+
+        <!-- Total Card -->
+        <div class="total-card callout">
+          <p style="margin-bottom: 1rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">Total Bucăți Produse</p>
+          <div class="total-value">264</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: #2c3e50; color: white; padding: 2rem 0; margin-top: 3rem; text-align: center;">
+    <p>Calculator Producție v1.0 - Foundation (Zurb)</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/js/foundation.min.js"></script>
+  <script>$(document).foundation();</script>
+</body>
+</html>

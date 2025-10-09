@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tailwind CSS - Calculator Producție Band 41</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            secondary: '#8B5CF6',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="bg-primary text-white shadow-lg">
+    <div class="container mx-auto px-4 py-6">
+      <h1 class="text-3xl font-bold">🏭 Band 41 Calculator</h1>
+      <p class="text-blue-100 mt-1">Calculator de producție - Tailwind CSS</p>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Rate Card -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Rată de Producție</h2>
+      <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 mb-4">
+        <input type="number" value="33.3" step="0.1" 
+          class="w-full text-4xl font-bold text-center bg-transparent border-b-2 border-primary focus:outline-none focus:border-secondary">
+        <div class="text-center text-gray-600 mt-2">buc/oră</div>
+      </div>
+      <div class="flex gap-2 mb-3">
+        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">WERK 1 = 33.3</span>
+        <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">WERK 2 = 34.4</span>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <button class="bg-primary hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md hover:shadow-lg">
+          WERK 1
+        </button>
+        <button class="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold py-3 px-6 rounded-lg transition">
+          WERK 2
+        </button>
+      </div>
+    </div>
+
+    <!-- Shift Card -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Schimb de Lucru</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <button class="bg-secondary hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md">
+          ☀️ Frühschicht
+        </button>
+        <button class="border-2 border-secondary text-secondary hover:bg-secondary hover:text-white font-semibold py-3 px-6 rounded-lg transition">
+          🌙 Spätschicht
+        </button>
+      </div>
+    </div>
+
+    <!-- Employees Card -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Angajați</h2>
+      
+      <div class="bg-gray-50 rounded-lg p-4 mb-4 border border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">👤</span>
+            <span class="font-semibold text-gray-800">Angajat 1</span>
+          </div>
+          <button class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-2">Ora început</label>
+            <input type="text" value="05:45:00" 
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-2">Ora sfârșit</label>
+            <input type="text" value="14:00:00" 
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+          </div>
+        </div>
+      </div>
+
+      <button class="w-full bg-gradient-to-r from-primary to-secondary hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md hover:shadow-lg">
+        + Adaugă Angajat
+      </button>
+    </div>
+
+    <!-- Total Card -->
+    <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-xl p-8 text-center text-white">
+      <div class="text-sm font-semibold uppercase tracking-wider mb-3 opacity-90">Total Bucăți Produse</div>
+      <div class="text-6xl font-bold">264</div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-gray-300 py-6 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p>Calculator Producție v1.0 - Tailwind CSS</p>
+    </div>
+  </footer>
+</body>
+</html>

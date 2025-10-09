@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bootstrap Modern - Calculator Producție Band 41</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <style>
+    :root {
+      --bs-primary: #0d6efd;
+      --bs-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    body { background: #f8f9fa; }
+    .gradient-header { background: var(--bs-gradient); color: white; }
+    .rate-card { background: linear-gradient(135deg, #e3f2fd, #f3e5f5); border: none; }
+    .rate-input { font-size: 3rem; font-weight: 700; text-align: center; border: none; border-bottom: 3px solid #0d6efd; background: transparent; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="gradient-header py-5 mb-4 shadow">
+    <div class="container">
+      <h1 class="display-5 fw-bold">🏭 Band 41 Calculator</h1>
+      <p class="lead">Calculator de producție - Bootstrap 5.3.2 Modern</p>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        
+        <!-- Rate Card -->
+        <div class="card mb-4 shadow-sm rate-card">
+          <div class="card-body p-4">
+            <h3 class="card-title mb-4">Rată de Producție</h3>
+            <input class="rate-input form-control mb-3" type="number" value="33.3" step="0.1">
+            <p class="text-center text-muted mb-3">buc/oră</p>
+            <div class="mb-3">
+              <span class="badge bg-primary me-2">WERK 1 = 33.3</span>
+              <span class="badge bg-primary">WERK 2 = 34.4</span>
+            </div>
+            <div class="row g-3">
+              <div class="col-6">
+                <button class="btn btn-primary w-100 btn-lg">
+                  <span class="material-icons-round me-2" style="vertical-align: middle;">precision_manufacturing</span>
+                  WERK 1
+                </button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-outline-primary w-100 btn-lg">
+                  <span class="material-icons-round me-2" style="vertical-align: middle;">precision_manufacturing</span>
+                  WERK 2
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shift Card -->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body p-4">
+            <h3 class="card-title mb-4">Schimb de Lucru</h3>
+            <div class="btn-group w-100" role="group">
+              <button class="btn btn-success btn-lg">
+                <span class="material-icons-round me-2" style="vertical-align: middle;">wb_sunny</span>
+                Frühschicht
+              </button>
+              <button class="btn btn-outline-success btn-lg">
+                <span class="material-icons-round me-2" style="vertical-align: middle;">nights_stay</span>
+                Spätschicht
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employees Card -->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body p-4">
+            <h3 class="card-title mb-4">Angajați</h3>
+            
+            <div class="bg-light rounded p-3 mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <span class="material-icons-round me-2" style="vertical-align: middle;">person</span>
+                  <strong>Angajat 1</strong>
+                </div>
+                <button class="btn btn-danger btn-sm">
+                  <span class="material-icons-round">delete</span>
+                </button>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Ora început</label>
+                  <input type="text" class="form-control" value="05:45:00">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Ora sfârșit</label>
+                  <input type="text" class="form-control" value="14:00:00">
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary w-100">
+              <span class="material-icons-round me-2" style="vertical-align: middle;">person_add</span>
+              Adaugă Angajat
+            </button>
+          </div>
+        </div>
+
+        <!-- Total Card -->
+        <div class="card text-white shadow" style="background: linear-gradient(135deg, #28a745, #20c997);">
+          <div class="card-body p-5 text-center">
+            <p class="text-uppercase mb-3" style="letter-spacing: 2px;">
+              <span class="material-icons-round me-2" style="vertical-align: middle;">inventory</span>
+              Total Bucăți Produse
+            </p>
+            <h1 class="display-1 fw-bold">264</h1>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p class="mb-0">Calculator Producție v1.0 - Bootstrap 5.3.2 Modern</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

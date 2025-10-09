@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bootstrap Colorful - Calculator Producție Band 41</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+    }
+    .rate-input {
+      font-size: 3.5rem;
+      font-weight: 900;
+      text-align: center;
+      border: none;
+      border-bottom: 4px solid white;
+      background: transparent;
+      color: white;
+    }
+    .badge-custom {
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="container py-5">
+    <div class="text-center text-white mb-5">
+      <h1 class="display-3 fw-bold">🏭 Band 41</h1>
+      <p class="lead fs-4">Calculator de producție - Bootstrap Colorful</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        
+        <!-- Rate Card -->
+        <div class="glass-card rounded-4 p-4 mb-4 shadow-lg">
+          <h3 class="mb-4 fw-bold">🎯 Rată de Producție</h3>
+          <div class="bg-white bg-opacity-10 rounded-3 p-4 mb-3">
+            <input class="rate-input form-control text-white" type="number" value="33.3" step="0.1" placeholder="0.0">
+            <p class="text-center mt-3 mb-0 fs-5">buc/oră</p>
+          </div>
+          <div class="mb-4">
+            <span class="badge badge-custom me-2">✨ WERK 1 = 33.3</span>
+            <span class="badge badge-custom">✨ WERK 2 = 34.4</span>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <button class="btn btn-light w-100 btn-lg fw-bold">WERK 1</button>
+            </div>
+            <div class="col-6">
+              <button class="btn btn-outline-light w-100 btn-lg fw-bold">WERK 2</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shift Card -->
+        <div class="glass-card rounded-4 p-4 mb-4 shadow-lg">
+          <h3 class="mb-4 fw-bold">⏰ Schimb de Lucru</h3>
+          <div class="row g-3">
+            <div class="col-6">
+              <button class="btn btn-warning w-100 btn-lg text-dark fw-bold">
+                ☀️ Frühschicht
+              </button>
+            </div>
+            <div class="col-6">
+              <button class="btn btn-outline-light w-100 btn-lg fw-bold">
+                🌙 Spätschicht
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employees Card -->
+        <div class="glass-card rounded-4 p-4 mb-4 shadow-lg">
+          <h3 class="mb-4 fw-bold">👥 Angajați</h3>
+          
+          <div class="bg-white bg-opacity-10 rounded-3 p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0 fw-bold">👤 Angajat 1</h5>
+              <button class="btn btn-danger btn-sm rounded-pill px-3">
+                ✕ Șterge
+              </button>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Ora început</label>
+                <input type="text" class="form-control form-control-lg bg-white bg-opacity-25 text-white border-white" value="05:45:00">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Ora sfârșit</label>
+                <input type="text" class="form-control form-control-lg bg-white bg-opacity-25 text-white border-white" value="14:00:00">
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-light w-100 btn-lg fw-bold">
+            ➕ Adaugă Angajat
+          </button>
+        </div>
+
+        <!-- Total Card -->
+        <div class="glass-card rounded-4 p-5 text-center shadow-lg" style="background: rgba(255, 255, 255, 0.25);">
+          <p class="text-uppercase mb-3 fs-5 fw-bold" style="letter-spacing: 3px;">
+            📦 Total Bucăți Produse
+          </p>
+          <h1 class="display-1 fw-bold" style="font-size: 7rem;">264</h1>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-white text-center py-4 mt-4">
+    <p class="mb-0 opacity-75">Calculator Producție v1.0 - Bootstrap Colorful Glass</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

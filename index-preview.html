@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>17 Framework Designs - Calculator Producție Band 41</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+      color: white;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .framework-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      transition: all 0.3s;
+    }
+    .framework-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+    .btn-view {
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .btn-view:hover {
+      background: rgba(255, 255, 255, 0.35);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .category-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 60px 0 30px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .badge-custom {
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="text-center mb-5">
+      <h1 class="display-3 fw-bold mb-3">🎨 17 Framework Designs</h1>
+      <p class="lead fs-4">Calculator Producție Band 41 - Toate Framework-urile CSS/UI</p>
+    </div>
+
+    <!-- CSS Frameworks -->
+    <div class="category-title">📐 CSS FRAMEWORKS (12)</div>
+    
+    <div class="row">
+      <!-- Tailwind -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">1. Tailwind CSS</h3>
+          <p class="mb-3">Utility-first CSS framework cu clase predefinite.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Utility-first</span>
+            <span class="badge-custom">Modern</span>
+          </div>
+          <a href="fw-tailwind.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Foundation -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">2. Foundation (Zurb)</h3>
+          <p class="mb-3">Framework profesional responsive cu grid flexibil.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Professional</span>
+            <span class="badge-custom">Zurb</span>
+          </div>
+          <a href="fw-foundation.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Bulma -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">3. Bulma</h3>
+          <p class="mb-3">Framework CSS modern bazat pe Flexbox.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Flexbox</span>
+            <span class="badge-custom">Clean</span>
+          </div>
+          <a href="fw-bulma.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Materialize -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">4. Materialize</h3>
+          <p class="mb-3">Material Design CSS framework by Google.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Material</span>
+            <span class="badge-custom">Google</span>
+          </div>
+          <a href="fw-materialize.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Chakra UI -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">5. Chakra UI Style</h3>
+          <p class="mb-3">React component library cu design modern.</p>
+          <div class="mb-3">
+            <span class="badge-custom">React</span>
+            <span class="badge-custom">Modern</span>
+          </div>
+          <a href="fw-chakra.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Ant Design -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">6. Ant Design Style</h3>
+          <p class="mb-3">Enterprise-level UI design language (React).</p>
+          <div class="mb-3">
+            <span class="badge-custom">React</span>
+            <span class="badge-custom">Enterprise</span>
+          </div>
+          <a href="fw-antd.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Vuetify -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">7. Vuetify Style</h3>
+          <p class="mb-3">Material Design framework pentru Vue.js.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Vue</span>
+            <span class="badge-custom">Material</span>
+          </div>
+          <a href="fw-vuetify.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Mantine -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">8. Mantine Style</h3>
+          <p class="mb-3">React components și hooks library modern.</p>
+          <div class="mb-3">
+            <span class="badge-custom">React</span>
+            <span class="badge-custom">Hooks</span>
+          </div>
+          <a href="fw-mantine.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Spectre -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">9. Spectre.css</h3>
+          <p class="mb-3">Lightweight responsive CSS framework.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Lightweight</span>
+            <span class="badge-custom">12KB</span>
+          </div>
+          <a href="fw-spectre.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Pure.css -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">10. Pure.css</h3>
+          <p class="mb-3">Minimal CSS framework by Yahoo (3.7KB).</p>
+          <div class="mb-3">
+            <span class="badge-custom">Minimal</span>
+            <span class="badge-custom">Yahoo</span>
+          </div>
+          <a href="fw-pure.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Milligram -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">11. Milligram</h3>
+          <p class="mb-3">Minimalist CSS framework (2KB gzipped).</p>
+          <div class="mb-3">
+            <span class="badge-custom">2KB</span>
+            <span class="badge-custom">Purple</span>
+          </div>
+          <a href="fw-milligram.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Skeleton -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">12. Skeleton</h3>
+          <p class="mb-3">Dead simple boilerplate (400 lines CSS).</p>
+          <div class="mb-3">
+            <span class="badge-custom">Simple</span>
+            <span class="badge-custom">400 lines</span>
+          </div>
+          <a href="fw-skeleton.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Designs -->
+    <div class="category-title">🅱️ BOOTSTRAP 5.3.2 (5 VARIANTE)</div>
+    
+    <div class="row">
+      <!-- Bootstrap 1 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">13. Bootstrap Modern</h3>
+          <p class="mb-3">Design modern cu gradient header și cards elevate.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Modern</span>
+            <span class="badge-custom">Gradient</span>
+          </div>
+          <a href="bs-design1-modern.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Bootstrap 2 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">14. Bootstrap Dark</h3>
+          <p class="mb-3">Dark theme cu purple accents și glow effects.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Dark</span>
+            <span class="badge-custom">Purple</span>
+          </div>
+          <a href="bs-design2-dark.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Bootstrap 3 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">15. Bootstrap Colorful</h3>
+          <p class="mb-3">Glass morphism colorat cu backdrop blur.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Glass</span>
+            <span class="badge-custom">Colorful</span>
+          </div>
+          <a href="bs-design3-colorful.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Bootstrap 4 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">16. Bootstrap Minimal</h3>
+          <p class="mb-3">Ultra minimalist cu typography Inter și border subtile.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Minimal</span>
+            <span class="badge-custom">Clean</span>
+          </div>
+          <a href="bs-design4-minimal.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+
+      <!-- Bootstrap 5 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <h3 class="h4 mb-3">17. Bootstrap Floating</h3>
+          <p class="mb-3">Floating cards cu shadow mare și icons colorful.</p>
+          <div class="mb-3">
+            <span class="badge-custom">Floating</span>
+            <span class="badge-custom">Icons</span>
+          </div>
+          <a href="bs-design5-floating.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="text-center mt-5 pt-4" style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 40px;">
+      <h2 class="mb-4">📊 REZUMAT</h2>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <div class="display-4 fw-bold">17</div>
+          <p class="mb-0">Design-uri Totale</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="display-4 fw-bold">12</div>
+          <p class="mb-0">Framework-uri CSS/UI</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="display-4 fw-bold">5</div>
+          <p class="mb-0">Variante Bootstrap</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-5 mt-5">
+    <p class="mb-0 opacity-75">Calculator Producție Band 41 - Toate Framework-urile v1.0</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vuetify Style - Calculator Producție Band 41</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <style>
+    .rate-input-vuetify { font-size: 3rem; font-weight: 500; text-align: center; border-bottom: 3px solid #1976D2; background: transparent; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <!-- App Bar -->
+      <v-app-bar app color="primary" dark>
+        <v-icon large class="mr-3">mdi-factory</v-icon>
+        <v-toolbar-title>Band 41 Calculator</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-chip small>Vuetify Style</v-chip>
+      </v-app-bar>
+
+      <!-- Main -->
+      <v-main class="grey lighten-4">
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="12" md="10" lg="8">
+              
+              <!-- Rate Card -->
+              <v-card class="mb-4" elevation="2">
+                <v-card-title>Rată de Producție</v-card-title>
+                <v-card-text>
+                  <v-sheet color="blue lighten-5" class="pa-6 rounded mb-4" elevation="0">
+                    <input class="rate-input-vuetify" type="number" value="33.3" step="0.1" style="width: 100%; border: none;">
+                    <div class="text-center grey--text mt-2">buc/oră</div>
+                  </v-sheet>
+                  <div class="mb-4">
+                    <v-chip color="primary" class="mr-2">WERK 1 = 33.3</v-chip>
+                    <v-chip color="primary">WERK 2 = 34.4</v-chip>
+                  </div>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-btn color="primary" block large>
+                        <v-icon left>mdi-cog</v-icon>
+                        WERK 1
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-btn color="primary" outlined block large>
+                        <v-icon left>mdi-cog</v-icon>
+                        WERK 2
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+
+              <!-- Shift Card -->
+              <v-card class="mb-4" elevation="2">
+                <v-card-title>Schimb de Lucru</v-card-title>
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-btn color="success" block large>
+                        <v-icon left>mdi-weather-sunny</v-icon>
+                        Frühschicht
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-btn color="success" outlined block large>
+                        <v-icon left>mdi-weather-night</v-icon>
+                        Spätschicht
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+
+              <!-- Employees Card -->
+              <v-card class="mb-4" elevation="2">
+                <v-card-title>Angajați</v-card-title>
+                <v-card-text>
+                  
+                  <v-sheet color="grey lighten-3" class="pa-4 rounded mb-4">
+                    <div class="d-flex justify-space-between align-center mb-4">
+                      <div class="d-flex align-center">
+                        <v-icon class="mr-2">mdi-account</v-icon>
+                        <span class="text-h6">Angajat 1</span>
+                      </div>
+                      <v-btn color="error" icon>
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </div>
+                    <v-row>
+                      <v-col cols="12" md="6">
+                        <v-text-field
+                          label="Ora început"
+                          value="05:45:00"
+                          prepend-icon="mdi-clock-outline"
+                          outlined
+                          dense
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <v-text-field
+                          label="Ora sfârșit"
+                          value="14:00:00"
+                          prepend-icon="mdi-clock-outline"
+                          outlined
+                          dense
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-sheet>
+
+                  <v-btn color="primary" block large>
+                    <v-icon left>mdi-account-plus</v-icon>
+                    Adaugă Angajat
+                  </v-btn>
+                </v-card-text>
+              </v-card>
+
+              <!-- Total Card -->
+              <v-card color="success" dark class="text-center pa-8" elevation="4">
+                <div class="text-subtitle-1 mb-4" style="letter-spacing: 2px;">
+                  <v-icon class="mr-2">mdi-package-variant</v-icon>
+                  TOTAL BUCĂȚI PRODUSE
+                </div>
+                <div class="text-h1" style="font-weight: 700;">264</div>
+              </v-card>
+
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-main>
+
+      <!-- Footer -->
+      <v-footer app dark color="grey darken-4">
+        <v-spacer></v-spacer>
+        <span>Calculator Producție v1.0 - Vuetify Style</span>
+        <v-spacer></v-spacer>
+      </v-footer>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+    })
+  </script>
+</body>
+</html>

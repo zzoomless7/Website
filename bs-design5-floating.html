@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bootstrap Floating - Calculator Producție Band 41</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    .floating-card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: none;
+    }
+    .floating-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+    }
+    .rate-input {
+      font-size: 3.5rem;
+      font-weight: 800;
+      text-align: center;
+      border: none;
+      border-bottom: 4px solid #6366f1;
+      background: transparent;
+      color: #6366f1;
+    }
+    .icon-box {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+    }
+    .gradient-btn {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      transition: all 0.3s;
+    }
+    .gradient-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-light bg-transparent py-4 mb-4">
+    <div class="container">
+      <span class="navbar-brand mb-0 h1 fw-bold">
+        <i class="bi bi-building me-2"></i>
+        Band 41 Calculator
+      </span>
+      <span class="badge bg-primary rounded-pill px-3 py-2">Bootstrap Floating</span>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        
+        <!-- Rate Card -->
+        <div class="card floating-card mb-4 p-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-4">
+              <div class="icon-box me-3">
+                <i class="bi bi-speedometer"></i>
+              </div>
+              <h3 class="mb-0 fw-bold">Rată de Producție</h3>
+            </div>
+            <div class="bg-light rounded-4 p-4 mb-4">
+              <input class="rate-input form-control" type="number" value="33.3" step="0.1">
+              <p class="text-center text-muted mt-3 mb-0">buc/oră</p>
+            </div>
+            <div class="d-flex gap-2 mb-4 flex-wrap">
+              <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
+                <i class="bi bi-info-circle me-1"></i>WERK 1 = 33.3
+              </span>
+              <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
+                <i class="bi bi-info-circle me-1"></i>WERK 2 = 34.4
+              </span>
+            </div>
+            <div class="row g-3">
+              <div class="col-6">
+                <button class="gradient-btn w-100">
+                  <i class="bi bi-gear me-2"></i>WERK 1
+                </button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-outline-primary w-100 rounded-pill fw-semibold py-3">
+                  <i class="bi bi-gear me-2"></i>WERK 2
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shift Card -->
+        <div class="card floating-card mb-4 p-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-4">
+              <div class="icon-box me-3" style="background: linear-gradient(135deg, #10b981, #059669);">
+                <i class="bi bi-clock"></i>
+              </div>
+              <h3 class="mb-0 fw-bold">Schimb de Lucru</h3>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <button class="btn btn-success w-100 rounded-pill fw-semibold py-3">
+                  <i class="bi bi-sun me-2"></i>Frühschicht
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-outline-success w-100 rounded-pill fw-semibold py-3">
+                  <i class="bi bi-moon me-2"></i>Spätschicht
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employees Card -->
+        <div class="card floating-card mb-4 p-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-4">
+              <div class="icon-box me-3" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                <i class="bi bi-people"></i>
+              </div>
+              <h3 class="mb-0 fw-bold">Angajați</h3>
+            </div>
+            
+            <div class="bg-light rounded-4 p-4 mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex align-items-center">
+                  <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <i class="bi bi-person"></i>
+                  </div>
+                  <h5 class="mb-0 fw-semibold">Angajat 1</h5>
+                </div>
+                <button class="btn btn-outline-danger rounded-pill btn-sm px-3">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">
+                    <i class="bi bi-clock-history me-1"></i>Ora început
+                  </label>
+                  <input type="text" class="form-control rounded-pill" value="05:45:00">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">
+                    <i class="bi bi-clock-history me-1"></i>Ora sfârșit
+                  </label>
+                  <input type="text" class="form-control rounded-pill" value="14:00:00">
+                </div>
+              </div>
+            </div>
+
+            <button class="gradient-btn w-100">
+              <i class="bi bi-person-plus me-2"></i>Adaugă Angajat
+            </button>
+          </div>
+        </div>
+
+        <!-- Total Card -->
+        <div class="card floating-card p-5 text-center" style="background: linear-gradient(135deg, #10b981, #059669);">
+          <p class="text-white text-uppercase mb-3 fw-semibold" style="letter-spacing: 2px; opacity: 0.9;">
+            <i class="bi bi-box-seam me-2"></i>Total Bucăți Produse
+          </p>
+          <h1 class="display-1 fw-bold text-white">264</h1>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-4 mt-5">
+    <p class="text-muted mb-0">Calculator Producție v1.0 - Bootstrap Floating Cards</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

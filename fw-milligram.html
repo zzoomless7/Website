@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Milligram - Calculator Producție Band 41</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+  <style>
+    .rate-input { font-size: 3rem; font-weight: 700; text-align: center; border-bottom: 3px solid #9b4dca; background: transparent; }
+    .header { background: #9b4dca; color: white; padding: 3rem 0; text-align: center; }
+    .card { background: white; padding: 2rem; margin-bottom: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .badge { display: inline-block; padding: 0.5rem 1rem; background: #f4f5f6; color: #606c76; border-radius: 4px; font-size: 0.9rem; margin-right: 0.5rem; }
+    .employee-box { background: #f4f5f6; padding: 2rem; border-radius: 8px; margin-bottom: 1.5rem; }
+    .total-box { background: linear-gradient(135deg, #9b4dca, #7a3db0); color: white; padding: 4rem 2rem; border-radius: 8px; text-align: center; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1>🏭 Band 41 Calculator</h1>
+    <p>Calculator de producție - Milligram</p>
+  </div>
+
+  <!-- Main -->
+  <div class="container" style="margin-top: 3rem;">
+    
+    <!-- Rate Card -->
+    <div class="card">
+      <h3>Rată de Producție</h3>
+      <div style="background: #f4f5f6; padding: 2rem; border-radius: 8px; margin-bottom: 1.5rem;">
+        <input class="rate-input" type="number" value="33.3" step="0.1" style="width: 100%;">
+        <p style="text-align: center; margin-top: 1rem; color: #606c76;">buc/oră</p>
+      </div>
+      <div style="margin-bottom: 1.5rem;">
+        <span class="badge">WERK 1 = 33.3</span>
+        <span class="badge">WERK 2 = 34.4</span>
+      </div>
+      <div class="row">
+        <div class="column">
+          <button class="button button-primary">WERK 1</button>
+        </div>
+        <div class="column">
+          <button class="button button-outline">WERK 2</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shift Card -->
+    <div class="card">
+      <h3>Schimb de Lucru</h3>
+      <div class="row">
+        <div class="column">
+          <button class="button button-primary">☀️ Frühschicht</button>
+        </div>
+        <div class="column">
+          <button class="button button-outline">🌙 Spätschicht</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employees Card -->
+    <div class="card">
+      <h3>Angajați</h3>
+      
+      <div class="employee-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+          <h4 style="margin: 0;">👤 Angajat 1</h4>
+          <button class="button button-clear" style="color: #e74c3c;">Șterge</button>
+        </div>
+        <div class="row">
+          <div class="column">
+            <label>Ora început</label>
+            <input type="text" value="05:45:00">
+          </div>
+          <div class="column">
+            <label>Ora sfârșit</label>
+            <input type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="button button-primary" style="width: 100%;">+ Adaugă Angajat</button>
+    </div>
+
+    <!-- Total Box -->
+    <div class="total-box">
+      <p style="text-transform: uppercase; letter-spacing: 3px; margin-bottom: 2rem; font-size: 1rem;">📦 Total Bucăți Produse</p>
+      <h1 style="font-size: 6rem; font-weight: 700; margin: 0;">264</h1>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer style="background: #9b4dca; color: white; padding: 3rem 0; margin-top: 4rem; text-align: center;">
+    <p>Calculator Producție v1.0 - Milligram</p>
+  </footer>
+</body>
+</html>
