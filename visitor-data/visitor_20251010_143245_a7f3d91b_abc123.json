@@ -1,0 +1,144 @@
+{
+    "timestamp": "2025-10-10T14:32:45.234Z",
+    "visitDate": "10.10.2025, 17:32:45",
+    "identitate": {
+        "fingerprint": "a7f3d91b2c4e8f1a",
+        "sessionId": "k9m3n7p2q5r8",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "vendor": "Google Inc.",
+        "platform": "Win32"
+    },
+    "locatie": {
+        "ip": "79.114.235.142",
+        "timezone": "Europe/Bucharest",
+        "timezoneOffset": -120,
+        "language": "ro-RO",
+        "languages": [
+            "ro-RO",
+            "ro",
+            "en-US",
+            "en"
+        ],
+        "country": "Romania",
+        "countryCode": "RO",
+        "region": "București",
+        "city": "București",
+        "latitude": 44.4268,
+        "longitude": 26.1025,
+        "isp": "RCS & RDS",
+        "org": "Digi Romania"
+    },
+    "device": {
+        "type": "Desktop",
+        "screenWidth": 1920,
+        "screenHeight": 1080,
+        "screenColorDepth": 24,
+        "screenOrientation": "landscape-primary",
+        "devicePixelRatio": 1,
+        "windowWidth": 1903,
+        "windowHeight": 937,
+        "cpuCores": 8,
+        "deviceMemory": "8GB",
+        "maxTouchPoints": 0,
+        "gpu": {
+            "vendor": "Google Inc. (Intel)",
+            "renderer": "ANGLE (Intel, Intel(R) UHD Graphics 620 Direct3D11 vs_5_0 ps_5_0)",
+            "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+            "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)"
+        },
+        "battery": {
+            "level": 85,
+            "charging": true,
+            "chargingTime": 1800,
+            "dischargingTime": null
+        },
+        "connection": {
+            "effectiveType": "4g",
+            "downlink": 10,
+            "rtt": 50,
+            "saveData": false
+        }
+    },
+    "comportament": {
+        "referrer": "https://www.google.com/",
+        "currentPage": "https://resedintabudas.ro/index.html",
+        "urlParams": {
+            "utm_source": "google",
+            "utm_medium": "organic"
+        },
+        "timeOnPage": 0,
+        "scrollDepth": 0,
+        "mouseMovements": [
+            {
+                "x": 834,
+                "y": 245,
+                "time": 1728568365234
+            },
+            {
+                "x": 856,
+                "y": 267,
+                "time": 1728568365251
+            },
+            {
+                "x": 892,
+                "y": 312,
+                "time": 1728568365268
+            }
+        ],
+        "clicks": [
+            {
+                "x": 960,
+                "y": 540,
+                "time": 1728568367890
+            }
+        ],
+        "historyLength": 3,
+        "cookiesEnabled": true,
+        "doNotTrack": "1",
+        "webdriver": false
+    },
+    "preferinte": {
+        "colorScheme": "light",
+        "reducedMotion": false,
+        "localStorage": true,
+        "sessionStorage": true,
+        "indexedDB": true,
+        "serviceWorker": true,
+        "plugins": [
+            "Chrome PDF Plugin",
+            "Chrome PDF Viewer",
+            "Native Client"
+        ]
+    },
+    "unic": {
+        "canvasFingerprint": "a7f3d91b2c4e8f1a",
+        "webglFingerprint": "d4f2a8c1b9e7f3a2",
+        "audioFingerprint": "7b3f1d9c4a8e2f6d",
+        "fontsDetected": [
+            "Arial",
+            "Courier New",
+            "Georgia",
+            "Times New Roman",
+            "Verdana",
+            "Calibri",
+            "Cambria"
+        ],
+        "combinedFingerprint": "a7f3d91b2c4e8f1a"
+    },
+    "performance": {
+        "pageLoadTime": 234.5,
+        "memoryUsage": {
+            "usedJSHeapSize": "45MB",
+            "totalJSHeapSize": "67MB"
+        }
+    },
+    "headers": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "accept_language": "ro-RO,ro;q=0.9,en-US;q=0.8,en;q=0.7",
+        "accept_encoding": "gzip, deflate, br",
+        "host": "resedintabudas.ro",
+        "referer": "https://www.google.com/",
+        "dnt": "1"
+    },
+    "serverTimestamp": "2025-10-10 17:32:45"
+}
