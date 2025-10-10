@@ -143,7 +143,7 @@
     .countdown {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 15px;
       flex-wrap: wrap;
     }
 
@@ -152,8 +152,8 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 16px;
-      padding: 25px 30px;
-      min-width: 120px;
+      padding: 20px 25px;
+      min-width: 100px;
       transition: transform 0.3s ease;
     }
 
@@ -333,12 +333,12 @@
       }
 
       .countdown {
-        gap: 15px;
+        gap: 10px;
       }
 
       .countdown-item {
-        padding: 20px 25px;
-        min-width: 100px;
+        padding: 15px 20px;
+        min-width: 80px;
       }
 
       .countdown-value {
@@ -356,13 +356,21 @@
         font-size: 1.75rem;
       }
 
+      .countdown {
+        gap: 8px;
+      }
+
       .countdown-item {
-        padding: 15px 20px;
-        min-width: 80px;
+        padding: 12px 15px;
+        min-width: 70px;
       }
 
       .countdown-value {
         font-size: 2rem;
+      }
+
+      .countdown-label-small {
+        font-size: 0.75rem;
       }
 
       .redirect-section {
@@ -389,7 +397,15 @@
       <div class="countdown-label">Lansare în</div>
       <div class="countdown" id="countdown">
         <div class="countdown-item">
-          <div class="countdown-value" id="days">000</div>
+          <div class="countdown-value" id="years">0</div>
+          <div class="countdown-label-small">Ani</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="months">0</div>
+          <div class="countdown-label-small">Luni</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="days">00</div>
           <div class="countdown-label-small">Zile</div>
         </div>
         <div class="countdown-item">
@@ -466,6 +482,8 @@
     const startDate = new Date('January 1, 2025 00:00:00').getTime(); // Starting point for progress calculation
     
     // Elements
+    const yearsEl = document.getElementById('years');
+    const monthsEl = document.getElementById('months');
     const daysEl = document.getElementById('days');
     const hoursEl = document.getElementById('hours');
     const minutesEl = document.getElementById('minutes');
@@ -481,7 +499,9 @@
       const distance = targetDate - now;
 
       if (distance < 0) {
-        daysEl.textContent = '000';
+        yearsEl.textContent = '0';
+        monthsEl.textContent = '0';
+        daysEl.textContent = '00';
         hoursEl.textContent = '00';
         minutesEl.textContent = '00';
         secondsEl.textContent = '00';
@@ -491,13 +511,26 @@
       }
 
       // Calculate time units
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const totalSeconds = Math.floor(distance / 1000);
+      const totalMinutes = Math.floor(totalSeconds / 60);
+      const totalHours = Math.floor(totalMinutes / 60);
+      const totalDays = Math.floor(totalHours / 24);
+      
+      // Calculate years, months, days
+      const years = Math.floor(totalDays / 365);
+      const remainingDaysAfterYears = totalDays % 365;
+      const months = Math.floor(remainingDaysAfterYears / 30);
+      const days = remainingDaysAfterYears % 30;
+      
+      // Calculate hours, minutes, seconds
+      const hours = totalHours % 24;
+      const minutes = totalMinutes % 60;
+      const seconds = totalSeconds % 60;
 
       // Update countdown display
-      daysEl.textContent = String(days).padStart(3, '0');
+      yearsEl.textContent = String(years);
+      monthsEl.textContent = String(months);
+      daysEl.textContent = String(days).padStart(2, '0');
       hoursEl.textContent = String(hours).padStart(2, '0');
       minutesEl.textContent = String(minutes).padStart(2, '0');
       secondsEl.textContent = String(seconds).padStart(2, '0');
