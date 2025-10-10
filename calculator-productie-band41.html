@@ -1,69 +1,28 @@
 <!doctype html>
-<html lang="ro" data-bs-theme="light">
+<html lang="ro">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Calculator producție - Band 41</title>
-
-  <!-- Google Material Icons & Fonts -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     :root {
-      --primary-color: #3b82f6;
-      --primary-hover: #2563eb;
-      --danger-color: #ef4444;
-      --card-bg: #ffffff;
-      --card-border: #e5e7eb;
-      --text-primary: #1e293b;
-      --text-secondary: #64748b;
-      --body-bg: #f9fafb;
-      --input-bg: #ffffff;
-      --input-border: #d1d5db;
-      --input-focus: rgba(59, 130, 246, 0.15);
-      --border-radius: 0.75rem;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-      --transition: all 0.2s ease;
-      --header-bg: #2563eb;
-      --header-text: #ffffff;
-      --footer-bg: #f1f5f9;
-      --footer-text: #64748b;
-      --badge-bg: #e5e7eb;
-      --badge-text: #1e293b;
-      --time-display-bg: rgba(0, 0, 0, 0.05);
+      --ant-primary: #1890ff;
+      --ant-success: #52c41a;
+      --ant-error: #ff4d4f;
+      --ant-border: #d9d9d9;
+      --ant-bg: #f0f2f5;
     }
     
-    [data-bs-theme="dark"] {
-      --primary-color: #3b82f6;
-      --primary-hover: #60a5fa;
-      --danger-color: #f87171;
-      --card-bg: #1e293b;
-      --card-border: #334155;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --body-bg: #0f172a;
-      --input-bg: #1e293b;
-      --input-border: #475569;
-      --input-focus: rgba(59, 130, 246, 0.2);
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-      --header-bg: #1e293b;
-      --header-text: #f1f5f9;
-      --footer-bg: #0f172a;
-      --footer-text: #94a3b8;
-      --badge-bg: #334155;
-      --badge-text: #e2e8f0;
-      --time-display-bg: rgba(255, 255, 255, 0.05);
-    }
-    
-    body { 
-      background: var(--body-bg); 
-      font-family: 'Inter', system-ui, sans-serif; 
-      color: var(--text-primary);
-      transition: var(--transition);
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--ant-bg);
+      color: rgba(0, 0, 0, 0.85);
+      line-height: 1.5715;
+      font-size: 14px;
       min-height: 100vh;
       margin: 0;
       padding: 0;
@@ -71,199 +30,266 @@
       flex-direction: column;
     }
     
-    .app-header {
-      background-color: var(--header-bg);
-      color: var(--header-text);
-      padding: 1rem;
-      transition: var(--transition);
-      position: relative;
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Ant Design Header */
+    .ant-header {
+      background: #001529;
+      color: white;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
     
-    .header-info {
-      color: var(--header-text);
-      opacity: 0.9;
-      font-size: 0.9rem;
+    .ant-header h1 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0;
     }
     
-    .app-footer {
-      background-color: var(--footer-bg);
-      color: var(--footer-text);
-      padding: 1rem;
-      margin-top: auto;
-      font-size: 0.875rem;
-      transition: var(--transition);
+    .ant-header-right {
+      margin-left: auto;
+      opacity: 0.8;
     }
     
+    /* Main Content */
     .main-content {
       flex: 1;
-      padding: 1.5rem 1rem;
+      padding: 24px 0;
     }
     
-    .card { 
-      background: var(--card-bg);
-      border-color: var(--card-border);
-      border-radius: var(--border-radius); 
-      box-shadow: var(--shadow); 
-      transition: var(--transition);
+    /* Ant Card */
+    .ant-card {
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      padding: 24px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.02);
     }
     
-    .logo-square { 
-      width: 44px; 
-      height: 44px; 
-      border-radius: 12px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-weight: 700; 
-      color: #fff; 
-      background: linear-gradient(135deg, var(--primary-color), #0ea5a4);
-      transition: var(--transition);
-    }
-    
-    .form-control, .form-select {
-      background-color: var(--input-bg);
-      border-color: var(--input-border);
-      color: var(--text-primary);
-      border-radius: 0.5rem;
-      padding: 0.6rem 1rem;
-      transition: var(--transition);
-    }
-    
-    .form-control:focus, .form-select:focus { 
-      box-shadow: 0 0 0 0.25rem var(--input-focus); 
-      border-color: var(--primary-color); 
-    }
-    
-    .btn {
-      border-radius: 0.5rem;
-      padding: 0.6rem 1rem;
+    .ant-card-title {
+      font-size: 20px;
       font-weight: 500;
-      transition: var(--transition);
+      margin-bottom: 16px;
+      color: rgba(0, 0, 0, 0.85);
     }
     
-    .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
+    /* Ant Input */
+    .ant-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--ant-border);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+      background: white;
+      color: rgba(0, 0, 0, 0.85);
     }
     
-    .btn-primary:hover, .btn-primary:focus {
-      background-color: var(--primary-hover);
-      border-color: var(--primary-hover);
+    .ant-input:hover {
+      border-color: var(--ant-primary);
     }
     
-    .btn-outline-primary {
-      color: var(--primary-color);
-      border-color: var(--primary-color);
+    .ant-input:focus {
+      outline: none;
+      border-color: var(--ant-primary);
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
     }
     
-    .btn-outline-primary:hover,
-    .btn-outline-primary.active {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-      color: #fff;
+    /* Ant Button */
+    .ant-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--ant-border);
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: white;
+      font-family: 'Inter', sans-serif;
+      color: rgba(0, 0, 0, 0.85);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
     
-    .btn-outline-secondary {
-      color: var(--text-secondary);
-      border-color: var(--input-border);
+    .ant-btn-primary {
+      background: var(--ant-primary);
+      color: white;
+      border-color: var(--ant-primary);
     }
     
-    .btn-outline-secondary:hover,
-    .btn-outline-secondary.active {
-      background-color: var(--text-secondary);
-      border-color: var(--text-secondary);
-      color: var(--card-bg);
+    .ant-btn-primary:hover {
+      background: #40a9ff;
+      border-color: #40a9ff;
     }
     
-    .btn-outline-danger {
-      color: var(--danger-color);
-      border-color: var(--danger-color);
+    .ant-btn:hover {
+      color: var(--ant-primary);
+      border-color: var(--ant-primary);
     }
     
-    .btn-outline-danger:hover {
-      background-color: var(--danger-color);
-      border-color: var(--danger-color);
+    .ant-btn-danger {
+      background: var(--ant-error);
+      color: white;
+      border-color: var(--ant-error);
     }
     
-    .employee-card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--border-radius);
-      margin-bottom: 1rem;
-      transition: var(--transition);
+    .ant-btn-danger:hover {
+      background: #ff7875;
+      border-color: #ff7875;
+      color: white;
     }
     
-    .employee-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    /* Ant Tag */
+    .ant-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #e6f7ff;
+      color: var(--ant-primary);
+      border: 1px solid #91d5ff;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 8px;
+    }
+    
+    /* Grid */
+    .ant-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .ant-col { flex: 1; min-width: 0; }
+    
+    /* Employee Box */
+    .employee-item {
+      background: #fafafa;
+      border: 1px solid var(--ant-border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+    
+    .employee-item:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
     .emp-name {
+      border: 1px solid transparent !important;
+      background: transparent !important;
+      padding: 4px 8px !important;
+      font-size: 16px;
       font-weight: 500;
-      color: var(--text-primary);
-      transition: var(--transition);
+      max-width: 200px;
+      color: rgba(0, 0, 0, 0.85);
     }
     
     .emp-name:hover {
-      border-color: var(--input-border) !important;
-      background: var(--input-bg) !important;
-      cursor: text;
+      border-color: var(--ant-border) !important;
+      background: white !important;
     }
     
     .emp-name:focus {
       outline: none;
-      box-shadow: 0 0 0 0.25rem var(--input-focus);
+      border-color: var(--ant-primary) !important;
+      background: white !important;
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
     }
     
-    .form-label {
-      color: var(--text-secondary);
-      margin-bottom: 0.3rem;
+    /* Statistic */
+    .ant-statistic {
+      background: linear-gradient(135deg, #52c41a, #389e0d);
+      color: white;
+      border-radius: 8px;
+      padding: 32px;
+      text-align: center;
     }
     
-    .small-note { 
-      color: var(--text-secondary); 
-      font-size: 0.875rem;
+    .ant-statistic-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      opacity: 0.9;
     }
     
-    .badge-adaptive {
-      background-color: var(--badge-bg);
-      color: var(--badge-text);
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.375rem;
-      font-size: 0.75rem;
-      font-weight: 500;
+    .ant-statistic-value {
+      font-size: 4rem;
+      font-weight: 600;
+      line-height: 1;
     }
     
-    .total-box {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--border-radius);
-      padding: 1rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--text-primary);
+    .rate-box {
+      background: #e6f7ff;
+      border: 1px solid #91d5ff;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    
+    .rate-input-large {
+      font-size: 2.5rem;
+      font-weight: 600;
+      text-align: center;
+      border: none;
+      border-bottom: 2px solid var(--ant-primary);
+      background: transparent;
+      width: 100%;
+      color: var(--ant-primary);
+    }
+    
+    .rate-input-large:focus {
+      outline: none;
+    }
+    
+    .rate-unit {
+      margin-top: 8px;
+      color: rgba(0,0,0,0.65);
+      font-size: 14px;
+    }
+    
+    /* Input Group Text */
+    .input-group-text {
+      background: white;
+      border: 1px solid var(--ant-border);
+      padding: 8px 12px;
+      color: rgba(0, 0, 0, 0.45);
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+    }
+    
+    .input-group .ant-input {
+      border-left: none;
+      border-radius: 0 6px 6px 0;
+    }
+    
+    .input-group {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      width: 100%;
     }
     
-    .theme-switch {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      z-index: 1000;
+    /* Labels */
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: rgba(0,0,0,0.85);
+      font-weight: 400;
     }
     
-    .btn-icon {
-      width: 44px;
-      height: 44px;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Footer */
+    .ant-footer {
+      background: white;
+      border-top: 1px solid #f0f0f0;
+      padding: 24px 0;
+      margin-top: auto;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.65);
     }
     
-    /* Animații */
+    /* Animations */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -273,166 +299,93 @@
       animation: fadeIn 0.3s ease forwards;
     }
     
-    .material-icons-round {
-      font-size: 20px;
-    }
-    
-    .input-group-text {
-      background-color: var(--input-bg);
-      border-color: var(--input-border);
-      color: var(--text-secondary);
-    }
-    
-    .time-display {
-      font-weight: 500;
-      font-size: 1rem;
-      background: var(--time-display-bg);
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.375rem;
-    }
-    
-    .footer-info {
-      display: flex;
-      align-items: center;
-    }
-    
-    @media (max-width: 576px) {
-      .main-content {
-        padding: 1rem 0.5rem;
+    /* Responsive */
+    @media (max-width: 768px) {
+      .ant-col { flex: 0 0 100%; }
+      
+      .ant-statistic-value {
+        font-size: 3rem;
       }
       
-      .total-box {
-        font-size: 1rem;
-      }
-      
-      .btn {
-        font-size: 0.9rem;
-      }
-      
-      .app-header h2 {
-        font-size: 1.5rem;
-      }
-      
-      .time-display {
-        font-size: 0.9rem;
+      .rate-input-large {
+        font-size: 2rem;
       }
     }
   </style>
 </head>
 <body>
   <!-- Header -->
-  <header class="app-header">
+  <div class="ant-header">
+    <h1>🏭 Band 41 Calculator</h1>
+    <span class="ant-header-right">Ant Design Style</span>
+  </div>
+
+  <!-- Main -->
+  <div class="main-content">
     <div class="container">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-          <div class="logo-square me-3">🏭</div>
-          <div>
-            <h2 class="mb-0">Band 41 Calculator</h2>
-            <p class="mb-0 header-info">Calculează producția</p>
+      
+      <!-- Rate Card -->
+      <div class="ant-card">
+        <div class="ant-card-title">Rată de Producție</div>
+        <div class="rate-box">
+          <input id="rateInput" class="rate-input-large" type="number" value="33.3" step="0.1" min="0" max="1000">
+          <p class="rate-unit">buc/oră</p>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <span class="ant-tag">WERK 1 = 33.3</span>
+          <span class="ant-tag">WERK 2 = 34.4</span>
+        </div>
+        <div class="ant-row">
+          <div class="ant-col">
+            <button id="werk1" class="ant-btn ant-btn-primary" style="width: 100%;">WERK 1</button>
+          </div>
+          <div class="ant-col">
+            <button id="werk2" class="ant-btn" style="width: 100%; color: var(--ant-primary); border-color: var(--ant-primary);">WERK 2</button>
           </div>
         </div>
-        <!-- Theme Toggle Button -->
-        <button id="themeToggle" class="btn btn-light btn-icon theme-switch" aria-label="Schimbă tema">
-          <span class="material-icons-round" id="themeIcon">dark_mode</span>
-        </button>
       </div>
-    </div>
-  </header>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <div class="container">
-      <div class="card mx-auto" style="max-width:720px;">
-        <div class="card-body">
-          <!-- Rate + Werk buttons -->
-          <div class="mb-3">
-            <label class="form-label fw-medium" for="rateInput">Rată de producție</label>
-            <div class="row g-2 align-items-center">
-              <div class="col-sm-5 mb-2 mb-sm-0">
-                <div class="input-group">
-                  <input id="rateInput" class="form-control" type="number" step="0.1" min="0" max="1000" value="33.3">
-                  <span class="input-group-text">buc/oră</span>
-                </div>
-                <div class="small-note mt-1">
-                  <span class="badge-adaptive">WERK 1 = 33.3</span>
-                  <span class="badge-adaptive ms-1">WERK 2 = 34.4</span>
-                </div>
-              </div>
-
-              <div class="col-sm-7">
-                <div class="d-flex gap-2">
-                  <button id="werk1" class="btn btn-outline-primary flex-grow-1">
-                    <span class="material-icons-round me-1">factory</span> WERK 1
-                  </button>
-                  <button id="werk2" class="btn btn-outline-primary flex-grow-1">
-                    <span class="material-icons-round me-1">factory</span> WERK 2
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Shift buttons -->
-          <div class="mb-3">
-            <label class="form-label fw-medium">Schimb de lucru</label>
-            <div class="d-flex gap-2">
-              <button id="fruhBtn" class="btn btn-outline-primary flex-fill">
-                <span class="material-icons-round me-1">wb_sunny</span> Frühschicht
-              </button>
-              <button id="spatBtn" class="btn btn-outline-primary flex-fill">
-                <span class="material-icons-round me-1">nights_stay</span> Spätschicht
-              </button>
-            </div>
-          </div>
-
-          <!-- Add employee -->
-          <div class="mb-3">
-            <button id="addEmp" class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2">
-              <span class="material-icons-round">person_add</span> Adaugă angajat
+      <!-- Shift Card -->
+      <div class="ant-card">
+        <div class="ant-card-title">Schimb de Lucru</div>
+        <div class="ant-row">
+          <div class="ant-col">
+            <button id="fruhBtn" class="ant-btn" style="width: 100%; background: var(--ant-success); color: white; border-color: var(--ant-success);">
+              ☀️ Frühschicht
             </button>
           </div>
-
-          <!-- Employees list -->
-          <div id="employeesList" class="mb-3">
-            <!-- injected employee cards -->
-          </div>
-
-          <!-- Total -->
-          <div class="d-flex justify-content-between align-items-center">
-            <div id="totalBox" class="total-box w-100">
-              <span class="material-icons-round me-1">inventory</span>
-              Total bucăți produse: 0
-            </div>
+          <div class="ant-col">
+            <button id="spatBtn" class="ant-btn" style="width: 100%; color: var(--ant-success); border-color: var(--ant-success);">
+              🌙 Spätschicht
+            </button>
           </div>
         </div>
       </div>
+
+      <!-- Employees Card -->
+      <div class="ant-card">
+        <div class="ant-card-title">Angajați</div>
+        
+        <div id="employeesList">
+          <!-- Employee cards will be inserted here -->
+        </div>
+
+        <button id="addEmp" class="ant-btn ant-btn-primary" style="width: 100%;">+ Adaugă Angajat</button>
+      </div>
+
+      <!-- Total Card -->
+      <div class="ant-statistic">
+        <div class="ant-statistic-title">📦 Total Bucăți Produse</div>
+        <div id="totalBox" class="ant-statistic-value">0</div>
+      </div>
+
     </div>
-  </main>
+  </div>
 
   <!-- Footer -->
-  <footer class="app-footer mt-4">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <div class="d-flex align-items-center">
-            <span class="material-icons-round me-2">info</span>
-            <span>Calculator producție v3.8 &copy; <span id="currentYear"></span></span>
-          </div>
-        </div>
-        <div class="col-md-6 text-md-end">
-          <div class="footer-info justify-content-md-end">
-            <div class="d-flex align-items-center">
-              <span class="material-icons-round me-2">calendar_today</span>
-              <span class="time-display" id="currentDateTime">-</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <footer class="ant-footer">
+    <p>Calculator Producție v3.8 - Ant Design Style</p>
   </footer>
-
-  <!-- Bootstrap JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     // --- Config inițial ---
@@ -480,54 +433,6 @@
     const addEmpBtn = document.getElementById('addEmp');
     const employeesList = document.getElementById('employeesList');
     const totalBox = document.getElementById('totalBox');
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    const currentDateTimeEl = document.getElementById('currentDateTime');
-    const currentYearEl = document.getElementById('currentYear');
-
-    // Update date and time in footer
-    function updateDateTime() {
-      const now = new Date();
-      
-      // Numele zilelor în română
-      const zile = ['duminică', 'luni', 'marți', 'miercuri', 'joi', 'vineri', 'sâmbătă'];
-      // Numele lunilor în română
-      const luni = ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 
-                    'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'];
-      
-      // Format: "ziua, DD luna AAAA HH:MM:SS"
-      const ziua = zile[now.getDay()];
-      const data = now.getDate();
-      const luna = luni[now.getMonth()];
-      const anul = now.getFullYear();
-      const ora = String(now.getHours()).padStart(2, '0');
-      const minute = String(now.getMinutes()).padStart(2, '0');
-      const secunde = String(now.getSeconds()).padStart(2, '0');
-      
-      const formattedDateTime = `${ziua}, ${data} ${luna} ${anul} ${ora}:${minute}:${secunde}`;
-      currentDateTimeEl.textContent = formattedDateTime;
-      
-      currentYearEl.textContent = anul;
-    }
-    
-    // Theme toggle system
-    function initTheme() {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-bs-theme', savedTheme);
-      updateThemeIcon(savedTheme);
-    }
-
-    function updateThemeIcon(theme) {
-      themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
-    }
-
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-bs-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-bs-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateThemeIcon(newTheme);
-    });
 
     // Helpers: time parsing & overlap
     function timeToSec(t) {
@@ -546,7 +451,7 @@
 
     function computeEmployeeWorkSeconds(empStartStr, empEndStr, shiftKey) {
       const shift = shifts[shiftKey];
-      if (!shift) return 0; // Validare shift existent
+      if (!shift) return 0;
       
       const shiftStart = timeToSec(shift.start);
       const shiftEnd = timeToSec(shift.end);
@@ -565,9 +470,9 @@
     }
 
     function recalcTotal() {
-      const rate = Math.max(0, parseFloat(rateInput.value) || 0); // Previne valori negative
+      const rate = Math.max(0, parseFloat(rateInput.value) || 0);
       let totalPieces = 0;
-      const blocks = employeesList.querySelectorAll('.employee-card');
+      const blocks = employeesList.querySelectorAll('.employee-item');
       
       blocks.forEach(block => {
         const startEl = block.querySelector('.emp-start');
@@ -582,38 +487,27 @@
       });
       
       const rounded = Math.round(totalPieces * 100) / 100;
-      totalBox.innerHTML = `<span class="material-icons-round me-2">inventory</span>Total bucăți produse: <span class="text-primary">${rounded}</span>`;
+      totalBox.textContent = rounded;
     }
-
 
     function attachTimeSanitizer(el) {
       let lastValue = el.value || '';
       
-      // Validare simplă - permite doar cifre
       el.addEventListener('keypress', function(e) {
-        // Permite doar cifre 0-9
         if (!/^[0-9]$/.test(e.key)) {
           e.preventDefault();
           return;
         }
       });
       
-      // Handler pentru cleanup (paste, etc) și recalcul LIVE
       el.addEventListener('input', function(e) {
         let value = this.value;
         let cursorPos = this.selectionStart;
         
-        // Detectează dacă e ștergere sau introducere
-        // Folosim lungimea TOTALĂ (cu ":") pentru detectare mai precisă
         const isDeleting = value.length < lastValue.length;
-        
-        // Elimină caractere invalide
         value = value.replace(/[^0-9:]/g, '');
-        
-        // Extrage doar cifrele
         const digits = value.replace(/:/g, '');
         
-        // Dacă nu sunt cifre, golește câmpul complet
         if (digits.length === 0) {
           if (this.value !== '') {
             this.value = '';
@@ -622,38 +516,29 @@
           return;
         }
         
-        // Validare și reconstruire formatului bazat pe numărul de cifre
         let validDigits = '';
         
-        // Validare cifră cu cifră
         for (let i = 0; i < digits.length && i < 6; i++) {
           const digit = parseInt(digits[i], 10);
           
           if (i === 0) {
-            // H1: maxim 2
             if (digit <= 2) validDigits += digits[i];
           } else if (i === 1) {
-            // H2: maxim 3 dacă H1=2, altfel maxim 9
             const h1 = parseInt(validDigits[0], 10);
             if ((h1 === 2 && digit <= 3) || h1 < 2) {
               validDigits += digits[i];
             }
           } else if (i === 2) {
-            // M1: maxim 5
             if (digit <= 5) validDigits += digits[i];
           } else if (i === 3) {
-            // M2: maxim 9
             validDigits += digits[i];
           } else if (i === 4) {
-            // S1: maxim 5
             if (digit <= 5) validDigits += digits[i];
           } else if (i === 5) {
-            // S2: maxim 9
             validDigits += digits[i];
           }
         }
         
-        // Formatare bazată pe numărul de cifre VALIDE
         let formatted = '';
         let newCursorPos = cursorPos;
         
@@ -661,24 +546,22 @@
           formatted = validDigits;
           newCursorPos = 1;
         } else if (validDigits.length === 2) {
-          // Adaugă ":" DOAR la introducere, NU la ștergere
           if (isDeleting) {
-            formatted = validDigits; // "09" (fără ":")
+            formatted = validDigits;
             newCursorPos = 2;
           } else {
-            formatted = validDigits + ':'; // "09:"
+            formatted = validDigits + ':';
             newCursorPos = 3;
           }
         } else if (validDigits.length === 3) {
           formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2);
           newCursorPos = 4;
         } else if (validDigits.length === 4) {
-          // Adaugă ":" DOAR la introducere, NU la ștergere
           if (isDeleting) {
-            formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2); // "09:30" (fără ":")
+            formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2);
             newCursorPos = 5;
           } else {
-            formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2) + ':'; // "09:30:"
+            formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2) + ':';
             newCursorPos = 6;
           }
         } else if (validDigits.length === 5) {
@@ -689,7 +572,6 @@
           newCursorPos = 8;
         }
         
-        // Limitare 8 caractere
         if (formatted.length > 8) {
           formatted = formatted.substring(0, 8);
           newCursorPos = 8;
@@ -700,14 +582,10 @@
           this.setSelectionRange(newCursorPos, newCursorPos);
         }
         
-        // Actualizează lastValue pentru următoarea detectare
         lastValue = formatted;
-        
-        // Recalculează LIVE totalul la fiecare modificare
         recalcTotal();
       });
 
-      // Auto-formatare când câmpul pierde focus-ul
       el.addEventListener('blur', function() {
         const value = this.value.trim();
         
@@ -718,7 +596,6 @@
           return;
         }
         
-        // Completare automată cu 0-uri dacă e nevoie
         const parts = value.split(':');
         const hours = (parts[0] || '00').padStart(2, '0');
         const minutes = (parts[1] || '00').padStart(2, '0');
@@ -732,53 +609,39 @@
 
     // Create employee card
     function createEmployeeBlock(defaultStart = null, defaultEnd = null, defaultName = null) {
-      // Calculează valori default safe în interiorul funcției
       const safeShift = shifts[activeShift] || shifts.fruh;
       const finalStart = defaultStart || safeShift.start;
       const finalEnd = defaultEnd || safeShift.end;
-      // Calculează numărul real al angajatului bazat pe numărul de carduri existente
-      const currentEmployeeNumber = employeesList.querySelectorAll('.employee-card').length + 1;
+      const currentEmployeeNumber = employeesList.querySelectorAll('.employee-item').length + 1;
       
       const wrap = document.createElement('div');
-      wrap.className = 'employee-card p-3 fade-in';
+      wrap.className = 'employee-item fade-in';
       wrap.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div class="d-flex align-items-center">
-            <span class="material-icons-round me-2">person</span>
-            <input type="text" class="form-control form-control-sm emp-name" value="${escapeHtml(defaultName) || 'Angajat ' + currentEmployeeNumber}" 
-                   style="max-width: 200px; display: inline-block; border: 1px solid transparent; background: transparent; padding: 0.25rem 0.5rem;" 
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center;">
+            <span style="margin-right: 8px;">👤</span>
+            <input type="text" class="ant-input emp-name" value="${escapeHtml(defaultName) || 'Angajat ' + currentEmployeeNumber}" 
                    placeholder="Nume angajat" aria-label="Nume angajat">
           </div>
-          <button class="btn btn-outline-danger btn-sm delete-btn d-flex align-items-center">
-            <span class="material-icons-round">delete</span>
+          <button class="ant-btn ant-btn-danger delete-btn" style="padding: 4px 12px;">
+            Șterge
           </button>
         </div>
 
-        <div class="row g-3">
-          <div class="col-12 col-md-6">
-            <label class="form-label">Ora început</label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <span class="material-icons-round">schedule</span>
-              </span>
-              <input class="form-control emp-start" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(finalStart)}" 
-                    placeholder="00:00:00" aria-label="Ora început">
-            </div>
+        <div class="ant-row">
+          <div class="ant-col">
+            <label>Ora început</label>
+            <input class="ant-input emp-start" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(finalStart)}" 
+                  placeholder="00:00:00" aria-label="Ora început">
           </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">Ora sfârșit</label>
-            <div class="input-group">
-              <span class="input-group-text">
-                <span class="material-icons-round">schedule</span>
-              </span>
-              <input class="form-control emp-end" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(finalEnd)}" 
-                    placeholder="00:00:00" aria-label="Ora sfârșit">
-            </div>
+          <div class="ant-col">
+            <label>Ora sfârșit</label>
+            <input class="ant-input emp-end" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(finalEnd)}" 
+                  placeholder="00:00:00" aria-label="Ora sfârșit">
           </div>
         </div>
       `;
 
-      // Delete employee button
       const delBtn = wrap.querySelector('.delete-btn');
       delBtn.addEventListener('click', () => {
         wrap.remove();
@@ -786,27 +649,14 @@
         debounceSaveState();
       });
 
-      // Time inputs
       const startInput = wrap.querySelector('.emp-start');
       const endInput = wrap.querySelector('.emp-end');
       attachTimeSanitizer(startInput);
       attachTimeSanitizer(endInput);
       
-      // Name input - save on change
       const nameInput = wrap.querySelector('.emp-name');
       nameInput.addEventListener('input', () => {
         debounceSaveState();
-      });
-      
-      // Add focus/blur effects for name input
-      nameInput.addEventListener('focus', function() {
-        this.style.borderColor = 'var(--primary-color)';
-        this.style.background = 'var(--input-bg)';
-      });
-      
-      nameInput.addEventListener('blur', function() {
-        this.style.borderColor = 'transparent';
-        this.style.background = 'transparent';
       });
 
       employeesList.appendChild(wrap);
@@ -820,19 +670,22 @@
       activeShift = key;
       
       if(key === 'fruh') {
-        fruhBtn.classList.add('active', 'btn-primary');
-        fruhBtn.classList.remove('btn-outline-primary');
-        spatBtn.classList.remove('active', 'btn-primary');
-        spatBtn.classList.add('btn-outline-primary');
+        fruhBtn.style.background = 'var(--ant-success)';
+        fruhBtn.style.color = 'white';
+        fruhBtn.style.borderColor = 'var(--ant-success)';
+        spatBtn.style.background = 'white';
+        spatBtn.style.color = 'var(--ant-success)';
+        spatBtn.style.borderColor = 'var(--ant-success)';
       } else {
-        spatBtn.classList.add('active', 'btn-primary');
-        spatBtn.classList.remove('btn-outline-primary');
-        fruhBtn.classList.remove('active', 'btn-primary');
-        fruhBtn.classList.add('btn-outline-primary');
+        spatBtn.style.background = 'var(--ant-success)';
+        spatBtn.style.color = 'white';
+        spatBtn.style.borderColor = 'var(--ant-success)';
+        fruhBtn.style.background = 'white';
+        fruhBtn.style.color = 'var(--ant-success)';
+        fruhBtn.style.borderColor = 'var(--ant-success)';
       }
 
-      // Actualizare directa a timpilor pentru toti angajatii
-      const cards = document.querySelectorAll('.employee-card');
+      const cards = document.querySelectorAll('.employee-item');
       if (cards.length > 0 && shifts[key]) {
         cards.forEach(card => {
           const s = card.querySelector('.emp-start');
@@ -842,7 +695,7 @@
         });
       }
       
-      recalcTotal(); // Un singur apel
+      recalcTotal();
       debounceSaveState();
     }
 
@@ -851,35 +704,35 @@
       
       if(werk === 'werk1') {
         rateInput.value = werkRates.werk1;
-        werk1Btn.classList.add('btn-primary');
-        werk1Btn.classList.remove('btn-outline-primary');
-        werk2Btn.classList.remove('btn-primary');
-        werk2Btn.classList.add('btn-outline-primary');
+        werk1Btn.classList.add('ant-btn-primary');
+        werk1Btn.style.color = 'white';
+        werk2Btn.classList.remove('ant-btn-primary');
+        werk2Btn.style.color = 'var(--ant-primary)';
       } else {
         rateInput.value = werkRates.werk2;
-        werk2Btn.classList.add('btn-primary');
-        werk2Btn.classList.remove('btn-outline-primary');
-        werk1Btn.classList.remove('btn-primary');
-        werk1Btn.classList.add('btn-outline-primary');
+        werk2Btn.classList.add('ant-btn-primary');
+        werk2Btn.style.color = 'white';
+        werk1Btn.classList.remove('ant-btn-primary');
+        werk1Btn.style.color = 'var(--ant-primary)';
       }
       
       recalcTotal();
       debounceSaveState();
     }
     
-    // LocalStorage management cu debounce pentru performanță
+    // LocalStorage management cu debounce
     function debounceSaveState() {
       if (saveStateTimeout) {
         clearTimeout(saveStateTimeout);
       }
       saveStateTimeout = setTimeout(() => {
         saveCalculatorState();
-      }, 500); // Salvează după 500ms de inactivitate
+      }, 500);
     }
     
     function saveCalculatorState() {
       const employees = [];
-      document.querySelectorAll('.employee-card').forEach(card => {
+      document.querySelectorAll('.employee-item').forEach(card => {
         const nameEl = card.querySelector('.emp-name');
         const startEl = card.querySelector('.emp-start');
         const endEl = card.querySelector('.emp-end');
@@ -914,56 +767,53 @@
       try {
         const state = JSON.parse(savedState);
         
-        // Restaurare rate
         if (state.rate !== undefined && state.rate !== null) {
           rateInput.value = state.rate;
         }
         
-        // Restaurare shift activ
         if (state.activeShift) {
-          // Validare shift existent
           if (!shifts[state.activeShift]) {
-            activeShift = 'fruh'; // Default safe
+            activeShift = 'fruh';
           } else {
             activeShift = state.activeShift;
           }
+          
           if(activeShift === 'fruh') {
-            fruhBtn.classList.add('active', 'btn-primary');
-            fruhBtn.classList.remove('btn-outline-primary');
-            spatBtn.classList.remove('active', 'btn-primary');
-            spatBtn.classList.add('btn-outline-primary');
+            fruhBtn.style.background = 'var(--ant-success)';
+            fruhBtn.style.color = 'white';
+            fruhBtn.style.borderColor = 'var(--ant-success)';
+            spatBtn.style.background = 'white';
+            spatBtn.style.color = 'var(--ant-success)';
+            spatBtn.style.borderColor = 'var(--ant-success)';
           } else {
-            spatBtn.classList.add('active', 'btn-primary');
-            spatBtn.classList.remove('btn-outline-primary');
-            fruhBtn.classList.remove('active', 'btn-primary');
-            fruhBtn.classList.add('btn-outline-primary');
+            spatBtn.style.background = 'var(--ant-success)';
+            spatBtn.style.color = 'white';
+            spatBtn.style.borderColor = 'var(--ant-success)';
+            fruhBtn.style.background = 'white';
+            fruhBtn.style.color = 'var(--ant-success)';
+            fruhBtn.style.borderColor = 'var(--ant-success)';
           }
         }
         
-        // Restaurare werk activ (doar UI, rata se restaurează deja de mai sus)
         if (state.activeWerk) {
-          // Validare werk existent
           if (!werkRates[state.activeWerk]) {
-            activeWerk = 'werk1'; // Default safe
+            activeWerk = 'werk1';
           } else {
             activeWerk = state.activeWerk;
           }
+          
           if(activeWerk === 'werk1') {
-            werk1Btn.classList.add('btn-primary');
-            werk1Btn.classList.remove('btn-outline-primary');
-            werk2Btn.classList.remove('btn-primary');
-            werk2Btn.classList.add('btn-outline-primary');
+            werk1Btn.classList.add('ant-btn-primary');
+            werk1Btn.style.color = 'white';
+            werk2Btn.classList.remove('ant-btn-primary');
+            werk2Btn.style.color = 'var(--ant-primary)';
           } else {
-            werk2Btn.classList.add('btn-primary');
-            werk2Btn.classList.remove('btn-outline-primary');
-            werk1Btn.classList.remove('btn-primary');
-            werk1Btn.classList.add('btn-outline-primary');
+            werk2Btn.classList.add('ant-btn-primary');
+            werk2Btn.style.color = 'white';
+            werk1Btn.classList.remove('ant-btn-primary');
+            werk1Btn.style.color = 'var(--ant-primary)';
           }
-          // NU modificăm rateInput.value - este deja restaurat la linia 924
         }
-        
-        // NU încărcăm angajații - pagina începe cu 0 angajați
-        // Utilizatorul va adăuga manual angajații
         
         return true;
       } catch (e) {
@@ -983,28 +833,13 @@
     });
     addEmpBtn.addEventListener('click', () => createEmployeeBlock());
 
-    // Init default
-    let dateTimeInterval = null;
-    
+    // Init
     window.addEventListener('DOMContentLoaded', () => {
-      initTheme();
-      updateDateTime();
-      dateTimeInterval = setInterval(updateDateTime, 1000); // Update date and time every second
-      
-      // Încearcă să încarce starea salvată
       const stateLoaded = loadCalculatorState();
       
-      // Dacă nu există stare salvată, setează configurația implicită
       if (!stateLoaded) {
         setActiveWerkUI('werk1');
         setActiveShiftUI('fruh');
-      }
-    });
-    
-    // Cleanup interval la unload pentru a preveni memory leaks
-    window.addEventListener('beforeunload', () => {
-      if (dateTimeInterval) {
-        clearInterval(dateTimeInterval);
       }
     });
   </script>
