@@ -317,6 +317,17 @@
       label {
         font-size: 12px;
       }
+      
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+      }
+      
+      .footer-left,
+      .footer-right {
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -440,6 +451,28 @@
     const addEmpBtn = document.getElementById('addEmp');
     const employeesList = document.getElementById('employeesList');
     const totalBox = document.getElementById('totalBox');
+    const currentDateTimeEl = document.getElementById('currentDateTime');
+    const currentYearEl = document.getElementById('currentYear');
+
+    // Update date and time in footer
+    function updateDateTime() {
+      const now = new Date();
+      
+      const zile = ['duminică', 'luni', 'marți', 'miercuri', 'joi', 'vineri', 'sâmbătă'];
+      const luni = ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 
+                    'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'];
+      
+      const ziua = zile[now.getDay()];
+      const data = now.getDate();
+      const luna = luni[now.getMonth()];
+      const anul = now.getFullYear();
+      const ora = String(now.getHours()).padStart(2, '0');
+      const minute = String(now.getMinutes()).padStart(2, '0');
+      const secunde = String(now.getSeconds()).padStart(2, '0');
+      
+      currentDateTimeEl.textContent = `📅 ${ziua}, ${data} ${luna} ${anul} | ⏰ ${ora}:${minute}:${secunde} (București)`;
+      currentYearEl.textContent = anul;
+    }
 
     // Helpers: time parsing & overlap
     function timeToSec(t) {
@@ -841,12 +874,23 @@
     addEmpBtn.addEventListener('click', () => createEmployeeBlock());
 
     // Init
+    let dateTimeInterval = null;
+    
     window.addEventListener('DOMContentLoaded', () => {
+      updateDateTime();
+      dateTimeInterval = setInterval(updateDateTime, 1000);
+      
       const stateLoaded = loadCalculatorState();
       
       if (!stateLoaded) {
         setActiveWerkUI('werk1');
         setActiveShiftUI('fruh');
+      }
+    });
+    
+    window.addEventListener('beforeunload', () => {
+      if (dateTimeInterval) {
+        clearInterval(dateTimeInterval);
       }
     });
   </script>
