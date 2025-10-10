@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ant Design Classic - Calculator Producție Band 41</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --ant-primary: #1890ff;
+      --ant-success: #52c41a;
+      --ant-error: #ff4d4f;
+      --ant-warning: #faad14;
+      --ant-border: #d9d9d9;
+      --ant-bg: #f0f2f5;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--ant-bg);
+      color: rgba(0, 0, 0, 0.85);
+      line-height: 1.5715;
+      font-size: 14px;
+    }
+    
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    
+    /* Ant Header */
+    .ant-page-header {
+      background: #fff;
+      padding: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--ant-border);
+    }
+    
+    .ant-page-header-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .ant-page-header-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    
+    /* Ant Card */
+    .ant-card {
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      border: 1px solid var(--ant-border);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+    
+    .ant-card-head {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--ant-border);
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .ant-card-body { padding: 24px; }
+    
+    /* Ant Form */
+    .ant-form-item {
+      margin-bottom: 24px;
+    }
+    
+    .ant-form-item-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    
+    /* Ant Input */
+    .ant-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--ant-border);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .ant-input:hover { border-color: var(--ant-primary); }
+    
+    .ant-input:focus {
+      outline: none;
+      border-color: var(--ant-primary);
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    }
+    
+    .ant-input-large {
+      padding: 12px 16px;
+      font-size: 16px;
+    }
+    
+    /* Ant Button */
+    .ant-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--ant-border);
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: #fff;
+      font-family: 'Inter', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .ant-btn:hover {
+      color: var(--ant-primary);
+      border-color: var(--ant-primary);
+    }
+    
+    .ant-btn-primary {
+      background: var(--ant-primary);
+      color: #fff;
+      border-color: var(--ant-primary);
+    }
+    
+    .ant-btn-primary:hover {
+      background: #40a9ff;
+      border-color: #40a9ff;
+    }
+    
+    .ant-btn-lg {
+      padding: 12px 20px;
+      font-size: 16px;
+    }
+    
+    /* Ant Space */
+    .ant-space { display: flex; gap: 12px; }
+    .ant-space-vertical { flex-direction: column; }
+    
+    /* Ant Tag */
+    .ant-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      background: #e6f7ff;
+      color: var(--ant-primary);
+      border: 1px solid #91d5ff;
+      border-radius: 4px;
+      font-size: 12px;
+      margin: 4px;
+    }
+    
+    /* Ant Divider */
+    .ant-divider {
+      border-top: 1px solid var(--ant-border);
+      margin: 24px 0;
+    }
+    
+    /* Ant Result */
+    .ant-result {
+      background: linear-gradient(135deg, #52c41a, #389e0d);
+      border-radius: 8px;
+      padding: 48px 32px;
+      text-align: center;
+      color: #fff;
+    }
+    
+    .ant-result-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+    
+    .ant-result-subtitle {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 0;
+    }
+    
+    /* Employee List */
+    .ant-list-item {
+      background: #fafafa;
+      border: 1px solid var(--ant-border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .ant-list-item-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .ant-list-item-meta-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    
+    /* Rate Input */
+    .rate-container {
+      background: #e6f7ff;
+      border: 1px solid #91d5ff;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    
+    .rate-input {
+      font-size: 48px;
+      font-weight: 600;
+      text-align: center;
+      border: none;
+      border-bottom: 2px solid var(--ant-primary);
+      background: transparent;
+      width: 100%;
+      color: var(--ant-primary);
+    }
+    
+    .rate-unit {
+      margin-top: 8px;
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 14px;
+    }
+    
+    /* Grid */
+    .ant-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .ant-col { flex: 1; min-width: 0; }
+    
+    @media (max-width: 768px) {
+      .ant-col { flex: 0 0 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Page Header -->
+  <div class="ant-page-header">
+    <div class="ant-page-header-heading">
+      <div class="ant-page-header-title">🏭 Band 41 Calculator</div>
+      <div class="ant-tag">Ant Design Classic</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    
+    <!-- Rate Card -->
+    <div class="ant-card">
+      <div class="ant-card-head">Rată de Producție</div>
+      <div class="ant-card-body">
+        <div class="rate-container">
+          <input class="rate-input" type="number" value="33.3" step="0.1" min="0">
+          <div class="rate-unit">buc/oră</div>
+        </div>
+        
+        <div style="margin-bottom: 16px;">
+          <span class="ant-tag">WERK 1 = 33.3</span>
+          <span class="ant-tag">WERK 2 = 34.4</span>
+        </div>
+        
+        <div class="ant-space">
+          <button class="ant-btn ant-btn-primary" style="flex: 1;">WERK 1</button>
+          <button class="ant-btn" style="flex: 1;">WERK 2</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shift Card -->
+    <div class="ant-card">
+      <div class="ant-card-head">Schimb de Lucru</div>
+      <div class="ant-card-body">
+        <div class="ant-space">
+          <button class="ant-btn ant-btn-primary" style="flex: 1; background: var(--ant-success); border-color: var(--ant-success);">
+            ☀️ Frühschicht
+          </button>
+          <button class="ant-btn" style="flex: 1; color: var(--ant-success); border-color: var(--ant-success);">
+            🌙 Spätschicht
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employees Card -->
+    <div class="ant-card">
+      <div class="ant-card-head">Angajați</div>
+      <div class="ant-card-body">
+        
+        <div class="ant-list-item">
+          <div class="ant-list-item-meta">
+            <div class="ant-list-item-meta-title">👤 Angajat 1</div>
+            <button class="ant-btn" style="background: var(--ant-error); color: #fff; border-color: var(--ant-error);">
+              Șterge
+            </button>
+          </div>
+          
+          <div class="ant-row">
+            <div class="ant-col">
+              <div class="ant-form-item">
+                <label class="ant-form-item-label">Ora început</label>
+                <input class="ant-input" type="text" value="05:45:00">
+              </div>
+            </div>
+            <div class="ant-col">
+              <div class="ant-form-item">
+                <label class="ant-form-item-label">Ora sfârșit</label>
+                <input class="ant-input" type="text" value="14:00:00">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="ant-btn ant-btn-primary ant-btn-lg" style="width: 100%;">
+          + Adaugă Angajat
+        </button>
+      </div>
+    </div>
+
+    <!-- Total Result -->
+    <div class="ant-result">
+      <div class="ant-result-title">📦 TOTAL BUCĂȚI PRODUSE</div>
+      <div class="ant-result-subtitle">264</div>
+    </div>
+
+  </div>
+</body>
+</html>

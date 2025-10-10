@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mantine Dark - Calculator Producție Band 41</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --mantine-primary: #339af0;
+      --mantine-bg: #1A1B1E;
+      --mantine-surface: #25262B;
+      --mantine-border: #373A40;
+      --mantine-text: #C1C2C5;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--mantine-bg);
+      color: var(--mantine-text);
+      min-height: 100vh;
+    }
+    
+    .container { max-width: 1000px; margin: 0 auto; padding: 28px 24px; }
+    
+    /* Dark Header */
+    .header {
+      background: var(--mantine-surface);
+      border: 1px solid var(--mantine-border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    
+    .header p {
+      color: #909296;
+      font-size: 15px;
+    }
+    
+    /* Dark Paper */
+    .paper-dark {
+      background: var(--mantine-surface);
+      border: 1px solid var(--mantine-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .paper-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    
+    /* Dark Input */
+    .input-dark {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--mantine-border);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.1s;
+      font-family: 'Inter', sans-serif;
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+    }
+    
+    .input-dark:hover {
+      border-color: #4c4f55;
+    }
+    
+    .input-dark:focus {
+      outline: none;
+      border-color: var(--mantine-primary);
+    }
+    
+    /* Dark Button */
+    .btn-dark {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.1s;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .btn-dark-filled {
+      background: var(--mantine-primary);
+      color: #fff;
+    }
+    
+    .btn-dark-filled:hover {
+      background: #228be6;
+    }
+    
+    .btn-dark-outline {
+      background: transparent;
+      color: var(--mantine-primary);
+      border: 1px solid var(--mantine-primary);
+    }
+    
+    .btn-dark-outline:hover {
+      background: rgba(51, 154, 240, 0.1);
+    }
+    
+    .btn-dark-subtle {
+      background: rgba(51, 154, 240, 0.15);
+      color: var(--mantine-primary);
+    }
+    
+    .btn-dark-subtle:hover {
+      background: rgba(51, 154, 240, 0.25);
+    }
+    
+    /* Badge Dark */
+    .badge-dark {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      background: rgba(51, 154, 240, 0.15);
+      color: #74c0fc;
+      border: 1px solid rgba(51, 154, 240, 0.3);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 4px;
+    }
+    
+    /* Employee Card Dark */
+    .employee-dark {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--mantine-border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .employee-name {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* Rate Display Dark */
+    .rate-box-dark {
+      background: rgba(51, 154, 240, 0.12);
+      border: 1px solid rgba(51, 154, 240, 0.3);
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .rate-input-dark {
+      font-size: 56px;
+      font-weight: 800;
+      text-align: center;
+      border: none;
+      border-bottom: 3px solid var(--mantine-primary);
+      background: transparent;
+      width: 100%;
+      color: #74c0fc;
+    }
+    
+    /* Total Dark */
+    .total-dark {
+      background: linear-gradient(135deg, #37b24d, #2f9e44);
+      border-radius: 12px;
+      padding: 48px 36px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(55, 178, 77, 0.3);
+    }
+    
+    .total-label {
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      opacity: 0.95;
+    }
+    
+    .total-value {
+      font-size: 72px;
+      font-weight: 800;
+    }
+    
+    /* Group */
+    .group-dark { display: flex; gap: 14px; }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #909296;
+    }
+    
+    @media (max-width: 768px) {
+      .group-dark { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🏭 Band 41 Calculator</h1>
+      <p>Calculator de producție - Mantine Dark Theme</p>
+    </div>
+
+    <!-- Rate Paper -->
+    <div class="paper-dark">
+      <div class="paper-title">Rată de Producție</div>
+      
+      <div class="rate-box-dark">
+        <input class="rate-input-dark" type="number" value="33.3" step="0.1" min="0">
+        <p style="margin-top: 12px; color: #909296; font-weight: 500;">buc/oră</p>
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <span class="badge-dark">WERK 1 = 33.3</span>
+        <span class="badge-dark">WERK 2 = 34.4</span>
+      </div>
+      
+      <div class="group-dark">
+        <button class="btn-dark btn-dark-filled" style="flex: 1;">WERK 1</button>
+        <button class="btn-dark btn-dark-outline" style="flex: 1;">WERK 2</button>
+      </div>
+    </div>
+
+    <!-- Shift Paper -->
+    <div class="paper-dark">
+      <div class="paper-title">Schimb de Lucru</div>
+      
+      <div class="group-dark">
+        <button class="btn-dark" style="flex: 1; background: #7950f2; color: #fff;">
+          ☀️ Frühschicht
+        </button>
+        <button class="btn-dark btn-dark-subtle" style="flex: 1; background: rgba(121, 80, 242, 0.15); color: #b197fc;">
+          🌙 Spätschicht
+        </button>
+      </div>
+    </div>
+
+    <!-- Employees Paper -->
+    <div class="paper-dark">
+      <div class="paper-title">Angajați</div>
+      
+      <div class="employee-dark">
+        <div class="employee-header">
+          <div class="employee-name">
+            <span style="font-size: 28px;">👤</span>
+            Angajat 1
+          </div>
+          <button class="btn-dark" style="background: #fa5252; color: #fff; padding: 10px 20px;">
+            Șterge
+          </button>
+        </div>
+        
+        <div class="group-dark">
+          <div style="flex: 1;">
+            <label>Ora început</label>
+            <input class="input-dark" type="text" value="05:45:00">
+          </div>
+          <div style="flex: 1;">
+            <label>Ora sfârșit</label>
+            <input class="input-dark" type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-dark btn-dark-filled" style="width: 100%; padding: 14px;">
+        + Adaugă Angajat
+      </button>
+    </div>
+
+    <!-- Total Card -->
+    <div class="total-dark">
+      <div class="total-label">📦 Total Bucăți Produse</div>
+      <div class="total-value">264</div>
+    </div>
+
+  </div>
+</body>
+</html>

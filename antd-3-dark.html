@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ant Design Dark - Calculator Producție Band 41</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --ant-primary: #177ddc;
+      --ant-success: #49aa19;
+      --ant-error: #d32029;
+      --ant-bg: #141414;
+      --ant-surface: #1f1f1f;
+      --ant-border: #434343;
+      --ant-text: rgba(255, 255, 255, 0.85);
+      --ant-text-secondary: rgba(255, 255, 255, 0.65);
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--ant-bg);
+      color: var(--ant-text);
+      min-height: 100vh;
+    }
+    
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    
+    /* Dark Header */
+    .header {
+      background: var(--ant-surface);
+      border-bottom: 1px solid var(--ant-border);
+      padding: 20px 24px;
+      margin: -24px -24px 24px -24px;
+    }
+    
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    /* Dark Card */
+    .card-dark {
+      background: var(--ant-surface);
+      border: 1px solid var(--ant-border);
+      border-radius: 8px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    
+    .card-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--ant-border);
+      font-size: 16px;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    .card-body { padding: 24px; }
+    
+    /* Dark Input */
+    .input-dark {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--ant-border);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ant-text);
+    }
+    
+    .input-dark:hover {
+      border-color: var(--ant-primary);
+    }
+    
+    .input-dark:focus {
+      outline: none;
+      border-color: var(--ant-primary);
+      box-shadow: 0 0 0 2px rgba(23, 125, 220, 0.2);
+    }
+    
+    /* Dark Button */
+    .btn-dark {
+      padding: 8px 16px;
+      border: 1px solid var(--ant-border);
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ant-text);
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .btn-dark:hover {
+      color: var(--ant-primary);
+      border-color: var(--ant-primary);
+      background: rgba(23, 125, 220, 0.1);
+    }
+    
+    .btn-dark-primary {
+      background: var(--ant-primary);
+      color: #fff;
+      border-color: var(--ant-primary);
+    }
+    
+    .btn-dark-primary:hover {
+      background: #095cb5;
+      border-color: #095cb5;
+    }
+    
+    /* Badge Dark */
+    .badge-dark {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      background: rgba(23, 125, 220, 0.2);
+      color: #58a9f7;
+      border: 1px solid rgba(23, 125, 220, 0.3);
+      border-radius: 4px;
+      font-size: 12px;
+      margin: 4px;
+    }
+    
+    /* Employee Card */
+    .employee-item-dark {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--ant-border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .employee-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--ant-text);
+    }
+    
+    /* Rate Display */
+    .rate-box-dark {
+      background: rgba(23, 125, 220, 0.15);
+      border: 1px solid rgba(23, 125, 220, 0.3);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    
+    .rate-input-dark {
+      font-size: 48px;
+      font-weight: 600;
+      text-align: center;
+      border: none;
+      border-bottom: 2px solid var(--ant-primary);
+      background: transparent;
+      width: 100%;
+      color: #58a9f7;
+    }
+    
+    /* Total Result Dark */
+    .result-dark {
+      background: linear-gradient(135deg, #49aa19, #3c8618);
+      border-radius: 8px;
+      padding: 48px 32px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(73, 170, 25, 0.3);
+    }
+    
+    .result-title {
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+    
+    .result-value {
+      font-size: 72px;
+      font-weight: 700;
+    }
+    
+    /* Grid */
+    .grid-dark { display: flex; gap: 16px; }
+    .grid-dark > * { flex: 1; }
+    
+    @media (max-width: 768px) {
+      .grid-dark { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <h1>🏭 Band 41 Calculator</h1>
+      <span class="badge-dark">Ant Design Dark</span>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="container">
+    
+    <!-- Rate Card -->
+    <div class="card-dark">
+      <div class="card-header">Rată de Producție</div>
+      <div class="card-body">
+        <div class="rate-box-dark">
+          <input class="rate-input-dark" type="number" value="33.3" step="0.1" min="0">
+          <p style="margin-top: 8px; color: var(--ant-text-secondary);">buc/oră</p>
+        </div>
+        
+        <div style="margin-bottom: 16px;">
+          <span class="badge-dark">WERK 1 = 33.3</span>
+          <span class="badge-dark">WERK 2 = 34.4</span>
+        </div>
+        
+        <div class="grid-dark">
+          <button class="btn-dark btn-dark-primary">WERK 1</button>
+          <button class="btn-dark">WERK 2</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shift Card -->
+    <div class="card-dark">
+      <div class="card-header">Schimb de Lucru</div>
+      <div class="card-body">
+        <div class="grid-dark">
+          <button class="btn-dark" style="background: var(--ant-success); color: #fff; border-color: var(--ant-success);">
+            ☀️ Frühschicht
+          </button>
+          <button class="btn-dark" style="color: #6abe39; border-color: var(--ant-success);">
+            🌙 Spätschicht
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employees Card -->
+    <div class="card-dark">
+      <div class="card-header">Angajați</div>
+      <div class="card-body">
+        
+        <div class="employee-item-dark">
+          <div class="employee-header">
+            <div class="employee-name">👤 Angajat 1</div>
+            <button class="btn-dark" style="background: var(--ant-error); color: #fff; border-color: var(--ant-error);">
+              Șterge
+            </button>
+          </div>
+          
+          <div class="grid-dark">
+            <div>
+              <label style="display: block; font-size: 14px; margin-bottom: 8px; color: var(--ant-text);">
+                Ora început
+              </label>
+              <input class="input-dark" type="text" value="05:45:00">
+            </div>
+            <div>
+              <label style="display: block; font-size: 14px; margin-bottom: 8px; color: var(--ant-text);">
+                Ora sfârșit
+              </label>
+              <input class="input-dark" type="text" value="14:00:00">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-dark btn-dark-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+          + Adaugă Angajat
+        </button>
+      </div>
+    </div>
+
+    <!-- Total Result -->
+    <div class="result-dark">
+      <div class="result-title">📦 Total Bucăți Produse</div>
+      <div class="result-value">264</div>
+    </div>
+
+  </div>
+</body>
+</html>

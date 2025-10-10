@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>17 Framework Designs - Calculator Producție Band 41</title>
+  <title>9 Design-uri - Ant Design, Chakra UI, Mantine</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { 
@@ -16,26 +16,72 @@
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 16px;
-      padding: 24px;
+      border-radius: 20px;
+      overflow: hidden;
       margin-bottom: 24px;
       transition: all 0.3s;
     }
     .framework-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
       border-color: rgba(255, 255, 255, 0.6);
     }
-    .btn-view {
-      background: rgba(255, 255, 255, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      text-decoration: none;
-      display: inline-block;
+    .preview-img {
+      height: 280px;
+      background: #2D3748;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .preview-img iframe {
+      width: 100%;
+      height: 700px;
+      border: none;
+      transform: scale(0.4);
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+    .card-body {
+      padding: 24px;
+    }
+    .design-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .design-desc {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .tag {
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      font-size: 0.75rem;
       font-weight: 600;
+    }
+    .btn-view {
+      display: block;
+      padding: 14px 24px;
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      text-align: center;
       transition: all 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
     .btn-view:hover {
       background: rgba(255, 255, 255, 0.35);
@@ -43,20 +89,23 @@
       transform: translateY(-2px);
     }
     .category-title {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 800;
       margin: 60px 0 30px;
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 2px;
     }
-    .badge-custom {
-      background: rgba(255, 255, 255, 0.3);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      margin-right: 8px;
+    .framework-logo {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 16px;
     }
   </style>
 </head>
@@ -64,264 +113,345 @@
   <div class="container">
     <!-- Header -->
     <div class="text-center mb-5">
-      <h1 class="display-3 fw-bold mb-3">🎨 17 Framework Designs</h1>
-      <p class="lead fs-4">Calculator Producție Band 41 - Toate Framework-urile CSS/UI</p>
+      <h1 class="display-3 fw-bold mb-3">🎨 9 Framework Designs</h1>
+      <p class="lead fs-4">Calculator Producție Band 41 - Ant Design, Chakra UI, Mantine</p>
     </div>
 
-    <!-- CSS Frameworks -->
-    <div class="category-title">📐 CSS FRAMEWORKS (12)</div>
+    <!-- ANT DESIGN -->
+    <div class="category-title">🐜 ANT DESIGN (3)</div>
     
     <div class="row">
-      <!-- Tailwind -->
       <div class="col-md-6 col-lg-4">
         <div class="framework-card">
-          <h3 class="h4 mb-3">1. Tailwind CSS</h3>
-          <p class="mb-3">Utility-first CSS framework cu clase predefinite.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Utility-first</span>
-            <span class="badge-custom">Modern</span>
+          <div class="preview-img">
+            <iframe src="antd-1-classic.html"></iframe>
           </div>
-          <a href="fw-tailwind.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #1890ff, #40a9ff);">🐜</div>
+            <div class="design-name">1. Ant Design Classic</div>
+            <div class="design-desc">
+              Design enterprise clasic cu card-uri, tags și layout standard Ant Design.
+            </div>
+            <div class="tags">
+              <span class="tag">Classic</span>
+              <span class="tag">Enterprise</span>
+              <span class="tag">Blue</span>
+            </div>
+            <a href="antd-1-classic.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          </div>
         </div>
       </div>
 
-      <!-- Foundation -->
       <div class="col-md-6 col-lg-4">
         <div class="framework-card">
-          <h3 class="h4 mb-3">2. Foundation (Zurb)</h3>
-          <p class="mb-3">Framework profesional responsive cu grid flexibil.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Professional</span>
-            <span class="badge-custom">Zurb</span>
+          <div class="preview-img">
+            <iframe src="antd-2-modern.html"></iframe>
           </div>
-          <a href="fw-foundation.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #1890ff, #722ed1);">🚀</div>
+            <div class="design-name">2. Ant Design Modern</div>
+            <div class="design-desc">
+              Versiune modernă cu gradient header, icon circles și shadow-uri mari.
+            </div>
+            <div class="tags">
+              <span class="tag">Modern</span>
+              <span class="tag">Gradient</span>
+              <span class="tag">Icons</span>
+            </div>
+            <a href="antd-2-modern.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          </div>
         </div>
       </div>
 
-      <!-- Bulma -->
       <div class="col-md-6 col-lg-4">
         <div class="framework-card">
-          <h3 class="h4 mb-3">3. Bulma</h3>
-          <p class="mb-3">Framework CSS modern bazat pe Flexbox.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Flexbox</span>
-            <span class="badge-custom">Clean</span>
+          <div class="preview-img">
+            <iframe src="antd-3-dark.html"></iframe>
           </div>
-          <a href="fw-bulma.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Materialize -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">4. Materialize</h3>
-          <p class="mb-3">Material Design CSS framework by Google.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Material</span>
-            <span class="badge-custom">Google</span>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #141414, #434343);">🌙</div>
+            <div class="design-name">3. Ant Design Dark</div>
+            <div class="design-desc">
+              Dark theme Ant Design cu blue primary și surface color #1f1f1f.
+            </div>
+            <div class="tags">
+              <span class="tag">Dark</span>
+              <span class="tag">Night</span>
+              <span class="tag">Sleek</span>
+            </div>
+            <a href="antd-3-dark.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
           </div>
-          <a href="fw-materialize.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Chakra UI -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">5. Chakra UI Style</h3>
-          <p class="mb-3">React component library cu design modern.</p>
-          <div class="mb-3">
-            <span class="badge-custom">React</span>
-            <span class="badge-custom">Modern</span>
-          </div>
-          <a href="fw-chakra.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Ant Design -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">6. Ant Design Style</h3>
-          <p class="mb-3">Enterprise-level UI design language (React).</p>
-          <div class="mb-3">
-            <span class="badge-custom">React</span>
-            <span class="badge-custom">Enterprise</span>
-          </div>
-          <a href="fw-antd.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Vuetify -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">7. Vuetify Style</h3>
-          <p class="mb-3">Material Design framework pentru Vue.js.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Vue</span>
-            <span class="badge-custom">Material</span>
-          </div>
-          <a href="fw-vuetify.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Mantine -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">8. Mantine Style</h3>
-          <p class="mb-3">React components și hooks library modern.</p>
-          <div class="mb-3">
-            <span class="badge-custom">React</span>
-            <span class="badge-custom">Hooks</span>
-          </div>
-          <a href="fw-mantine.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Spectre -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">9. Spectre.css</h3>
-          <p class="mb-3">Lightweight responsive CSS framework.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Lightweight</span>
-            <span class="badge-custom">12KB</span>
-          </div>
-          <a href="fw-spectre.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Pure.css -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">10. Pure.css</h3>
-          <p class="mb-3">Minimal CSS framework by Yahoo (3.7KB).</p>
-          <div class="mb-3">
-            <span class="badge-custom">Minimal</span>
-            <span class="badge-custom">Yahoo</span>
-          </div>
-          <a href="fw-pure.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Milligram -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">11. Milligram</h3>
-          <p class="mb-3">Minimalist CSS framework (2KB gzipped).</p>
-          <div class="mb-3">
-            <span class="badge-custom">2KB</span>
-            <span class="badge-custom">Purple</span>
-          </div>
-          <a href="fw-milligram.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
-        </div>
-      </div>
-
-      <!-- Skeleton -->
-      <div class="col-md-6 col-lg-4">
-        <div class="framework-card">
-          <h3 class="h4 mb-3">12. Skeleton</h3>
-          <p class="mb-3">Dead simple boilerplate (400 lines CSS).</p>
-          <div class="mb-3">
-            <span class="badge-custom">Simple</span>
-            <span class="badge-custom">400 lines</span>
-          </div>
-          <a href="fw-skeleton.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
         </div>
       </div>
     </div>
 
-    <!-- Bootstrap Designs -->
-    <div class="category-title">🅱️ BOOTSTRAP 5.3.2 (5 VARIANTE)</div>
+    <!-- CHAKRA UI -->
+    <div class="category-title">⚡ CHAKRA UI (3)</div>
     
     <div class="row">
-      <!-- Bootstrap 1 -->
       <div class="col-md-6 col-lg-4">
         <div class="framework-card">
-          <h3 class="h4 mb-3">13. Bootstrap Modern</h3>
-          <p class="mb-3">Design modern cu gradient header și cards elevate.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Modern</span>
-            <span class="badge-custom">Gradient</span>
+          <div class="preview-img">
+            <iframe src="chakra-1-light.html"></iframe>
           </div>
-          <a href="bs-design1-modern.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #3182CE, #2C5282);">⚡</div>
+            <div class="design-name">4. Chakra UI Light</div>
+            <div class="design-desc">
+              Clean light theme cu shadow-uri subtile și blue primary (#3182CE).
+            </div>
+            <div class="tags">
+              <span class="tag">Light</span>
+              <span class="tag">Clean</span>
+              <span class="tag">Professional</span>
+            </div>
+            <a href="chakra-1-light.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          </div>
         </div>
       </div>
 
-      <!-- Bootstrap 2 -->
       <div class="col-md-6 col-lg-4">
         <div class="framework-card">
-          <h3 class="h4 mb-3">14. Bootstrap Dark</h3>
-          <p class="mb-3">Dark theme cu purple accents și glow effects.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Dark</span>
-            <span class="badge-custom">Purple</span>
+          <div class="preview-img">
+            <iframe src="chakra-2-colorful.html"></iframe>
           </div>
-          <a href="bs-design2-dark.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #6B46C1, #38A169);">🌈</div>
+            <div class="design-name">5. Chakra UI Colorful</div>
+            <div class="design-desc">
+              Design vibrant cu purple, teal, green și emoji icon boxes colorful.
+            </div>
+            <div class="tags">
+              <span class="tag">Colorful</span>
+              <span class="tag">Vibrant</span>
+              <span class="tag">Fun</span>
+            </div>
+            <a href="chakra-2-colorful.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          </div>
         </div>
       </div>
 
-      <!-- Bootstrap 3 -->
       <div class="col-md-6 col-lg-4">
         <div class="framework-card">
-          <h3 class="h4 mb-3">15. Bootstrap Colorful</h3>
-          <p class="mb-3">Glass morphism colorat cu backdrop blur.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Glass</span>
-            <span class="badge-custom">Colorful</span>
+          <div class="preview-img">
+            <iframe src="chakra-3-dark.html"></iframe>
           </div>
-          <a href="bs-design3-colorful.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #1A202C, #90CDF4);">🌑</div>
+            <div class="design-name">6. Chakra UI Dark</div>
+            <div class="design-desc">
+              Dark theme cu cyan primary (#90CDF4), glow effects și purple accents.
+            </div>
+            <div class="tags">
+              <span class="tag">Dark</span>
+              <span class="tag">Glow</span>
+              <span class="tag">Cyan</span>
+            </div>
+            <a href="chakra-3-dark.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANTINE -->
+    <div class="category-title">🎯 MANTINE (3)</div>
+    
+    <div class="row">
+      <div class="col-md-6 col-lg-4">
+        <div class="framework-card">
+          <div class="preview-img">
+            <iframe src="mantine-1-clean.html"></iframe>
+          </div>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #228be6, #1c7ed6);">🎯</div>
+            <div class="design-name">7. Mantine Clean</div>
+            <div class="design-desc">
+              Design curat și simplu cu border subtile, blue primary și layout minimal.
+            </div>
+            <div class="tags">
+              <span class="tag">Clean</span>
+              <span class="tag">Simple</span>
+              <span class="tag">Blue</span>
+            </div>
+            <a href="mantine-1-clean.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          </div>
         </div>
       </div>
 
-      <!-- Bootstrap 4 -->
       <div class="col-md-6 col-lg-4">
         <div class="framework-card">
-          <h3 class="h4 mb-3">16. Bootstrap Minimal</h3>
-          <p class="mb-3">Ultra minimalist cu typography Inter și border subtile.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Minimal</span>
-            <span class="badge-custom">Clean</span>
+          <div class="preview-img">
+            <iframe src="mantine-2-gradient.html"></iframe>
           </div>
-          <a href="bs-design4-minimal.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #667eea, #764ba2);">✨</div>
+            <div class="design-name">8. Mantine Gradient</div>
+            <div class="design-desc">
+              Glassmorphism cu gradient background, backdrop blur și efecte luminoase.
+            </div>
+            <div class="tags">
+              <span class="tag">Gradient</span>
+              <span class="tag">Glass</span>
+              <span class="tag">Modern</span>
+            </div>
+            <a href="mantine-2-gradient.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          </div>
         </div>
       </div>
 
-      <!-- Bootstrap 5 -->
       <div class="col-md-6 col-lg-4">
         <div class="framework-card">
-          <h3 class="h4 mb-3">17. Bootstrap Floating</h3>
-          <p class="mb-3">Floating cards cu shadow mare și icons colorful.</p>
-          <div class="mb-3">
-            <span class="badge-custom">Floating</span>
-            <span class="badge-custom">Icons</span>
+          <div class="preview-img">
+            <iframe src="mantine-3-dark.html"></iframe>
           </div>
-          <a href="bs-design5-floating.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          <div class="card-body">
+            <div class="framework-logo" style="background: linear-gradient(135deg, #1A1B1E, #339af0);">🌌</div>
+            <div class="design-name">9. Mantine Dark</div>
+            <div class="design-desc">
+              Dark theme Mantine cu cyan primary (#339af0) și surface #25262B.
+            </div>
+            <div class="tags">
+              <span class="tag">Dark</span>
+              <span class="tag">Cyan</span>
+              <span class="tag">Sleek</span>
+            </div>
+            <a href="mantine-3-dark.html" target="_blank" class="btn-view">👁️ Vezi Design</a>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Summary -->
-    <div class="text-center mt-5 pt-4" style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 40px;">
-      <h2 class="mb-4">📊 REZUMAT</h2>
+    <div class="text-center mt-5 pt-4" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 20px; padding: 50px; border: 1px solid rgba(255,255,255,0.3);">
+      <h2 class="mb-4 fw-bold">📊 REZUMAT</h2>
       <div class="row">
         <div class="col-md-4 mb-3">
-          <div class="display-4 fw-bold">17</div>
-          <p class="mb-0">Design-uri Totale</p>
+          <div class="display-3 fw-bold">9</div>
+          <p class="mb-0 fs-5">Design-uri Totale</p>
         </div>
         <div class="col-md-4 mb-3">
-          <div class="display-4 fw-bold">12</div>
-          <p class="mb-0">Framework-uri CSS/UI</p>
+          <div class="display-3 fw-bold">3</div>
+          <p class="mb-0 fs-5">Framework-uri UI</p>
         </div>
         <div class="col-md-4 mb-3">
-          <div class="display-4 fw-bold">5</div>
-          <p class="mb-0">Variante Bootstrap</p>
+          <div class="display-3 fw-bold">3</div>
+          <p class="mb-0 fs-5">Variante / Framework</p>
+        </div>
+      </div>
+      
+      <div class="mt-5 pt-4" style="border-top: 1px solid rgba(255,255,255,0.2);">
+        <h3 class="mb-4">🏆 TOP 3 RECOMANDĂRI</h3>
+        <div class="row text-start">
+          <div class="col-md-4 mb-3">
+            <div class="p-3 rounded" style="background: rgba(255,255,255,0.1);">
+              <div class="fw-bold mb-2">🥇 Chakra UI Colorful (#5)</div>
+              <small>Perfect pentru aplicații moderne și vibrant</small>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="p-3 rounded" style="background: rgba(255,255,255,0.1);">
+              <div class="fw-bold mb-2">🥈 Mantine Gradient (#8)</div>
+              <small>Glassmorphism impresionant și elegant</small>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="p-3 rounded" style="background: rgba(255,255,255,0.1);">
+              <div class="fw-bold mb-2">🥉 Ant Design Modern (#2)</div>
+              <small>Enterprise-ready cu design modern</small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Comparison Table -->
+    <div class="mt-5" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 20px; padding: 40px; border: 1px solid rgba(255,255,255,0.3);">
+      <h2 class="mb-4 text-center fw-bold">📊 Tabel Comparativ</h2>
+      <div class="table-responsive">
+        <table class="table table-dark table-borderless">
+          <thead>
+            <tr style="border-bottom: 2px solid rgba(255,255,255,0.3);">
+              <th>Design</th>
+              <th>Framework</th>
+              <th>Stil</th>
+              <th>Complexitate</th>
+              <th>Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Classic</strong></td>
+              <td>Ant Design</td>
+              <td>Enterprise</td>
+              <td>★★☆</td>
+              <td>Admin Panels</td>
+            </tr>
+            <tr>
+              <td><strong>2. Modern</strong></td>
+              <td>Ant Design</td>
+              <td>Gradient</td>
+              <td>★★★</td>
+              <td>Modern Apps</td>
+            </tr>
+            <tr>
+              <td><strong>3. Dark</strong></td>
+              <td>Ant Design</td>
+              <td>Dark Theme</td>
+              <td>★★☆</td>
+              <td>Night Mode</td>
+            </tr>
+            <tr style="border-top: 1px solid rgba(255,255,255,0.2);">
+              <td><strong>4. Light</strong></td>
+              <td>Chakra UI</td>
+              <td>Clean</td>
+              <td>★★☆</td>
+              <td>Professional</td>
+            </tr>
+            <tr>
+              <td><strong>5. Colorful</strong></td>
+              <td>Chakra UI</td>
+              <td>Vibrant</td>
+              <td>★★★</td>
+              <td>Fun Apps</td>
+            </tr>
+            <tr>
+              <td><strong>6. Dark</strong></td>
+              <td>Chakra UI</td>
+              <td>Dark + Glow</td>
+              <td>★★★</td>
+              <td>Dark Mode</td>
+            </tr>
+            <tr style="border-top: 1px solid rgba(255,255,255,0.2);">
+              <td><strong>7. Clean</strong></td>
+              <td>Mantine</td>
+              <td>Minimal</td>
+              <td>★★☆</td>
+              <td>Simple Apps</td>
+            </tr>
+            <tr>
+              <td><strong>8. Gradient</strong></td>
+              <td>Mantine</td>
+              <td>Glass</td>
+              <td>★★★</td>
+              <td>Showcase</td>
+            </tr>
+            <tr>
+              <td><strong>9. Dark</strong></td>
+              <td>Mantine</td>
+              <td>Dark Theme</td>
+              <td>★★☆</td>
+              <td>Night Mode</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
   <!-- Footer -->
   <footer class="text-center py-5 mt-5">
-    <p class="mb-0 opacity-75">Calculator Producție Band 41 - Toate Framework-urile v1.0</p>
+    <p class="mb-0 opacity-75">Calculator Producție Band 41 - Framework Comparison v1.0</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chakra UI Colorful - Calculator Producție Band 41</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #F7FAFC 0%, #EDF2F7 100%);
+      min-height: 100vh;
+      color: #1A202C;
+    }
+    
+    .container { max-width: 1000px; margin: 0 auto; padding: 40px 24px; }
+    
+    /* Colorful Header */
+    .header {
+      background: linear-gradient(135deg, #6B46C1, #553C9A);
+      color: #fff;
+      padding: 48px 40px;
+      border-radius: 24px;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 60px rgba(107, 70, 193, 0.3);
+    }
+    
+    .header h1 {
+      font-size: 40px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    
+    .header p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+    
+    /* Colorful Box */
+    .box-colorful {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    
+    .box-colorful:hover {
+      border-color: #6B46C1;
+      box-shadow: 0 8px 30px rgba(107, 70, 193, 0.2);
+      transform: translateY(-4px);
+    }
+    
+    .box-heading {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .emoji-icon {
+      font-size: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #E9D8FD, #D6BCFA);
+      border-radius: 16px;
+    }
+    
+    /* Colorful Input */
+    .input-colorful {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #E2E8F0;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+      background: #F7FAFC;
+    }
+    
+    .input-colorful:focus {
+      outline: none;
+      border-color: #6B46C1;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(107, 70, 193, 0.1);
+    }
+    
+    /* Colorful Button */
+    .btn-colorful {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .btn-purple {
+      background: linear-gradient(135deg, #6B46C1, #553C9A);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(107, 70, 193, 0.3);
+    }
+    
+    .btn-purple:hover {
+      box-shadow: 0 6px 24px rgba(107, 70, 193, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .btn-teal {
+      background: linear-gradient(135deg, #38B2AC, #319795);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(56, 178, 172, 0.3);
+    }
+    
+    .btn-teal:hover {
+      box-shadow: 0 6px 24px rgba(56, 178, 172, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+      background: #fff;
+      color: #6B46C1;
+      border: 2px solid #6B46C1;
+      box-shadow: none;
+    }
+    
+    .btn-outline:hover {
+      background: #FAF5FF;
+    }
+    
+    /* Badge Colorful */
+    .badge-colorful {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #E9D8FD, #D6BCFA);
+      color: #553C9A;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 4px;
+    }
+    
+    /* Employee Card */
+    .employee-card {
+      background: linear-gradient(135deg, #FFF5F5, #FED7D7);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+      border: 2px solid #FEB2B2;
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .employee-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1A202C;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    /* Rate Display */
+    .rate-display {
+      background: linear-gradient(135deg, #E9D8FD, #D6BCFA);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    
+    .rate-input {
+      font-size: 64px;
+      font-weight: 900;
+      text-align: center;
+      border: none;
+      background: transparent;
+      width: 100%;
+      color: #553C9A;
+    }
+    
+    .rate-unit {
+      margin-top: 12px;
+      font-size: 18px;
+      color: #6B46C1;
+      font-weight: 700;
+    }
+    
+    /* Total Card */
+    .total-card {
+      background: linear-gradient(135deg, #48BB78, #38A169);
+      border-radius: 24px;
+      padding: 56px 40px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 20px 60px rgba(72, 187, 120, 0.4);
+    }
+    
+    .total-title {
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 24px;
+    }
+    
+    .total-number {
+      font-size: 88px;
+      font-weight: 900;
+    }
+    
+    /* Stack */
+    .stack { display: flex; gap: 20px; }
+    
+    @media (max-width: 768px) {
+      .stack { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🏭 Band 41 Calculator</h1>
+      <p>Calculator de producție - Chakra UI Colorful</p>
+    </div>
+
+    <!-- Rate Box -->
+    <div class="box-colorful">
+      <div class="box-heading">
+        <div class="emoji-icon">📊</div>
+        Rată de Producție
+      </div>
+      
+      <div class="rate-display">
+        <input class="rate-input" type="number" value="33.3" step="0.1" min="0">
+        <div class="rate-unit">BUC / ORĂ</div>
+      </div>
+      
+      <div style="margin-bottom: 24px;">
+        <span class="badge-colorful">✨ WERK 1 = 33.3</span>
+        <span class="badge-colorful">✨ WERK 2 = 34.4</span>
+      </div>
+      
+      <div class="stack">
+        <button class="btn-colorful btn-purple" style="flex: 1;">WERK 1</button>
+        <button class="btn-colorful btn-outline" style="flex: 1;">WERK 2</button>
+      </div>
+    </div>
+
+    <!-- Shift Box -->
+    <div class="box-colorful">
+      <div class="box-heading">
+        <div class="emoji-icon" style="background: linear-gradient(135deg, #B2F5EA, #81E6D9);">⏰</div>
+        Schimb de Lucru
+      </div>
+      
+      <div class="stack">
+        <button class="btn-colorful btn-teal" style="flex: 1;">
+          ☀️ Frühschicht
+        </button>
+        <button class="btn-colorful" style="flex: 1; background: #fff; color: #319795; border: 2px solid #319795;">
+          🌙 Spätschicht
+        </button>
+      </div>
+    </div>
+
+    <!-- Employees Box -->
+    <div class="box-colorful">
+      <div class="box-heading">
+        <div class="emoji-icon" style="background: linear-gradient(135deg, #FED7E2, #FBB6CE);">👥</div>
+        Angajați
+      </div>
+      
+      <div class="employee-card">
+        <div class="employee-header">
+          <div class="employee-name">
+            <span style="font-size: 32px;">👤</span>
+            Angajat 1
+          </div>
+          <button class="btn-colorful" style="background: #F56565; color: #fff; padding: 12px 24px;">
+            ✕ Șterge
+          </button>
+        </div>
+        
+        <div class="stack">
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 14px; font-weight: 700; color: #4A5568; margin-bottom: 10px;">
+              Ora început
+            </label>
+            <input class="input-colorful" type="text" value="05:45:00">
+          </div>
+          <div style="flex: 1;">
+            <label style="display: block; font-size: 14px; font-weight: 700; color: #4A5568; margin-bottom: 10px;">
+              Ora sfârșit
+            </label>
+            <input class="input-colorful" type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-colorful btn-purple" style="width: 100%; font-size: 18px; padding: 16px;">
+        + Adaugă Angajat
+      </button>
+    </div>
+
+    <!-- Total Card -->
+    <div class="total-card">
+      <div class="total-title">📦 Total Bucăți Produse</div>
+      <div class="total-number">264</div>
+    </div>
+
+  </div>
+</body>
+</html>

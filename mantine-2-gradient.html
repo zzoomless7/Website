@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mantine Gradient - Calculator Producție Band 41</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #fff;
+      padding: 0;
+    }
+    
+    .container { max-width: 1000px; margin: 0 auto; padding: 40px 24px; }
+    
+    /* Gradient Header */
+    .header {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    .header h1 {
+      font-size: 36px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    
+    .header p {
+      font-size: 16px;
+      opacity: 0.95;
+    }
+    
+    /* Glass Paper */
+    .glass-paper {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s;
+    }
+    
+    .glass-paper:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    .paper-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: #fff;
+    }
+    
+    /* Glass Input */
+    .glass-input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      font-size: 15px;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+    
+    .glass-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .glass-input:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Glass Button */
+    .glass-btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .glass-btn-solid {
+      background: rgba(255, 255, 255, 0.3);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    .glass-btn-solid:hover {
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .glass-btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .glass-btn-outline:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    /* Glass Badge */
+    .glass-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Employee Card */
+    .employee-glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+    
+    .employee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .employee-name {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    /* Rate Display */
+    .rate-display {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 18px;
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .rate-input-large {
+      font-size: 64px;
+      font-weight: 900;
+      text-align: center;
+      border: none;
+      background: transparent;
+      width: 100%;
+      color: #fff;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Total Card */
+    .total-glass {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(30px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 24px;
+      padding: 56px 40px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+    
+    .total-label {
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+    
+    .total-value {
+      font-size: 88px;
+      font-weight: 900;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Group */
+    .group { display: flex; gap: 16px; }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      opacity: 0.95;
+    }
+    
+    @media (max-width: 768px) {
+      .group { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🏭 Band 41 Calculator</h1>
+      <p>Calculator de producție - Mantine Gradient</p>
+    </div>
+
+    <!-- Rate Paper -->
+    <div class="glass-paper">
+      <div class="paper-title">📊 Rată de Producție</div>
+      
+      <div class="rate-display">
+        <input class="rate-input-large" type="number" value="33.3" step="0.1" min="0">
+        <div style="margin-top: 16px; font-size: 18px; font-weight: 600;">buc/oră</div>
+      </div>
+      
+      <div style="margin-bottom: 24px;">
+        <span class="glass-badge">✨ WERK 1 = 33.3</span>
+        <span class="glass-badge">✨ WERK 2 = 34.4</span>
+      </div>
+      
+      <div class="group">
+        <button class="glass-btn glass-btn-solid" style="flex: 1;">WERK 1</button>
+        <button class="glass-btn glass-btn-outline" style="flex: 1;">WERK 2</button>
+      </div>
+    </div>
+
+    <!-- Shift Paper -->
+    <div class="glass-paper">
+      <div class="paper-title">⏰ Schimb de Lucru</div>
+      
+      <div class="group">
+        <button class="glass-btn glass-btn-solid" style="flex: 1;">
+          ☀️ Frühschicht
+        </button>
+        <button class="glass-btn glass-btn-outline" style="flex: 1;">
+          🌙 Spätschicht
+        </button>
+      </div>
+    </div>
+
+    <!-- Employees Paper -->
+    <div class="glass-paper">
+      <div class="paper-title">👥 Angajați</div>
+      
+      <div class="employee-glass">
+        <div class="employee-header">
+          <div class="employee-name">
+            <span style="font-size: 32px;">👤</span>
+            Angajat 1
+          </div>
+          <button class="glass-btn" style="background: rgba(255, 107, 107, 0.8); color: #fff; padding: 12px 24px;">
+            ✕ Șterge
+          </button>
+        </div>
+        
+        <div class="group">
+          <div style="flex: 1;">
+            <label>Ora început</label>
+            <input class="glass-input" type="text" value="05:45:00">
+          </div>
+          <div style="flex: 1;">
+            <label>Ora sfârșit</label>
+            <input class="glass-input" type="text" value="14:00:00">
+          </div>
+        </div>
+      </div>
+
+      <button class="glass-btn glass-btn-solid" style="width: 100%; font-size: 17px; padding: 16px;">
+        + Adaugă Angajat
+      </button>
+    </div>
+
+    <!-- Total Card -->
+    <div class="total-glass">
+      <div class="total-label">📦 Total Bucăți Produse</div>
+      <div class="total-value">264</div>
+    </div>
+
+  </div>
+</body>
+</html>
