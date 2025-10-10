@@ -473,26 +473,52 @@
     const currentYearEl = document.getElementById('currentYear');
     const weatherInfo = document.getElementById('weatherInfo');
 
-    // Weather icons mapping
-    const weatherEmojis = {
-      'Clear': '☀️',
-      'Clouds': '☁️',
-      'Rain': '🌧️',
-      'Drizzle': '🌦️',
-      'Thunderstorm': '⛈️',
-      'Snow': '❄️',
-      'Mist': '🌫️',
-      'Fog': '🌫️',
-      'Haze': '🌫️',
-      'Smoke': '🌫️',
-      'Dust': '🌫️',
-      'Sand': '🌫️',
-      'Ash': '🌫️',
-      'Squall': '💨',
-      'Tornado': '🌪️'
-    };
+    // Weather code to emoji mapping (WMO Weather codes)
+    function getWeatherEmoji(code) {
+      if (code === 0) return '☀️'; // Clear sky
+      if (code <= 3) return '⛅'; // Partly cloudy
+      if (code <= 48) return '🌫️'; // Fog
+      if (code <= 57) return '🌦️'; // Drizzle
+      if (code <= 67) return '🌧️'; // Rain
+      if (code <= 77) return '❄️'; // Snow
+      if (code <= 82) return '🌧️'; // Rain showers
+      if (code <= 86) return '❄️'; // Snow showers
+      if (code <= 99) return '⛈️'; // Thunderstorm
+      return '🌤️';
+    }
 
-    // Get weather based on GPS location
+    // Get weather description in Romanian
+    function getWeatherDescription(code) {
+      const descriptions = {
+        0: 'senin',
+        1: 'predominant senin',
+        2: 'parțial înnorat',
+        3: 'înnorat',
+        45: 'ceață',
+        48: 'ceață cu chiciură',
+        51: 'burniță ușoară',
+        53: 'burniță moderată',
+        55: 'burniță densă',
+        61: 'ploaie ușoară',
+        63: 'ploaie moderată',
+        65: 'ploaie torențială',
+        71: 'ninsoare ușoară',
+        73: 'ninsoare moderată',
+        75: 'ninsoare abundentă',
+        77: 'fulgi de zăpadă',
+        80: 'averse ușoare',
+        81: 'averse moderate',
+        82: 'averse puternice',
+        85: 'ninsoare cu averse',
+        86: 'ninsoare cu averse puternice',
+        95: 'furtună',
+        96: 'furtună cu grindină',
+        99: 'furtună puternică cu grindină'
+      };
+      return descriptions[code] || 'vreme variabilă';
+    }
+
+    // Get weather based on GPS location (100% FREE - Open-Meteo API)
     function getWeather() {
       if (!navigator.geolocation) {
         weatherInfo.textContent = '🌍 București, România';
@@ -502,38 +528,53 @@
 
       navigator.geolocation.getCurrentPosition(
         // Success callback
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
+        async (position) => {
+          const lat = position.coords.latitude.toFixed(2);
+          const lon = position.coords.longitude.toFixed(2);
           
-          // OpenWeatherMap API (free tier)
-          // IMPORTANT: Înlocuiește 'YOUR_API_KEY' cu API key-ul tău de la https://openweathermap.org/api
-          const apiKey = 'YOUR_API_KEY'; // Obține gratuit de la openweathermap.org
-          const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=ro&appid=${apiKey}`;
-          
-          fetch(url)
-            .then(response => response.json())
-            .then(data => {
-              if (data.main && data.weather) {
-                const temp = Math.round(data.main.temp);
-                const condition = data.weather[0].main;
-                const description = data.weather[0].description;
-                const city = data.name;
-                const emoji = weatherEmojis[condition] || '🌤️';
-                
-                weatherInfo.innerHTML = `${emoji} ${city}: ${temp}°C, ${description}`;
-                weatherInfo.classList.remove('weather-loading');
-              } else {
-                // Fallback dacă API key-ul nu e valid
-                weatherInfo.innerHTML = '📍 Locația ta (API key necesar pentru meteo)';
-                weatherInfo.classList.remove('weather-loading');
-              }
-            })
-            .catch(error => {
-              console.error('Weather API error:', error);
-              weatherInfo.innerHTML = '📍 Locația ta (verifică API key-ul)';
-              weatherInfo.classList.remove('weather-loading');
-            });
+          try {
+            // Open-Meteo API - 100% GRATUIT, fără API key, fără limită
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+            
+            const weatherResponse = await fetch(weatherUrl);
+            const weatherData = await weatherResponse.json();
+            
+            if (weatherData.current) {
+              const temp = Math.round(weatherData.current.temperature_2m);
+              const weatherCode = weatherData.current.weather_code;
+              const emoji = getWeatherEmoji(weatherCode);
+              const description = getWeatherDescription(weatherCode);
+              
+              // Nominatim API pentru numele orașului (gratuit OpenStreetMap)
+              const cityUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=ro`;
+              
+              fetch(cityUrl, {
+                headers: {
+                  'User-Agent': 'Band41Calculator/1.0'
+                }
+              })
+                .then(response => response.json())
+                .then(cityData => {
+                  const city = cityData.address?.city 
+                    || cityData.address?.town 
+                    || cityData.address?.village 
+                    || cityData.address?.county
+                    || 'Locația ta';
+                  
+                  weatherInfo.innerHTML = `${emoji} ${city}: ${temp}°C, ${description}`;
+                  weatherInfo.classList.remove('weather-loading');
+                })
+                .catch(() => {
+                  // Fără nume oraș, doar temp
+                  weatherInfo.innerHTML = `${emoji} ${temp}°C, ${description}`;
+                  weatherInfo.classList.remove('weather-loading');
+                });
+            }
+          } catch (error) {
+            console.error('Weather error:', error);
+            weatherInfo.innerHTML = '📍 Locația ta';
+            weatherInfo.classList.remove('weather-loading');
+          }
         },
         // Error callback
         (error) => {
