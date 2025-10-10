@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Weather Test</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .loading { opacity: 0.6; }
+  </style>
+</head>
+<body>
+  <h1>Weather GPS Test</h1>
+  <div id="weatherInfo" class="loading">📍 Se detectează locația...</div>
+  
+  <script>
+    const weatherInfo = document.getElementById('weatherInfo');
+
+    function getWeatherEmoji(code) {
+      if (code === 0) return '☀️';
+      if (code <= 3) return '⛅';
+      if (code <= 48) return '🌫️';
+      if (code <= 57) return '🌦️';
+      if (code <= 67) return '🌧️';
+      if (code <= 77) return '❄️';
+      if (code <= 82) return '🌧️';
+      if (code <= 86) return '❄️';
+      if (code <= 99) return '⛈️';
+      return '🌤️';
+    }
+
+    function getWeatherDescription(code) {
+      const descriptions = {
+        0: 'senin', 1: 'predominant senin', 2: 'parțial înnorat', 
+        3: 'înnorat', 45: 'ceață', 61: 'ploaie ușoară', 
+        63: 'ploaie moderată', 71: 'ninsoare ușoară', 95: 'furtună'
+      };
+      return descriptions[code] || 'vreme variabilă';
+    }
+
+    function getWeather() {
+      if (!navigator.geolocation) {
+        weatherInfo.textContent = '🌍 București, România';
+        weatherInfo.classList.remove('loading');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude.toFixed(2);
+          const lon = position.coords.longitude.toFixed(2);
+          
+          try {
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+            
+            const weatherResponse = await fetch(weatherUrl);
+            const weatherData = await weatherResponse.json();
+            
+            if (weatherData.current) {
+              const temp = Math.round(weatherData.current.temperature_2m);
+              const weatherCode = weatherData.current.weather_code;
+              const emoji = getWeatherEmoji(weatherCode);
+              const description = getWeatherDescription(weatherCode);
+              
+              const cityUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=ro`;
+              
+              fetch(cityUrl, {
+                headers: { 'User-Agent': 'Band41Calculator/1.0' }
+              })
+                .then(response => response.json())
+                .then(cityData => {
+                  const city = cityData.address?.city 
+                    || cityData.address?.town 
+                    || cityData.address?.village 
+                    || cityData.address?.county
+                    || 'Locația ta';
+                  
+                  weatherInfo.innerHTML = `${emoji} ${city}: ${temp}°C, ${description}`;
+                  weatherInfo.classList.remove('loading');
+                })
+                .catch(() => {
+                  weatherInfo.innerHTML = `${emoji} ${temp}°C, ${description}`;
+                  weatherInfo.classList.remove('loading');
+                });
+            }
+          } catch (error) {
+            console.error('Weather error:', error);
+            weatherInfo.innerHTML = '📍 Locația ta';
+            weatherInfo.classList.remove('loading');
+          }
+        },
+        (error) => {
+          console.log('Geolocation error:', error);
+          weatherInfo.innerHTML = '🌍 București, România';
+          weatherInfo.classList.remove('loading');
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 5000,
+          maximumAge: 600000
+        }
+      );
+    }
+
+    // Apelează funcția la încărcare
+    window.addEventListener('DOMContentLoaded', getWeather);
+  </script>
+</body>
+</html>

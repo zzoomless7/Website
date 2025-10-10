@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test Weather</title>
+</head>
+<body>
+  <h1>Test Weather API</h1>
+  <div id="result">Loading...</div>
+  
+  <script>
+    const resultDiv = document.getElementById('result');
+    
+    // Test Open-Meteo API (București coordinates)
+    const lat = 44.43;
+    const lon = 26.10;
+    
+    async function testWeather() {
+      try {
+        resultDiv.innerHTML = '1. Testing Open-Meteo API...<br>';
+        
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+        
+        const response = await fetch(weatherUrl);
+        const data = await response.json();
+        
+        resultDiv.innerHTML += `✅ Open-Meteo Response: ${JSON.stringify(data.current)}<br><br>`;
+        
+        if (data.current) {
+          const temp = Math.round(data.current.temperature_2m);
+          const code = data.current.weather_code;
+          
+          resultDiv.innerHTML += `Temperature: ${temp}°C<br>`;
+          resultDiv.innerHTML += `Weather Code: ${code}<br><br>`;
+        }
+        
+        // Test Nominatim
+        resultDiv.innerHTML += '2. Testing Nominatim API...<br>';
+        
+        const cityUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=ro`;
+        
+        const cityResponse = await fetch(cityUrl, {
+          headers: {
+            'User-Agent': 'Band41Calculator/1.0'
+          }
+        });
+        const cityData = await cityResponse.json();
+        
+        resultDiv.innerHTML += `✅ Nominatim Response: ${JSON.stringify(cityData.address)}<br><br>`;
+        
+        const city = cityData.address?.city 
+          || cityData.address?.town 
+          || cityData.address?.village 
+          || cityData.address?.county
+          || 'Unknown';
+        
+        resultDiv.innerHTML += `City detected: ${city}<br>`;
+        
+      } catch (error) {
+        resultDiv.innerHTML += `❌ Error: ${error.message}`;
+      }
+    }
+    
+    testWeather();
+  </script>
+</body>
+</html>
