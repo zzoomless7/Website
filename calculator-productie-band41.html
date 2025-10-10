@@ -36,22 +36,27 @@
     .ant-header {
       background: #001529;
       color: white;
-      padding: 0 24px;
-      height: 64px;
-      display: flex;
-      align-items: center;
+      padding: 16px 24px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
     
     .ant-header h1 {
       font-size: 20px;
       font-weight: 500;
-      margin: 0;
+      margin: 0 0 8px 0;
     }
     
-    .ant-header-right {
-      margin-left: auto;
-      opacity: 0.8;
+    .weather-info {
+      font-size: 15px;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .weather-loading {
+      opacity: 0.6;
+      font-size: 14px;
     }
     
     /* Main Content */
@@ -334,8 +339,12 @@
 <body>
   <!-- Header -->
   <div class="ant-header">
-    <h1>🏭 Band 41 Calculator</h1>
-    <span class="ant-header-right">Ant Design Style</span>
+    <div class="container">
+      <h1>🏭 Band 41 Calculator</h1>
+      <div id="weatherInfo" class="weather-info weather-loading">
+        📍 Se detectează locația...
+      </div>
+    </div>
   </div>
 
   <!-- Main -->
@@ -462,6 +471,85 @@
     const totalBox = document.getElementById('totalBox');
     const currentDateTimeEl = document.getElementById('currentDateTime');
     const currentYearEl = document.getElementById('currentYear');
+    const weatherInfo = document.getElementById('weatherInfo');
+
+    // Weather icons mapping
+    const weatherEmojis = {
+      'Clear': '☀️',
+      'Clouds': '☁️',
+      'Rain': '🌧️',
+      'Drizzle': '🌦️',
+      'Thunderstorm': '⛈️',
+      'Snow': '❄️',
+      'Mist': '🌫️',
+      'Fog': '🌫️',
+      'Haze': '🌫️',
+      'Smoke': '🌫️',
+      'Dust': '🌫️',
+      'Sand': '🌫️',
+      'Ash': '🌫️',
+      'Squall': '💨',
+      'Tornado': '🌪️'
+    };
+
+    // Get weather based on GPS location
+    function getWeather() {
+      if (!navigator.geolocation) {
+        weatherInfo.textContent = '🌍 București, România';
+        weatherInfo.classList.remove('weather-loading');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        // Success callback
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          
+          // OpenWeatherMap API (free tier)
+          // IMPORTANT: Înlocuiește 'YOUR_API_KEY' cu API key-ul tău de la https://openweathermap.org/api
+          const apiKey = 'YOUR_API_KEY'; // Obține gratuit de la openweathermap.org
+          const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=ro&appid=${apiKey}`;
+          
+          fetch(url)
+            .then(response => response.json())
+            .then(data => {
+              if (data.main && data.weather) {
+                const temp = Math.round(data.main.temp);
+                const condition = data.weather[0].main;
+                const description = data.weather[0].description;
+                const city = data.name;
+                const emoji = weatherEmojis[condition] || '🌤️';
+                
+                weatherInfo.innerHTML = `${emoji} ${city}: ${temp}°C, ${description}`;
+                weatherInfo.classList.remove('weather-loading');
+              } else {
+                // Fallback dacă API key-ul nu e valid
+                weatherInfo.innerHTML = '📍 Locația ta (API key necesar pentru meteo)';
+                weatherInfo.classList.remove('weather-loading');
+              }
+            })
+            .catch(error => {
+              console.error('Weather API error:', error);
+              weatherInfo.innerHTML = '📍 Locația ta (verifică API key-ul)';
+              weatherInfo.classList.remove('weather-loading');
+            });
+        },
+        // Error callback
+        (error) => {
+          console.log('Geolocation error:', error);
+          // Fallback la București
+          weatherInfo.innerHTML = '🌍 București, România';
+          weatherInfo.classList.remove('weather-loading');
+        },
+        // Options
+        {
+          enableHighAccuracy: false,
+          timeout: 5000,
+          maximumAge: 600000 // Cache 10 minute
+        }
+      );
+    }
 
     // Update date and time in footer
     function updateDateTime() {
@@ -888,6 +976,9 @@
     window.addEventListener('DOMContentLoaded', () => {
       updateDateTime();
       dateTimeInterval = setInterval(updateDateTime, 1000);
+      
+      // Get weather on load
+      getWeather();
       
       const stateLoaded = loadCalculatorState();
       
