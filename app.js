@@ -8,9 +8,32 @@ class TournamentManager {
         this.teams = this.loadData('teams') || [];
         this.matches = this.loadData('matches') || [];
         this.groups = this.loadData('groups') || {};
+        this.config = this.loadData('config') || this.getDefaultConfig();
         this.currentTeamId = null;
         this.currentMatchId = null;
         this.init();
+    }
+
+    getDefaultConfig() {
+        return {
+            tournamentName: '',
+            tournamentLocation: '',
+            tournamentStart: '',
+            tournamentEnd: '',
+            maxPlayersPerTeam: 25,
+            minPlayersPerTeam: 11,
+            requireTeamLogo: false,
+            allowDuplicateNumbers: true,
+            requirePlayerNumber: false,
+            defaultPosition: 'midfielder',
+            matchDuration: 90,
+            allowOvertime: false,
+            allowPenalties: false,
+            defaultMatchLocation: '',
+            autoSave: true,
+            showConfirmations: true,
+            teamsPerGroup: 4
+        };
     }
 
     init() {
@@ -202,6 +225,12 @@ class TournamentManager {
 
         if (!name.trim()) {
             alert('Numele echipei este obligatoriu!');
+            return;
+        }
+
+        // Check if logo is required
+        if (this.config.requireTeamLogo && !logo) {
+            alert('Logo-ul echipei este obligatoriu conform setărilor turneului!');
             return;
         }
 
@@ -466,11 +495,17 @@ class TournamentManager {
         const team2Id = parseInt(document.getElementById('match-team2').value);
         const date = document.getElementById('match-date').value;
         const stage = document.getElementById('match-stage').value;
-        const location = document.getElementById('match-location').value;
+        const locationInput = document.getElementById('match-location');
+        const location = locationInput.value || this.config.defaultMatchLocation || '';
 
         if (team1Id === team2Id) {
             alert('O echipă nu poate juca împotriva ei însăși!');
             return;
+        }
+
+        // Set default location if configured
+        if (!locationInput.value && this.config.defaultMatchLocation) {
+            locationInput.value = this.config.defaultMatchLocation;
         }
 
         const match = {
@@ -724,8 +759,11 @@ class TournamentManager {
     }
 
     generateGroups() {
-        if (this.teams.length < 4) {
-            alert('Trebuie să existe cel puțin 4 echipe pentru a genera grupe!');
+        const teamsPerGroup = this.config.teamsPerGroup || 4;
+        const minTeams = teamsPerGroup;
+
+        if (this.teams.length < minTeams) {
+            alert(`Trebuie să existe cel puțin ${minTeams} echipe pentru a genera grupe!`);
             return;
         }
 
@@ -735,11 +773,11 @@ class TournamentManager {
             }
         }
 
-        const numGroups = Math.ceil(this.teams.length / 4);
+        const numGroups = Math.ceil(this.teams.length / teamsPerGroup);
         
         // Maximum 8 groups (A-H)
         if (numGroups > 8) {
-            alert('Maximum 8 grupe (A-H) sunt permise!\n\nAi ' + this.teams.length + ' echipe, ceea ce ar necesita ' + numGroups + ' grupe.\n\nMaximum 32 echipe (8 grupe × 4 echipe) sunt permise.');
+            alert(`Maximum 8 grupe (A-H) sunt permise!\n\nAi ${this.teams.length} echipe, ceea ce ar necesita ${numGroups} grupe.\n\nMaximum ${8 * teamsPerGroup} echipe (8 grupe × ${teamsPerGroup} echipe) sunt permise.`);
             return;
         }
 
@@ -750,12 +788,12 @@ class TournamentManager {
 
         for (let i = 0; i < numGroups && i < 8; i++) {
             const groupName = groupNames[i];
-            this.groups[groupName] = shuffled.slice(i * 4, (i + 1) * 4).map(t => t.id);
+            this.groups[groupName] = shuffled.slice(i * teamsPerGroup, (i + 1) * teamsPerGroup).map(t => t.id);
         }
 
         this.saveData('groups', this.groups);
         this.updateAllViews();
-        alert(`Grupele au fost generate cu succes!\n\n${numGroups} grupe (${groupNames.slice(0, numGroups).join(', ')}) create cu ${this.teams.length} echipe.`);
+        alert(`Grupele au fost generate cu succes!\n\n${numGroups} grupe (${groupNames.slice(0, numGroups).join(', ')}) create cu ${this.teams.length} echipe (${teamsPerGroup} echipe/grupă).`);
     }
 
     renderGroups() {
@@ -1256,8 +1294,8 @@ class TournamentManager {
             }
         }
 
-        // Check for duplicate jersey number in the same team
-        if (number) {
+        // Check for duplicate jersey number in the same team (only if duplicates not allowed)
+        if (number && !this.config.allowDuplicateNumbers) {
             const duplicateNumber = this.players.find(p => 
                 p.id !== this.currentPlayerId &&
                 p.teamId === teamId && 
@@ -1266,6 +1304,21 @@ class TournamentManager {
             if (duplicateNumber) {
                 const teamName = this.teams.find(t => t.id === teamId)?.name;
                 alert(`Numărul ${number} este deja folosit de ${duplicateNumber.name} în echipa ${teamName}!`);
+                return;
+            }
+        }
+
+        // Check if player number is required
+        if (this.config.requirePlayerNumber && !number) {
+            alert('Numărul tricou este obligatoriu conform setărilor turneului!');
+            return;
+        }
+
+        // Check max players per team
+        if (!this.currentPlayerId) {
+            const teamPlayerCount = this.players.filter(p => p.teamId === teamId).length;
+            if (teamPlayerCount >= this.config.maxPlayersPerTeam) {
+                alert(`Echipa a atins numărul maxim de jucători (${this.config.maxPlayersPerTeam})!`);
                 return;
             }
         }
@@ -1622,13 +1675,58 @@ class TournamentManager {
     // ========================================
 
     setupSettings() {
+        // Load config values into form
+        this.loadConfigToForm();
+
+        // Tournament config
+        const saveTournamentConfig = document.getElementById('save-tournament-config');
+        if (saveTournamentConfig) {
+            saveTournamentConfig.addEventListener('click', () => this.saveTournamentConfig());
+        }
+
+        // Team settings
+        const saveTeamSettings = document.getElementById('save-team-settings');
+        const bulkDeleteTeams = document.getElementById('bulk-delete-teams');
+        if (saveTeamSettings) {
+            saveTeamSettings.addEventListener('click', () => this.saveTeamSettings());
+        }
+        if (bulkDeleteTeams) {
+            bulkDeleteTeams.addEventListener('click', () => this.bulkDeleteTeams());
+        }
+
+        // Player settings
+        const savePlayerSettings = document.getElementById('save-player-settings');
+        const bulkDeletePlayers = document.getElementById('bulk-delete-players');
+        if (savePlayerSettings) {
+            savePlayerSettings.addEventListener('click', () => this.savePlayerSettings());
+        }
+        if (bulkDeletePlayers) {
+            bulkDeletePlayers.addEventListener('click', () => this.bulkDeletePlayers());
+        }
+
+        // Match settings
+        const saveMatchSettings = document.getElementById('save-match-settings');
+        const bulkDeleteMatches = document.getElementById('bulk-delete-matches');
+        if (saveMatchSettings) {
+            saveMatchSettings.addEventListener('click', () => this.saveMatchSettings());
+        }
+        if (bulkDeleteMatches) {
+            bulkDeleteMatches.addEventListener('click', () => this.bulkDeleteMatches());
+        }
+
+        // Advanced settings
+        const saveAdvancedSettings = document.getElementById('save-advanced-settings');
+        if (saveAdvancedSettings) {
+            saveAdvancedSettings.addEventListener('click', () => this.saveAdvancedSettings());
+        }
+
+        // Reset buttons
         const resetAllBtn = document.getElementById('reset-all-data');
         const resetMatchesBtn = document.getElementById('reset-matches-only');
         const resetStatsBtn = document.getElementById('reset-stats-only');
+        const resetGroupsBtn = document.getElementById('reset-groups-only');
+        const resetPlayersBtn = document.getElementById('reset-players-only');
         const resetTournamentBtn = document.getElementById('reset-tournament-btn');
-        const exportBtn = document.getElementById('export-data');
-        const importBtn = document.getElementById('import-data');
-        const importFile = document.getElementById('import-file');
 
         if (resetAllBtn) {
             resetAllBtn.addEventListener('click', () => this.resetAllData());
@@ -1639,18 +1737,408 @@ class TournamentManager {
         if (resetStatsBtn) {
             resetStatsBtn.addEventListener('click', () => this.resetStats());
         }
+        if (resetGroupsBtn) {
+            resetGroupsBtn.addEventListener('click', () => this.resetGroupsOnly());
+        }
+        if (resetPlayersBtn) {
+            resetPlayersBtn.addEventListener('click', () => this.resetPlayersOnly());
+        }
         if (resetTournamentBtn) {
             resetTournamentBtn.addEventListener('click', () => this.resetAllData());
         }
+
+        // Export buttons
+        const exportBtn = document.getElementById('export-data');
+        const exportTeamsBtn = document.getElementById('export-teams-only');
+        const exportPlayersBtn = document.getElementById('export-players-only');
+        const importBtn = document.getElementById('import-data');
+        const importFile = document.getElementById('import-file');
+
         if (exportBtn) {
             exportBtn.addEventListener('click', () => this.exportData());
+        }
+        if (exportTeamsBtn) {
+            exportTeamsBtn.addEventListener('click', () => this.exportTeamsOnly());
+        }
+        if (exportPlayersBtn) {
+            exportPlayersBtn.addEventListener('click', () => this.exportPlayersOnly());
         }
         if (importBtn && importFile) {
             importBtn.addEventListener('click', () => importFile.click());
             importFile.addEventListener('change', (e) => this.importData(e));
         }
 
+        // Sample data generation
+        const genTeamsBtn = document.getElementById('generate-sample-teams');
+        const genPlayersBtn = document.getElementById('generate-sample-players');
+        const genMatchesBtn = document.getElementById('generate-sample-matches');
+        const genFullBtn = document.getElementById('generate-full-tournament');
+
+        if (genTeamsBtn) {
+            genTeamsBtn.addEventListener('click', () => this.generateSampleTeams());
+        }
+        if (genPlayersBtn) {
+            genPlayersBtn.addEventListener('click', () => this.generateSamplePlayers());
+        }
+        if (genMatchesBtn) {
+            genMatchesBtn.addEventListener('click', () => this.generateSampleMatches());
+        }
+        if (genFullBtn) {
+            genFullBtn.addEventListener('click', () => this.generateFullTournament());
+        }
+
         this.renderTournamentInfo();
+    }
+
+    loadConfigToForm() {
+        // Load tournament config
+        const tournamentName = document.getElementById('tournament-name');
+        const tournamentLocation = document.getElementById('tournament-location');
+        const tournamentStart = document.getElementById('tournament-start');
+        const tournamentEnd = document.getElementById('tournament-end');
+
+        if (tournamentName) tournamentName.value = this.config.tournamentName || '';
+        if (tournamentLocation) tournamentLocation.value = this.config.tournamentLocation || '';
+        if (tournamentStart) tournamentStart.value = this.config.tournamentStart || '';
+        if (tournamentEnd) tournamentEnd.value = this.config.tournamentEnd || '';
+
+        // Load team settings
+        const maxPlayers = document.getElementById('max-players-per-team');
+        const minPlayers = document.getElementById('min-players-per-team');
+        const requireLogo = document.getElementById('require-team-logo');
+
+        if (maxPlayers) maxPlayers.value = this.config.maxPlayersPerTeam || 25;
+        if (minPlayers) minPlayers.value = this.config.minPlayersPerTeam || 11;
+        if (requireLogo) requireLogo.checked = this.config.requireTeamLogo || false;
+
+        // Load player settings
+        const allowDupNumbers = document.getElementById('allow-duplicate-numbers');
+        const requireNumber = document.getElementById('require-player-number');
+        const defaultPos = document.getElementById('default-position');
+
+        if (allowDupNumbers) allowDupNumbers.checked = this.config.allowDuplicateNumbers !== false;
+        if (requireNumber) requireNumber.checked = this.config.requirePlayerNumber || false;
+        if (defaultPos) defaultPos.value = this.config.defaultPosition || 'midfielder';
+
+        // Load match settings
+        const matchDuration = document.getElementById('match-duration');
+        const allowOvertime = document.getElementById('allow-overtime');
+        const allowPenalties = document.getElementById('allow-penalties');
+        const defaultLocation = document.getElementById('default-match-location');
+
+        if (matchDuration) matchDuration.value = this.config.matchDuration || 90;
+        if (allowOvertime) allowOvertime.checked = this.config.allowOvertime || false;
+        if (allowPenalties) allowPenalties.checked = this.config.allowPenalties || false;
+        if (defaultLocation) defaultLocation.value = this.config.defaultMatchLocation || '';
+
+        // Load advanced settings
+        const autoSave = document.getElementById('auto-save');
+        const showConfirmations = document.getElementById('show-confirmations');
+        const teamsPerGroup = document.getElementById('teams-per-group');
+
+        if (autoSave) autoSave.checked = this.config.autoSave !== false;
+        if (showConfirmations) showConfirmations.checked = this.config.showConfirmations !== false;
+        if (teamsPerGroup) teamsPerGroup.value = this.config.teamsPerGroup || 4;
+    }
+
+    saveTournamentConfig() {
+        this.config.tournamentName = document.getElementById('tournament-name').value;
+        this.config.tournamentLocation = document.getElementById('tournament-location').value;
+        this.config.tournamentStart = document.getElementById('tournament-start').value;
+        this.config.tournamentEnd = document.getElementById('tournament-end').value;
+
+        this.saveData('config', this.config);
+        alert('✅ Configurarea turneului a fost salvată!');
+        this.renderTournamentInfo();
+    }
+
+    saveTeamSettings() {
+        this.config.maxPlayersPerTeam = parseInt(document.getElementById('max-players-per-team').value);
+        this.config.minPlayersPerTeam = parseInt(document.getElementById('min-players-per-team').value);
+        this.config.requireTeamLogo = document.getElementById('require-team-logo').checked;
+
+        this.saveData('config', this.config);
+        alert('✅ Setările pentru echipe au fost salvate!');
+    }
+
+    savePlayerSettings() {
+        this.config.allowDuplicateNumbers = document.getElementById('allow-duplicate-numbers').checked;
+        this.config.requirePlayerNumber = document.getElementById('require-player-number').checked;
+        this.config.defaultPosition = document.getElementById('default-position').value;
+
+        this.saveData('config', this.config);
+        alert('✅ Setările pentru jucători au fost salvate!');
+    }
+
+    saveMatchSettings() {
+        this.config.matchDuration = parseInt(document.getElementById('match-duration').value);
+        this.config.allowOvertime = document.getElementById('allow-overtime').checked;
+        this.config.allowPenalties = document.getElementById('allow-penalties').checked;
+        this.config.defaultMatchLocation = document.getElementById('default-match-location').value;
+
+        this.saveData('config', this.config);
+        alert('✅ Setările pentru meciuri au fost salvate!');
+    }
+
+    saveAdvancedSettings() {
+        this.config.autoSave = document.getElementById('auto-save').checked;
+        this.config.showConfirmations = document.getElementById('show-confirmations').checked;
+        this.config.teamsPerGroup = parseInt(document.getElementById('teams-per-group').value);
+
+        this.saveData('config', this.config);
+        alert('✅ Setările avansate au fost salvate!');
+    }
+
+    bulkDeleteTeams() {
+        if (!confirm('⚠️ ATENȚIE! Aceasta va șterge TOATE echipele și:\n\n- Toți jucătorii\n- Toate meciurile\n- Toate grupele\n\nContinui?')) return;
+
+        this.teams = [];
+        this.players = [];
+        this.matches = [];
+        this.groups = {};
+
+        this.saveData('teams', this.teams);
+        this.saveData('players', this.players);
+        this.saveData('matches', this.matches);
+        this.saveData('groups', this.groups);
+
+        this.updateAllViews();
+        alert('✅ Toate echipele și datele asociate au fost șterse!');
+    }
+
+    bulkDeletePlayers() {
+        if (!confirm('Sigur doriți să ștergeți TOȚI jucătorii din toate echipele?')) return;
+
+        this.players = [];
+        this.saveData('players', this.players);
+        this.updateAllViews();
+        alert('✅ Toți jucătorii au fost șterși!');
+    }
+
+    bulkDeleteMatches() {
+        if (!confirm('Sigur doriți să ștergeți TOATE meciurile?\n\nStatisticile echipelor vor fi resetate!')) return;
+
+        this.matches = [];
+        // Reset all team statistics
+        this.teams.forEach(team => {
+            team.stats = { 
+                played: 0, wins: 0, draws: 0, losses: 0, 
+                goalsFor: 0, goalsAgainst: 0, points: 0,
+                setsWon: 0, setsLost: 0 
+            };
+        });
+
+        this.saveData('matches', this.matches);
+        this.saveData('teams', this.teams);
+        this.updateAllViews();
+        alert('✅ Toate meciurile au fost șterse și statisticile resetate!');
+    }
+
+    resetGroupsOnly() {
+        if (!confirm('Sigur doriți să ștergeți toate grupele?')) return;
+
+        this.groups = {};
+        this.saveData('groups', this.groups);
+        this.updateAllViews();
+        alert('✅ Grupele au fost șterse!');
+    }
+
+    resetPlayersOnly() {
+        if (!confirm('Sigur doriți să ștergeți toți jucătorii?')) return;
+
+        this.players = [];
+        this.saveData('players', this.players);
+        this.updateAllViews();
+        alert('✅ Toți jucătorii au fost șterși!');
+    }
+
+    exportTeamsOnly() {
+        const data = {
+            sport: this.currentSport,
+            teams: this.teams,
+            exportDate: new Date().toISOString(),
+            exportType: 'teams-only'
+        };
+
+        this.downloadJSON(data, `echipe-${this.currentSport}-${new Date().toISOString().split('T')[0]}.json`);
+        alert('✅ Echipele au fost exportate cu succes!');
+    }
+
+    exportPlayersOnly() {
+        const data = {
+            sport: this.currentSport,
+            players: this.players,
+            teams: this.teams, // Include teams for reference
+            exportDate: new Date().toISOString(),
+            exportType: 'players-only'
+        };
+
+        this.downloadJSON(data, `jucatori-${this.currentSport}-${new Date().toISOString().split('T')[0]}.json`);
+        alert('✅ Jucătorii au fost exportați cu succes!');
+    }
+
+    downloadJSON(data, filename) {
+        const dataStr = JSON.stringify(data, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ========================================
+    // Sample Data Generation
+    // ========================================
+
+    generateSampleTeams() {
+        if (this.teams.length > 0) {
+            if (!confirm('Există deja echipe! Continui să adaugi echipe demo?')) return;
+        }
+
+        const sampleTeams = this.currentSport === 'football' 
+            ? [
+                { name: 'Arsenal', logo: '🔴', city: 'Londra', coach: 'Mikel Arteta' },
+                { name: 'Barcelona', logo: '🔵', city: 'Barcelona', coach: 'Xavi Hernández' },
+                { name: 'Bayern München', logo: '🔴', city: 'München', coach: 'Thomas Tuchel' },
+                { name: 'Chelsea', logo: '🔵', city: 'Londra', coach: 'Mauricio Pochettino' },
+                { name: 'Juventus', logo: '⚫', city: 'Torino', coach: 'Massimiliano Allegri' },
+                { name: 'Manchester United', logo: '🔴', city: 'Manchester', coach: 'Erik ten Hag' },
+                { name: 'Paris Saint-Germain', logo: '🔵', city: 'Paris', coach: 'Luis Enrique' },
+                { name: 'Real Madrid', logo: '⚪', city: 'Madrid', coach: 'Carlo Ancelotti' }
+            ]
+            : [
+                { name: 'CSM București', logo: '🏐', city: 'București', coach: 'Adrian Vasile' },
+                { name: 'Dinamo București', logo: '🔴', city: 'București', coach: 'Costel Enache' },
+                { name: 'Știința Bacău', logo: '🔵', city: 'Bacău', coach: 'Gheorghe Crețu' },
+                { name: 'Volei Municipal Zalău', logo: '🟡', city: 'Zalău', coach: 'Mihai Gavril' },
+                { name: 'CSM Târgoviște', logo: '⚫', city: 'Târgoviște', coach: 'Dan Pascu' },
+                { name: 'Rapid București', logo: '⚪', city: 'București', coach: 'Marian Muntean' },
+                { name: 'Arcada Galați', logo: '🟢', city: 'Galați', coach: 'Constantin Matei' },
+                { name: 'Steaua București', logo: '🔴', city: 'București', coach: 'Giani Kiriță' }
+            ];
+
+        sampleTeams.forEach(teamData => {
+            const team = {
+                id: Date.now() + Math.random(),
+                ...teamData,
+                stats: { 
+                    played: 0, wins: 0, draws: 0, losses: 0, 
+                    goalsFor: 0, goalsAgainst: 0, points: 0,
+                    setsWon: 0, setsLost: 0
+                }
+            };
+            this.teams.push(team);
+        });
+
+        this.saveData('teams', this.teams);
+        this.updateAllViews();
+        alert(`✅ ${sampleTeams.length} echipe demo au fost generate!`);
+    }
+
+    generateSamplePlayers() {
+        if (this.teams.length === 0) {
+            alert('Adaugă mai întâi echipe!');
+            return;
+        }
+
+        if (this.players.length > 0) {
+            if (!confirm('Există deja jucători! Continui să adaugi jucători demo?')) return;
+        }
+
+        const firstNames = ['Alex', 'Andrei', 'Cristian', 'Dan', 'Emil', 'Florin', 'George', 'Ion', 'Mihai', 'Radu', 'Stefan', 'Victor'];
+        const lastNames = ['Popescu', 'Ionescu', 'Popa', 'Stan', 'Dumitrescu', 'Marin', 'Gheorghe', 'Stoica', 'Diaconu', 'Constantin'];
+        const positions = ['goalkeeper', 'defender', 'defender', 'defender', 'midfielder', 'midfielder', 'midfielder', 'forward', 'forward'];
+
+        let playersAdded = 0;
+
+        this.teams.forEach(team => {
+            // Add 11 players per team
+            for (let i = 0; i < 11; i++) {
+                const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                const player = {
+                    id: Date.now() + Math.random(),
+                    name: `${firstName} ${lastName}`,
+                    teamId: team.id,
+                    number: i + 1,
+                    position: positions[i] || 'midfielder',
+                    stats: { goals: 0, assists: 0, yellowCards: 0, redCards: 0 }
+                };
+                this.players.push(player);
+                playersAdded++;
+            }
+        });
+
+        this.saveData('players', this.players);
+        this.updateAllViews();
+        alert(`✅ ${playersAdded} jucători demo au fost generați!`);
+    }
+
+    generateSampleMatches() {
+        if (this.teams.length < 4) {
+            alert('Trebuie să ai cel puțin 4 echipe pentru a genera meciuri!');
+            return;
+        }
+
+        if (Object.keys(this.groups).length === 0) {
+            if (!confirm('Nu există grupe generate!\n\nGenerez grupele automat și apoi meciurile?')) return;
+            this.generateGroups();
+        }
+
+        // Generate group stage matches
+        let matchesAdded = 0;
+        const today = new Date();
+
+        Object.entries(this.groups).forEach(([groupName, teamIds]) => {
+            // Generate round-robin matches for the group
+            for (let i = 0; i < teamIds.length; i++) {
+                for (let j = i + 1; j < teamIds.length; j++) {
+                    const matchDate = new Date(today);
+                    matchDate.setDate(today.getDate() + matchesAdded);
+                    matchDate.setHours(18, 0, 0);
+
+                    const match = {
+                        id: Date.now() + Math.random(),
+                        team1Id: teamIds[i],
+                        team2Id: teamIds[j],
+                        date: matchDate.toISOString().slice(0, 16),
+                        stage: 'group',
+                        location: this.config.defaultMatchLocation || `Teren ${matchesAdded + 1}`,
+                        score1: null,
+                        score2: null,
+                        status: 'scheduled'
+                    };
+                    this.matches.push(match);
+                    matchesAdded++;
+                }
+            }
+        });
+
+        this.saveData('matches', this.matches);
+        this.updateAllViews();
+        alert(`✅ ${matchesAdded} meciuri demo au fost generate pentru faza grupelor!`);
+    }
+
+    generateFullTournament() {
+        if (!confirm('Aceasta va genera un turneu complet demo cu:\n\n- 8 echipe\n- ~88 jucători\n- Grupe\n- Meciuri\n\nContinui?')) return;
+
+        // Clear existing data
+        this.teams = [];
+        this.players = [];
+        this.matches = [];
+        this.groups = {};
+
+        // Generate sample data
+        this.generateSampleTeams();
+        setTimeout(() => {
+            this.generateSamplePlayers();
+            setTimeout(() => {
+                this.generateSampleMatches();
+                alert('🎉 Turneu complet generat cu succes!\n\nExplorează secțiunile pentru a vedea toate datele!');
+            }, 100);
+        }, 100);
     }
 
     resetAllData() {
@@ -1709,6 +2197,7 @@ class TournamentManager {
     exportData() {
         const data = {
             sport: this.currentSport,
+            config: this.config,
             teams: this.teams,
             matches: this.matches,
             groups: this.groups,
@@ -1716,16 +2205,8 @@ class TournamentManager {
             exportDate: new Date().toISOString()
         };
 
-        const dataStr = JSON.stringify(data, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `turneu-${this.currentSport}-${new Date().toISOString().split('T')[0]}.json`;
-        link.click();
-        URL.revokeObjectURL(url);
-        
-        alert('Datele au fost exportate cu succes!');
+        this.downloadJSON(data, `turneu-${this.currentSport}-${new Date().toISOString().split('T')[0]}.json`);
+        alert('✅ Toate datele au fost exportate cu succes!');
     }
 
     importData(event) {
@@ -1747,14 +2228,17 @@ class TournamentManager {
                 this.matches = data.matches || [];
                 this.groups = data.groups || {};
                 this.players = data.players || [];
+                this.config = data.config || this.config;
 
                 this.saveData('teams', this.teams);
                 this.saveData('matches', this.matches);
                 this.saveData('groups', this.groups);
                 this.saveData('players', this.players);
+                this.saveData('config', this.config);
 
+                this.loadConfigToForm();
                 this.updateAllViews();
-                alert('Datele au fost importate cu succes!');
+                alert('✅ Datele au fost importate cu succes!');
             } catch (error) {
                 alert('Eroare la importarea datelor: ' + error.message);
             }
@@ -1768,14 +2252,28 @@ class TournamentManager {
 
         const config = this.getSportConfig();
         const finishedMatches = this.matches.filter(m => m.status === 'finished').length;
+        const scheduledMatches = this.matches.filter(m => m.status === 'scheduled').length;
+
+        const tournamentName = this.config.tournamentName || 'Nesetat';
+        const tournamentDates = this.config.tournamentStart && this.config.tournamentEnd
+            ? `${this.config.tournamentStart} → ${this.config.tournamentEnd}`
+            : 'Nesetate';
 
         container.innerHTML = `
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem;">
+                ${this.config.tournamentName ? `<div><strong>📛 Nume:</strong> ${this.config.tournamentName}</div>` : ''}
+                ${this.config.tournamentLocation ? `<div><strong>📍 Locație:</strong> ${this.config.tournamentLocation}</div>` : ''}
+                ${this.config.tournamentStart || this.config.tournamentEnd ? `<div><strong>📅 Perioada:</strong> ${tournamentDates}</div>` : ''}
+                <div style="border-top: 1px solid #e5e7eb; padding-top: 0.5rem; margin-top: 0.5rem;"></div>
                 <div><strong>Sport:</strong> ${config.icon} ${config.name}</div>
-                <div><strong>Echipe:</strong> ${this.teams.length}</div>
-                <div><strong>Jucători:</strong> ${this.players?.length || 0}</div>
-                <div><strong>Meciuri:</strong> ${this.matches.length} (${finishedMatches} finalizate)</div>
-                <div><strong>Grupe:</strong> ${Object.keys(this.groups).length}</div>
+                <div><strong>Echipe:</strong> ${this.teams.length} echipe</div>
+                <div><strong>Jucători:</strong> ${this.players?.length || 0} jucători</div>
+                <div><strong>Meciuri:</strong> ${this.matches.length} total</div>
+                <div style="margin-left: 1rem;">
+                    <small>✅ Finalizate: ${finishedMatches}</small><br>
+                    <small>📅 Programate: ${scheduledMatches}</small>
+                </div>
+                <div><strong>Grupe:</strong> ${Object.keys(this.groups).length} grupe</div>
             </div>
         `;
     }
