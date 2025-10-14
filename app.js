@@ -1061,7 +1061,8 @@ class TournamentManager {
         this.renderKnockoutStage();
         this.renderStatistics();
         this.updateDashboard();
-        this.renderPlayers();
+        this.renderTeamFilterButtons();
+        this.renderPlayers(this.currentPlayerFilter);
         this.renderTournamentInfo();
     }
 
@@ -1071,6 +1072,7 @@ class TournamentManager {
 
     setupPlayersSection() {
         this.players = this.loadData('players') || [];
+        this.currentPlayerFilter = null; // Track current filter
         
         const addPlayerBtn = document.getElementById('add-player-btn');
         const managePlayersBtn = document.getElementById('manage-players-btn');
@@ -1125,7 +1127,73 @@ class TournamentManager {
             this.savePlayer();
         });
 
+        // Setup team filter buttons
+        this.setupPlayerFilters();
+
         this.renderPlayers();
+    }
+
+    setupPlayerFilters() {
+        // Setup "Toate Echipele" button
+        const allTeamsBtn = document.querySelector('[data-filter-team="all"]');
+        if (allTeamsBtn) {
+            allTeamsBtn.addEventListener('click', () => {
+                this.currentPlayerFilter = null;
+                this.updatePlayerFilterButtons();
+                this.renderPlayers();
+            });
+        }
+
+        // Render team filter buttons
+        this.renderTeamFilterButtons();
+    }
+
+    renderTeamFilterButtons() {
+        const container = document.getElementById('team-filter-buttons');
+        if (!container) return;
+
+        if (this.teams.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+
+        // Sort teams alphabetically
+        const sortedTeams = [...this.teams].sort((a, b) => 
+            a.name.localeCompare(b.name, 'ro', { sensitivity: 'base' })
+        );
+
+        container.innerHTML = sortedTeams.map(team => {
+            const playerCount = this.players.filter(p => p.teamId === team.id).length;
+            return `
+                <button class="filter-btn" data-filter-team="${team.id}">
+                    ${team.logo} ${team.name} (${playerCount})
+                </button>
+            `;
+        }).join('');
+
+        // Add event listeners to team filter buttons
+        container.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const teamId = parseInt(btn.dataset.filterTeam);
+                this.currentPlayerFilter = teamId;
+                this.updatePlayerFilterButtons();
+                this.renderPlayers(teamId);
+            });
+        });
+    }
+
+    updatePlayerFilterButtons() {
+        // Update active state on filter buttons
+        document.querySelectorAll('[data-filter-team]').forEach(btn => {
+            const filterValue = btn.dataset.filterTeam;
+            if (filterValue === 'all' && this.currentPlayerFilter === null) {
+                btn.classList.add('active');
+            } else if (filterValue !== 'all' && parseInt(filterValue) === this.currentPlayerFilter) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
     }
 
     populatePlayerTeamSelect() {
@@ -1221,7 +1289,13 @@ class TournamentManager {
         }
 
         this.saveData('players', this.players);
-        this.renderPlayers();
+        
+        // Update filter buttons to show new counts
+        this.renderTeamFilterButtons();
+        
+        // Render players with current filter
+        this.renderPlayers(this.currentPlayerFilter);
+        
         document.getElementById('player-modal').classList.remove('active');
         
         alert(this.currentPlayerId ? 'Jucătorul a fost actualizat!' : 'Jucătorul a fost adăugat cu succes!');
@@ -1246,7 +1320,12 @@ class TournamentManager {
         
         this.players = this.players.filter(p => p.id !== id);
         this.saveData('players', this.players);
-        this.renderPlayers();
+        
+        // Update filter buttons to show new counts
+        this.renderTeamFilterButtons();
+        
+        // Render players with current filter
+        this.renderPlayers(this.currentPlayerFilter);
     }
 
     renderPlayers(filterTeamId = null) {
