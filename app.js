@@ -205,6 +205,27 @@ class TournamentManager {
             return;
         }
 
+        // Check for duplicate team name (only when adding new team)
+        if (!this.currentTeamId) {
+            const duplicate = this.teams.find(t => 
+                t.name.toLowerCase().trim() === name.toLowerCase().trim()
+            );
+            if (duplicate) {
+                alert(`Echipa "${name}" există deja! Alege un alt nume.`);
+                return;
+            }
+        } else {
+            // When editing, check if name conflicts with other teams
+            const duplicate = this.teams.find(t => 
+                t.id !== this.currentTeamId && 
+                t.name.toLowerCase().trim() === name.toLowerCase().trim()
+            );
+            if (duplicate) {
+                alert(`Echipa "${name}" există deja! Alege un alt nume.`);
+                return;
+            }
+        }
+
         const team = {
             id: this.currentTeamId || Date.now(),
             name: name.trim(),
@@ -294,7 +315,12 @@ class TournamentManager {
             return;
         }
 
-        container.innerHTML = this.teams.map(team => `
+        // Sort teams alphabetically by name
+        const sortedTeams = [...this.teams].sort((a, b) => 
+            a.name.localeCompare(b.name, 'ro', { sensitivity: 'base' })
+        );
+
+        container.innerHTML = sortedTeams.map(team => `
             <div class="team-card">
                 <div class="team-card-header">
                     <div class="team-logo">
@@ -385,12 +411,54 @@ class TournamentManager {
         const team1Select = document.getElementById('match-team1');
         const team2Select = document.getElementById('match-team2');
 
-        const options = this.teams.map(team => 
+        if (!team1Select || !team2Select) return;
+
+        // Sort teams alphabetically
+        const sortedTeams = [...this.teams].sort((a, b) => 
+            a.name.localeCompare(b.name, 'ro', { sensitivity: 'base' })
+        );
+
+        const options = sortedTeams.map(team => 
             `<option value="${team.id}">${team.name}</option>`
         ).join('');
 
         team1Select.innerHTML = options;
         team2Select.innerHTML = options;
+
+        // Add event listener to team1 to update team2 options
+        team1Select.addEventListener('change', () => {
+            this.updateTeam2Options();
+        });
+
+        // Initial update of team2 options
+        this.updateTeam2Options();
+    }
+
+    updateTeam2Options() {
+        const team1Select = document.getElementById('match-team1');
+        const team2Select = document.getElementById('match-team2');
+        
+        if (!team1Select || !team2Select) return;
+
+        const selectedTeam1Id = parseInt(team1Select.value);
+        const currentTeam2Value = team2Select.value;
+
+        // Sort teams alphabetically
+        const sortedTeams = [...this.teams].sort((a, b) => 
+            a.name.localeCompare(b.name, 'ro', { sensitivity: 'base' })
+        );
+
+        // Filter out the selected team1 from team2 options
+        const filteredTeams = sortedTeams.filter(team => team.id !== selectedTeam1Id);
+
+        team2Select.innerHTML = filteredTeams.map(team => 
+            `<option value="${team.id}">${team.name}</option>`
+        ).join('');
+
+        // Try to restore previous selection if still valid
+        if (currentTeam2Value && parseInt(currentTeam2Value) !== selectedTeam1Id) {
+            team2Select.value = currentTeam2Value;
+        }
     }
 
     saveMatch() {
@@ -668,19 +736,26 @@ class TournamentManager {
         }
 
         const numGroups = Math.ceil(this.teams.length / 4);
+        
+        // Maximum 8 groups (A-H)
+        if (numGroups > 8) {
+            alert('Maximum 8 grupe (A-H) sunt permise!\n\nAi ' + this.teams.length + ' echipe, ceea ce ar necesita ' + numGroups + ' grupe.\n\nMaximum 32 echipe (8 grupe × 4 echipe) sunt permise.');
+            return;
+        }
+
         const shuffled = [...this.teams].sort(() => Math.random() - 0.5);
         
         this.groups = {};
         const groupNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-        for (let i = 0; i < numGroups; i++) {
+        for (let i = 0; i < numGroups && i < 8; i++) {
             const groupName = groupNames[i];
             this.groups[groupName] = shuffled.slice(i * 4, (i + 1) * 4).map(t => t.id);
         }
 
         this.saveData('groups', this.groups);
         this.updateAllViews();
-        alert(`Grupele au fost generate cu succes!\n\n${numGroups} grupe create cu ${this.teams.length} echipe.`);
+        alert(`Grupele au fost generate cu succes!\n\n${numGroups} grupe (${groupNames.slice(0, numGroups).join(', ')}) create cu ${this.teams.length} echipe.`);
     }
 
     renderGroups() {
@@ -1062,7 +1137,12 @@ class TournamentManager {
             return;
         }
         
-        select.innerHTML = this.teams.map(team => 
+        // Sort teams alphabetically
+        const sortedTeams = [...this.teams].sort((a, b) => 
+            a.name.localeCompare(b.name, 'ro', { sensitivity: 'base' })
+        );
+        
+        select.innerHTML = sortedTeams.map(team => 
             `<option value="${team.id}">${team.name}</option>`
         ).join('');
     }
@@ -1081,6 +1161,45 @@ class TournamentManager {
         if (!teamId) {
             alert('Selectează o echipă!');
             return;
+        }
+
+        // Check for duplicate player name in the same team
+        if (!this.currentPlayerId) {
+            const duplicate = this.players.find(p => 
+                p.teamId === teamId && 
+                p.name.toLowerCase().trim() === name.toLowerCase().trim()
+            );
+            if (duplicate) {
+                const teamName = this.teams.find(t => t.id === teamId)?.name;
+                alert(`Jucătorul "${name}" există deja în echipa ${teamName}!`);
+                return;
+            }
+        } else {
+            // When editing, check if name conflicts with other players in same team
+            const duplicate = this.players.find(p => 
+                p.id !== this.currentPlayerId &&
+                p.teamId === teamId && 
+                p.name.toLowerCase().trim() === name.toLowerCase().trim()
+            );
+            if (duplicate) {
+                const teamName = this.teams.find(t => t.id === teamId)?.name;
+                alert(`Jucătorul "${name}" există deja în echipa ${teamName}!`);
+                return;
+            }
+        }
+
+        // Check for duplicate jersey number in the same team
+        if (number) {
+            const duplicateNumber = this.players.find(p => 
+                p.id !== this.currentPlayerId &&
+                p.teamId === teamId && 
+                p.number === number
+            );
+            if (duplicateNumber) {
+                const teamName = this.teams.find(t => t.id === teamId)?.name;
+                alert(`Numărul ${number} este deja folosit de ${duplicateNumber.name} în echipa ${teamName}!`);
+                return;
+            }
         }
 
         const player = {
