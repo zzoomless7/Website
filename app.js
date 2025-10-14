@@ -566,11 +566,26 @@ class TournamentManager {
                             <button class="btn btn-small btn-success" onclick="tournament.updateMatchScore(${match.id}, document.getElementById('score1-${match.id}').value, document.getElementById('score2-${match.id}').value)">
                                 ✅ Salvează Scor
                             </button>
+                            <button class="btn btn-small btn-primary" onclick="tournament.editMatch(${match.id})">
+                                ✏️ Editează
+                            </button>
                             <button class="btn btn-small btn-danger" onclick="tournament.deleteMatch(${match.id})">
                                 🗑️ Șterge
                             </button>
                         </div>
-                    ` : ''}
+                    ` : `
+                        <div class="match-actions">
+                            <button class="btn btn-small btn-primary" onclick="tournament.editMatchScore(${match.id})">
+                                ✏️ Editează Scor
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="tournament.editMatch(${match.id})">
+                                📝 Editează Detalii
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="tournament.deleteMatch(${match.id})">
+                                🗑️ Șterge
+                            </button>
+                        </div>
+                    `}
                 </div>
             `;
         }).join('');
@@ -918,8 +933,517 @@ class TournamentManager {
         this.renderMatches();
         this.renderGroups();
         this.updateDashboard();
+        this.renderPlayers();
+        this.renderTournamentInfo();
+    }
+
+    // ========================================
+    // Players Management (CRUD)
+    // ========================================
+
+    setupPlayersSection() {
+        this.players = this.loadData('players') || [];
+        
+        const addPlayerBtn = document.getElementById('add-player-btn');
+        const playerModal = document.getElementById('player-modal');
+        const closeBtn = playerModal.querySelector('.close');
+        const cancelBtn = document.getElementById('cancel-player');
+        const playerForm = document.getElementById('player-form');
+
+        addPlayerBtn.addEventListener('click', () => {
+            this.currentPlayerId = null;
+            document.getElementById('player-modal-title').textContent = 'Adaugă Jucător Nou';
+            this.populatePlayerTeamSelect();
+            playerForm.reset();
+            playerModal.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            playerModal.classList.remove('active');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            playerModal.classList.remove('active');
+        });
+
+        playerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.savePlayer();
+        });
+
+        this.renderPlayers();
+    }
+
+    populatePlayerTeamSelect() {
+        const select = document.getElementById('player-team');
+        select.innerHTML = this.teams.map(team => 
+            `<option value="${team.id}">${team.name}</option>`
+        ).join('');
+    }
+
+    savePlayer() {
+        const name = document.getElementById('player-name').value;
+        const teamId = parseInt(document.getElementById('player-team').value);
+        const number = parseInt(document.getElementById('player-number').value) || null;
+        const position = document.getElementById('player-position').value;
+
+        const player = {
+            id: this.currentPlayerId || Date.now(),
+            name,
+            teamId,
+            number,
+            position,
+            stats: { goals: 0, assists: 0, yellowCards: 0, redCards: 0 }
+        };
+
+        if (this.currentPlayerId) {
+            const index = this.players.findIndex(p => p.id === this.currentPlayerId);
+            this.players[index] = { ...this.players[index], ...player };
+        } else {
+            this.players.push(player);
+        }
+
+        this.saveData('players', this.players);
+        this.renderPlayers();
+        document.getElementById('player-modal').classList.remove('active');
+    }
+
+    editPlayer(id) {
+        const player = this.players.find(p => p.id === id);
+        if (!player) return;
+
+        this.currentPlayerId = id;
+        document.getElementById('player-modal-title').textContent = 'Editează Jucător';
+        this.populatePlayerTeamSelect();
+        document.getElementById('player-name').value = player.name;
+        document.getElementById('player-team').value = player.teamId;
+        document.getElementById('player-number').value = player.number || '';
+        document.getElementById('player-position').value = player.position;
+        document.getElementById('player-modal').classList.add('active');
+    }
+
+    deletePlayer(id) {
+        if (!confirm('Sigur doriți să ștergeți acest jucător?')) return;
+        
+        this.players = this.players.filter(p => p.id !== id);
+        this.saveData('players', this.players);
+        this.renderPlayers();
+    }
+
+    renderPlayers(filterTeamId = null) {
+        const container = document.getElementById('players-grid');
+        
+        let filteredPlayers = this.players;
+        if (filterTeamId) {
+            filteredPlayers = this.players.filter(p => p.teamId === filterTeamId);
+        }
+
+        if (filteredPlayers.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">👤</div>
+                    <p>Nu există jucători înregistrați. Adaugă primul jucător!</p>
+                </div>
+            `;
+            return;
+        }
+
+        const positionNames = {
+            goalkeeper: 'Portar',
+            defender: 'Fundaș',
+            midfielder: 'Mijlocaș',
+            forward: 'Atacant'
+        };
+
+        container.innerHTML = filteredPlayers.map(player => {
+            const team = this.teams.find(t => t.id === player.teamId);
+            if (!team) return '';
+
+            return `
+                <div class="player-card">
+                    <div class="player-header">
+                        <div class="player-number">${player.number || '?'}</div>
+                        <div class="player-info">
+                            <h4>${player.name}</h4>
+                            <p>${team.logo} ${team.name}</p>
+                        </div>
+                    </div>
+                    <div class="player-position">${positionNames[player.position]}</div>
+                    <div class="player-actions">
+                        <button class="btn btn-small btn-primary" onclick="tournament.editPlayer(${player.id})">
+                            ✏️ Editează
+                        </button>
+                        <button class="btn btn-small btn-danger" onclick="tournament.deletePlayer(${player.id})">
+                            🗑️ Șterge
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ========================================
+    // Groups Editing (CRUD)
+    // ========================================
+
+    setupGroupsEditing() {
+        const editGroupsBtn = document.getElementById('edit-groups-btn');
+        const clearGroupsBtn = document.getElementById('clear-groups-btn');
+        const editGroupsModal = document.getElementById('edit-groups-modal');
+        const closeBtn = editGroupsModal.querySelector('.close');
+        const saveBtn = document.getElementById('save-groups-edit');
+        const cancelBtn = document.getElementById('cancel-groups-edit');
+
+        editGroupsBtn.addEventListener('click', () => {
+            if (Object.keys(this.groups).length === 0) {
+                alert('Nu există grupe generate! Generează mai întâi grupele.');
+                return;
+            }
+            this.renderGroupsEditor();
+            editGroupsModal.classList.add('active');
+        });
+
+        clearGroupsBtn.addEventListener('click', () => {
+            if (!confirm('Sigur doriți să ștergeți toate grupele?')) return;
+            this.groups = {};
+            this.saveData('groups', this.groups);
+            this.renderGroups();
+        });
+
+        closeBtn.addEventListener('click', () => {
+            editGroupsModal.classList.remove('active');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            editGroupsModal.classList.remove('active');
+        });
+
+        saveBtn.addEventListener('click', () => {
+            this.saveGroupsFromEditor();
+            editGroupsModal.classList.remove('active');
+        });
+    }
+
+    renderGroupsEditor() {
+        const container = document.getElementById('edit-groups-container');
+        const groupEntries = Object.entries(this.groups);
+
+        container.innerHTML = groupEntries.map(([groupName, teamIds]) => {
+            const groupTeams = teamIds.map(id => this.teams.find(t => t.id === id)).filter(t => t);
+
+            return `
+                <div class="edit-group-card" data-group="${groupName}">
+                    <h4>Grupa ${groupName}</h4>
+                    <div class="edit-group-teams" data-group="${groupName}">
+                        ${groupTeams.map(team => `
+                            <div class="editable-team-item" draggable="true" data-team-id="${team.id}">
+                                <span class="team-drag-handle">☰</span>
+                                <span>${team.logo} ${team.name}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Setup drag and drop
+        this.setupDragAndDrop();
+    }
+
+    setupDragAndDrop() {
+        const draggableItems = document.querySelectorAll('.editable-team-item');
+        const dropZones = document.querySelectorAll('.edit-group-teams');
+
+        draggableItems.forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', e.target.innerHTML);
+                e.dataTransfer.setData('teamId', e.target.dataset.teamId);
+                e.target.classList.add('dragging');
+            });
+
+            item.addEventListener('dragend', (e) => {
+                e.target.classList.remove('dragging');
+            });
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const teamId = e.dataTransfer.getData('teamId');
+                const draggingElement = document.querySelector('.dragging');
+                
+                if (draggingElement && teamId) {
+                    zone.appendChild(draggingElement);
+                }
+            });
+        });
+    }
+
+    saveGroupsFromEditor() {
+        const newGroups = {};
+        const groupCards = document.querySelectorAll('.edit-group-card');
+
+        groupCards.forEach(card => {
+            const groupName = card.dataset.group;
+            const teamElements = card.querySelectorAll('.editable-team-item');
+            newGroups[groupName] = Array.from(teamElements).map(el => parseInt(el.dataset.teamId));
+        });
+
+        this.groups = newGroups;
+        this.saveData('groups', this.groups);
+        this.renderGroups();
+        alert('Grupele au fost actualizate cu succes!');
+    }
+
+    // ========================================
+    // Match Editing
+    // ========================================
+
+    editMatch(id) {
+        const match = this.matches.find(m => m.id === id);
+        if (!match) return;
+
+        this.currentMatchId = id;
+        this.populateTeamSelects();
+        
+        document.getElementById('match-team1').value = match.team1Id;
+        document.getElementById('match-team2').value = match.team2Id;
+        document.getElementById('match-date').value = match.date;
+        document.getElementById('match-stage').value = match.stage;
+        document.getElementById('match-location').value = match.location || '';
+        
+        document.getElementById('match-modal').classList.add('active');
+    }
+
+    editMatchScore(id) {
+        const match = this.matches.find(m => m.id === id);
+        if (!match || match.status !== 'finished') return;
+
+        const newScore1 = prompt(`Scor echipa 1 (${this.teams.find(t => t.id === match.team1Id).name}):`, match.score1);
+        const newScore2 = prompt(`Scor echipa 2 (${this.teams.find(t => t.id === match.team2Id).name}):`, match.score2);
+
+        if (newScore1 !== null && newScore2 !== null) {
+            // Reverse old stats
+            this.reverseTeamStats(match);
+            
+            // Update match
+            match.score1 = parseInt(newScore1) || 0;
+            match.score2 = parseInt(newScore2) || 0;
+            
+            // Apply new stats
+            this.updateTeamStats(match);
+            
+            this.saveData('matches', this.matches);
+            this.saveData('teams', this.teams);
+            this.renderMatches();
+            this.updateDashboard();
+        }
+    }
+
+    reverseTeamStats(match) {
+        const team1 = this.teams.find(t => t.id === match.team1Id);
+        const team2 = this.teams.find(t => t.id === match.team2Id);
+
+        if (!team1 || !team2 || match.score1 === null) return;
+
+        const config = this.getSportConfig();
+
+        // Reverse played matches
+        team1.stats.played--;
+        team2.stats.played--;
+
+        if (this.currentSport === 'volleyball') {
+            team1.stats.setsWon -= match.score1;
+            team1.stats.setsLost -= match.score2;
+            team2.stats.setsWon -= match.score2;
+            team2.stats.setsLost -= match.score1;
+
+            if (match.score1 > match.score2) {
+                team1.stats.wins--;
+                team1.stats.points -= config.pointsForWin;
+                team2.stats.losses--;
+            } else {
+                team2.stats.wins--;
+                team2.stats.points -= config.pointsForWin;
+                team1.stats.losses--;
+            }
+        } else {
+            team1.stats.goalsFor -= match.score1;
+            team1.stats.goalsAgainst -= match.score2;
+            team2.stats.goalsFor -= match.score2;
+            team2.stats.goalsAgainst -= match.score1;
+
+            if (match.score1 > match.score2) {
+                team1.stats.wins--;
+                team1.stats.points -= config.pointsForWin;
+                team2.stats.losses--;
+            } else if (match.score1 < match.score2) {
+                team2.stats.wins--;
+                team2.stats.points -= config.pointsForWin;
+                team1.stats.losses--;
+            } else {
+                team1.stats.draws--;
+                team2.stats.draws--;
+                team1.stats.points -= config.pointsForDraw;
+                team2.stats.points -= config.pointsForDraw;
+            }
+        }
+    }
+
+    // ========================================
+    // Settings & Data Management
+    // ========================================
+
+    setupSettings() {
+        const resetAllBtn = document.getElementById('reset-all-data');
+        const resetMatchesBtn = document.getElementById('reset-matches-only');
+        const resetStatsBtn = document.getElementById('reset-stats-only');
+        const resetTournamentBtn = document.getElementById('reset-tournament-btn');
+        const exportBtn = document.getElementById('export-data');
+        const importBtn = document.getElementById('import-data');
+        const importFile = document.getElementById('import-file');
+
+        resetAllBtn.addEventListener('click', () => this.resetAllData());
+        resetMatchesBtn.addEventListener('click', () => this.resetMatches());
+        resetStatsBtn.addEventListener('click', () => this.resetStats());
+        resetTournamentBtn.addEventListener('click', () => this.resetAllData());
+        exportBtn.addEventListener('click', () => this.exportData());
+        importBtn.addEventListener('click', () => importFile.click());
+        importFile.addEventListener('change', (e) => this.importData(e));
+
+        this.renderTournamentInfo();
+    }
+
+    resetAllData() {
+        if (!confirm('ATENȚIE! Aceasta va șterge TOATE datele pentru ' + this.getSportConfig().name + '! Continui?')) return;
+        
+        this.teams = [];
+        this.matches = [];
+        this.groups = {};
+        this.players = [];
+        
+        this.saveData('teams', this.teams);
+        this.saveData('matches', this.matches);
+        this.saveData('groups', this.groups);
+        this.saveData('players', this.players);
+        
+        this.updateAllViews();
+        alert('Toate datele au fost șterse!');
+    }
+
+    resetMatches() {
+        if (!confirm('Sigur doriți să ștergeți toate meciurile?')) return;
+        
+        this.matches = [];
+        this.saveData('matches', this.matches);
+        this.resetStats();
+        this.renderMatches();
+        alert('Meciurile au fost șterse!');
+    }
+
+    resetStats() {
+        if (!confirm('Sigur doriți să resetați statisticile echipelor?')) return;
+        
+        this.teams.forEach(team => {
+            team.stats = { 
+                played: 0, wins: 0, draws: 0, losses: 0, 
+                goalsFor: 0, goalsAgainst: 0, points: 0,
+                setsWon: 0, setsLost: 0 
+            };
+        });
+        
+        this.saveData('teams', this.teams);
+        this.updateAllViews();
+        alert('Statisticile au fost resetate!');
+    }
+
+    exportData() {
+        const data = {
+            sport: this.currentSport,
+            teams: this.teams,
+            matches: this.matches,
+            groups: this.groups,
+            players: this.players,
+            exportDate: new Date().toISOString()
+        };
+
+        const dataStr = JSON.stringify(data, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `turneu-${this.currentSport}-${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+        
+        alert('Datele au fost exportate cu succes!');
+    }
+
+    importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                
+                if (data.sport !== this.currentSport) {
+                    if (!confirm(`Acest fișier este pentru ${data.sport}. Vrei să îl imporți în ${this.currentSport}?`)) {
+                        return;
+                    }
+                }
+
+                this.teams = data.teams || [];
+                this.matches = data.matches || [];
+                this.groups = data.groups || {};
+                this.players = data.players || [];
+
+                this.saveData('teams', this.teams);
+                this.saveData('matches', this.matches);
+                this.saveData('groups', this.groups);
+                this.saveData('players', this.players);
+
+                this.updateAllViews();
+                alert('Datele au fost importate cu succes!');
+            } catch (error) {
+                alert('Eroare la importarea datelor: ' + error.message);
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    renderTournamentInfo() {
+        const container = document.getElementById('tournament-info');
+        if (!container) return;
+
+        const config = this.getSportConfig();
+        const finishedMatches = this.matches.filter(m => m.status === 'finished').length;
+
+        container.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <div><strong>Sport:</strong> ${config.icon} ${config.name}</div>
+                <div><strong>Echipe:</strong> ${this.teams.length}</div>
+                <div><strong>Jucători:</strong> ${this.players?.length || 0}</div>
+                <div><strong>Meciuri:</strong> ${this.matches.length} (${finishedMatches} finalizate)</div>
+                <div><strong>Grupe:</strong> ${Object.keys(this.groups).length}</div>
+            </div>
+        `;
     }
 }
 
 // Initialize the tournament manager
 const tournament = new TournamentManager();
+
+// Setup additional sections after initialization
+setTimeout(() => {
+    tournament.setupPlayersSection();
+    tournament.setupGroupsEditing();
+    tournament.setupSettings();
+}, 100);
