@@ -3,14 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turneu de Fotbal - Sistem de Management</title>
+    <title>Turneu Multi-Sport - Sistem de Management</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Header -->
     <header>
         <div class="container">
-            <h1>⚽ Turneu de Fotbal</h1>
+            <div class="sport-selector">
+                <button class="sport-btn active" data-sport="football">
+                    <span class="sport-icon">⚽</span>
+                    <span>Fotbal</span>
+                </button>
+                <button class="sport-btn" data-sport="volleyball">
+                    <span class="sport-icon">🏐</span>
+                    <span>Volei</span>
+                </button>
+            </div>
+            <h1 id="header-title">⚽ Turneu de Fotbal</h1>
             <p class="subtitle">Sistem complet de management turneu</p>
         </div>
     </header>
@@ -21,7 +31,7 @@
             <button class="nav-btn active" data-section="dashboard">🏠 Dashboard</button>
             <button class="nav-btn" data-section="teams">👥 Echipe</button>
             <button class="nav-btn" data-section="groups">📊 Grupe</button>
-            <button class="nav-btn" data-section="matches">⚽ Meciuri</button>
+            <button class="nav-btn" data-section="matches"><span id="nav-match-icon">⚽</span> Meciuri</button>
             <button class="nav-btn" data-section="knockout">🏆 Faza Eliminatorie</button>
             <button class="nav-btn" data-section="stats">📈 Statistici</button>
         </div>
@@ -48,10 +58,10 @@
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">🎯</div>
+                    <div class="stat-icon" id="stat-icon-points">🎯</div>
                     <div class="stat-info">
                         <h3 id="total-goals">0</h3>
-                        <p>Goluri Marcate</p>
+                        <p id="stat-label-points">Goluri Marcate</p>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -225,7 +235,7 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>&copy; 2025 Turneu de Fotbal - Sistem de Management Complet</p>
+            <p>&copy; 2025 Turneu Multi-Sport - Sistem de Management Complet</p>
         </div>
     </footer>
 

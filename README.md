@@ -1,6 +1,19 @@
-# ⚽ Sistem de Management Turneu de Fotbal
+# ⚽🏐 Sistem de Management Turneu Multi-Sport
 
-Un sistem complet de management pentru turnee de fotbal, cu toate funcționalitățile necesare pentru organizarea și urmărirea unui turneu profesionist.
+Un sistem complet de management pentru turnee sportive, suportând **FOTBAL** și **VOLEI**, cu toate funcționalitățile necesare pentru organizarea și urmărirea unui turneu profesionist.
+
+## 🎯 Sporturi Suportate
+
+### ⚽ **Fotbal**
+- Sistem clasic de puncte (3 puncte victorie, 1 punct egal)
+- Goluri și golaveraj
+- Statistici complete (V/E/Î)
+
+### 🏐 **Volei**  
+- Sistem de seturi (best of 3 sau best of 5)
+- 2 puncte pentru victorie (fără egaluri)
+- Statistici seturi câștigate/pierdute
+- Validare automată scoruri (2-0, 2-1, 3-0, 3-1, 3-2)
 
 ## 🎯 Funcționalități
 
@@ -92,41 +105,50 @@ Fiecare meci afișează:
 ### 1. **Deschide Website-ul**
 Simplu deschide fișierul `index.html` în browser.
 
-### 2. **Adaugă Echipe**
+### 2. **Selectează Sportul**
+- Click pe **⚽ Fotbal** sau **🏐 Volei** în header
+- Fiecare sport are date separate și independente
+- Poți comuta între sporturi oricând
+
+### 3. **Adaugă Echipe**
 - Mergi la secțiunea "👥 Echipe"
 - Click pe "➕ Adaugă Echipă"
 - Completează informațiile echipei
 - Salvează
 
-### 3. **Generează Grupe**
+### 4. **Generează Grupe**
 - După ce ai adăugat cel puțin 4 echipe
 - Mergi la secțiunea "📊 Grupe"
 - Click pe "🔄 Generează Grupe"
 - Grupele vor fi create automat
 
-### 4. **Adaugă Meciuri**
+### 5. **Adaugă Meciuri**
 - Mergi la secțiunea "⚽ Meciuri"
 - Click pe "➕ Adaugă Meci"
 - Selectează echipele, data și faza
 - Salvează
 
-### 5. **Actualizează Rezultate**
+### 6. **Actualizează Rezultate**
 - În secțiunea "⚽ Meciuri"
 - Introdu scorurile în meciurile programate
 - Click pe "✅ Salvează Scor"
 - Statisticile se actualizează automat!
 
-### 6. **Urmărește Progresul**
+### 7. **Urmărește Progresul**
 - Vezi clasamentele în "📊 Grupe"
 - Urmărește bracket-ul în "🏆 Faza Eliminatorie"
 - Analizează statisticile în "📈 Statistici"
 
 ## 💡 Sfaturi
 
-1. **Logo-uri Echipe**: Poți folosi emoji (🔴, 🔵, ⚫, ⭐) sau URL-uri către imagini
+1. **Logo-uri Echipe**: 
+   - Fotbal: 🔴, 🔵, ⚫, ⭐, ⚽
+   - Volei: 🏐, 🔴, 🔵, ⚫, 🟡
+   - Sau URL-uri către imagini
 2. **Organizare**: Adaugă toate echipele înainte de a genera grupele
-3. **Backup**: Datele sunt salvate în browser, dar poți face export manual din LocalStorage
+3. **Backup**: Datele sunt salvate separat pentru fiecare sport în browser
 4. **Meciuri**: Adaugă meciurile în ordinea cronologică pentru o mai bună organizare
+5. **Volei**: Scorurile reprezintă seturile câștigate (ex: 2-0, 2-1, 3-2)
 
 ## 📋 Exemplu de Flux de Lucru
 
@@ -155,12 +177,13 @@ Simplu deschide fișierul `index.html` în browser.
 
 ## 🎯 Perfect Pentru
 
-- ✅ Turnee școlare și universitare
+- ✅ Turnee școlare și universitare (fotbal & volei)
 - ✅ Competiții locale
 - ✅ Turnee de cartier
 - ✅ Campionate amicale
 - ✅ Evenimente corporative
-- ✅ Orice alt tip de turneu de fotbal!
+- ✅ Campionate interscholare
+- ✅ Orice alt tip de turneu sportiv!
 
 ## 📱 Compatibilitate
 
@@ -173,6 +196,27 @@ Simplu deschide fișierul `index.html` în browser.
 
 ---
 
-**Dezvoltat cu ❤️ pentru pasionații de fotbal! ⚽**
+## 🆕 Ce este Nou?
+
+### Multi-Sport Support! 🎉
+- ✅ Suport complet pentru **Fotbal** ⚽
+- ✅ Suport complet pentru **Volei** 🏐
+- ✅ Date separate pentru fiecare sport
+- ✅ Comutare ușoară între sporturi
+- ✅ Reguli și statistici specifice fiecărui sport
+
+### Diferențe Fotbal vs Volei
+
+| Caracteristică | ⚽ Fotbal | 🏐 Volei |
+|---|---|---|
+| **Scor** | Goluri | Seturi (best of 3/5) |
+| **Victorie** | 3 puncte | 2 puncte |
+| **Egal** | 1 punct | Nu există |
+| **Statistici** | Goluri marcate/primite | Seturi câștigate/pierdute |
+| **Clasament** | Puncte → Golaveraj | Puncte → Diferență seturi |
+
+---
+
+**Dezvoltat cu ❤️ pentru pasionații de sport! ⚽🏐**
 
 Bucură-te de organizarea turneului tău!
