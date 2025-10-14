@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Debug</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .error { background: #fee; }
+        .success { background: #efe; }
+    </style>
+</head>
+<body>
+    <h1>Test Funcționalități</h1>
+    <div id="results"></div>
+
+    <script>
+        const results = document.getElementById('results');
+        
+        function addTest(name, passed, message) {
+            const div = document.createElement('div');
+            div.className = 'test ' + (passed ? 'success' : 'error');
+            div.innerHTML = `<strong>${passed ? '✅' : '❌'} ${name}</strong><br>${message}`;
+            results.appendChild(div);
+        }
+
+        // Load and test
+        const script = document.createElement('script');
+        script.src = 'app.js';
+        script.onload = () => {
+            setTimeout(() => {
+                // Test 1: Tournament exists
+                addTest('Tournament object', typeof tournament !== 'undefined', 
+                    typeof tournament !== 'undefined' ? 'Tournament object created' : 'Tournament object NOT found');
+
+                // Test 2: Functions exist
+                if (typeof tournament !== 'undefined') {
+                    const functions = ['editPlayer', 'deletePlayer', 'editMatch', 'deleteMatch', 
+                                     'editTeam', 'deleteTeam', 'updateMatchScore'];
+                    
+                    functions.forEach(fn => {
+                        const exists = typeof tournament[fn] === 'function';
+                        addTest(`Function: ${fn}`, exists, 
+                            exists ? 'Function exists' : 'Function NOT found');
+                    });
+
+                    // Test 3: DOM elements
+                    const elements = ['add-player-btn', 'player-modal', 'edit-groups-btn', 
+                                    'add-match-btn', 'match-modal'];
+                    
+                    elements.forEach(id => {
+                        const elem = document.getElementById(id);
+                        addTest(`Element: ${id}`, elem !== null, 
+                            elem ? 'Element exists' : 'Element NOT found');
+                    });
+
+                    // Test 4: Teams
+                    addTest('Teams loaded', tournament.teams !== undefined, 
+                        `Teams: ${tournament.teams ? tournament.teams.length : 0}`);
+
+                    // Test 5: Players
+                    addTest('Players loaded', tournament.players !== undefined, 
+                        `Players: ${tournament.players ? tournament.players.length : 0}`);
+                }
+            }, 500);
+        };
+        script.onerror = () => {
+            addTest('Load app.js', false, 'Failed to load app.js');
+        };
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>

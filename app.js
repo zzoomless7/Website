@@ -1003,7 +1003,10 @@ class TournamentManager {
         const cancelBtn = document.getElementById('cancel-player');
         const playerForm = document.getElementById('player-form');
 
-        if (!addPlayerBtn || !playerModal || !playerForm) return;
+        if (!addPlayerBtn || !playerModal || !playerForm) {
+            console.warn('Players section elements not found, skipping setup');
+            return;
+        }
 
         const closeBtn = playerModal.querySelector('.close');
 
@@ -1052,6 +1055,13 @@ class TournamentManager {
 
     populatePlayerTeamSelect() {
         const select = document.getElementById('player-team');
+        if (!select) return;
+        
+        if (this.teams.length === 0) {
+            select.innerHTML = '<option value="">Adaugă mai întâi echipe!</option>';
+            return;
+        }
+        
         select.innerHTML = this.teams.map(team => 
             `<option value="${team.id}">${team.name}</option>`
         ).join('');
@@ -1184,7 +1194,10 @@ class TournamentManager {
         const saveBtn = document.getElementById('save-groups-edit');
         const cancelBtn = document.getElementById('cancel-groups-edit');
 
-        if (!editGroupsBtn || !editGroupsModal) return;
+        if (!editGroupsBtn || !editGroupsModal) {
+            console.warn('Groups editing elements not found, skipping setup');
+            return;
+        }
         
         const closeBtn = editGroupsModal.querySelector('.close');
 
@@ -1570,5 +1583,15 @@ class TournamentManager {
     }
 }
 
-// Initialize the tournament manager
-const tournament = new TournamentManager();
+// Initialize the tournament manager after DOM is loaded
+let tournament;
+
+// Wait for DOM to be fully loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        tournament = new TournamentManager();
+    });
+} else {
+    // DOM already loaded
+    tournament = new TournamentManager();
+}
