@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Funcționalități</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #ccc;
+            background: #f9f9f9;
+        }
+        .test-item.pass {
+            border-left-color: #10b981;
+            background: #d1fae5;
+        }
+        .test-item.fail {
+            border-left-color: #ef4444;
+            background: #fee2e2;
+        }
+        .test-item.warning {
+            border-left-color: #f59e0b;
+            background: #fef3c7;
+        }
+        h1 { color: #2563eb; }
+        h2 { color: #1e40af; margin-top: 0; }
+        .summary {
+            background: #2563eb;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .summary h2 { color: white; margin: 0 0 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test Funcționalități Site Turneu</h1>
+    
+    <div class="summary" id="summary">
+        <h2>Rezumat</h2>
+        <div id="summary-content">Rulare teste...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>1. Verificare Butoane HTML</h2>
+        <div id="buttons-test"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Verificare Secțiuni</h2>
+        <div id="sections-test"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Verificare Modale</h2>
+        <div id="modals-test"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Verificare Funcții JavaScript</h2>
+        <div id="functions-test"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Verificare Event Listeners</h2>
+        <div id="listeners-test"></div>
+    </div>
+
+    <script>
+        // Load the actual HTML to test
+        fetch('index.html')
+            .then(response => response.text())
+            .then(html => {
+                runTests(html);
+            })
+            .catch(error => {
+                document.getElementById('summary-content').innerHTML = 
+                    '<span style="color: #fee2e2;">❌ Eroare la încărcarea index.html: ' + error.message + '</span>';
+            });
+
+        function runTests(html) {
+            let totalTests = 0;
+            let passedTests = 0;
+            let failedTests = 0;
+            let warnings = 0;
+
+            // Test 1: Verificare Butoane
+            const buttons = [
+                { id: 'reset-tournament-btn', name: 'Resetează Turneu' },
+                { id: 'add-team-btn', name: 'Adaugă Echipă' },
+                { id: 'manage-players-btn', name: 'Jucători' },
+                { id: 'generate-groups-btn', name: 'Generează Grupe' },
+                { id: 'edit-groups-btn', name: 'Editează Grupe' },
+                { id: 'clear-groups-btn', name: 'Șterge Grupe' },
+                { id: 'add-match-btn', name: 'Adaugă Meci' },
+                { id: 'add-player-btn', name: 'Adaugă Jucător' },
+                { id: 'reset-all-data', name: 'Resetează Tot' },
+                { id: 'reset-matches-only', name: 'Resetează Meciuri' },
+                { id: 'reset-stats-only', name: 'Resetează Statistici' },
+                { id: 'export-data', name: 'Exportă Date' },
+                { id: 'import-data', name: 'Importă Date' },
+                { id: 'save-groups-edit', name: 'Salvează Grupe' },
+                { id: 'cancel-groups-edit', name: 'Anulează Grupe' },
+            ];
+
+            const buttonsTestDiv = document.getElementById('buttons-test');
+            buttons.forEach(btn => {
+                totalTests++;
+                const exists = html.includes(`id="${btn.id}"`);
+                if (exists) {
+                    passedTests++;
+                    buttonsTestDiv.innerHTML += 
+                        `<div class="test-item pass">✅ ${btn.name} (${btn.id})</div>`;
+                } else {
+                    failedTests++;
+                    buttonsTestDiv.innerHTML += 
+                        `<div class="test-item fail">❌ ${btn.name} (${btn.id}) - LIPSEȘTE</div>`;
+                }
+            });
+
+            // Test 2: Verificare Secțiuni
+            const sections = [
+                { id: 'dashboard', name: 'Dashboard' },
+                { id: 'teams', name: 'Echipe' },
+                { id: 'players', name: 'Jucători' },
+                { id: 'groups', name: 'Grupe' },
+                { id: 'matches', name: 'Meciuri' },
+                { id: 'knockout', name: 'Faza Eliminatorie' },
+                { id: 'stats', name: 'Statistici' },
+                { id: 'settings', name: 'Setări' }
+            ];
+
+            const sectionsTestDiv = document.getElementById('sections-test');
+            sections.forEach(sec => {
+                totalTests++;
+                const exists = html.includes(`section id="${sec.id}"`);
+                if (exists) {
+                    passedTests++;
+                    sectionsTestDiv.innerHTML += 
+                        `<div class="test-item pass">✅ Secțiunea ${sec.name}</div>`;
+                } else {
+                    failedTests++;
+                    sectionsTestDiv.innerHTML += 
+                        `<div class="test-item fail">❌ Secțiunea ${sec.name} - LIPSEȘTE</div>`;
+                }
+            });
+
+            // Test 3: Verificare Modale
+            const modals = [
+                { id: 'team-modal', name: 'Modal Echipă' },
+                { id: 'match-modal', name: 'Modal Meci' },
+                { id: 'player-modal', name: 'Modal Jucător' },
+                { id: 'edit-groups-modal', name: 'Modal Editare Grupe' }
+            ];
+
+            const modalsTestDiv = document.getElementById('modals-test');
+            modals.forEach(modal => {
+                totalTests++;
+                const exists = html.includes(`id="${modal.id}"`);
+                const hasClose = html.match(new RegExp(`id="${modal.id}"[^>]*>.*?<span class="close">`, 's'));
+                
+                if (exists && hasClose) {
+                    passedTests++;
+                    modalsTestDiv.innerHTML += 
+                        `<div class="test-item pass">✅ ${modal.name} (cu buton close)</div>`;
+                } else if (exists) {
+                    warnings++;
+                    modalsTestDiv.innerHTML += 
+                        `<div class="test-item warning">⚠️ ${modal.name} (fără buton close)</div>`;
+                } else {
+                    failedTests++;
+                    modalsTestDiv.innerHTML += 
+                        `<div class="test-item fail">❌ ${modal.name} - LIPSEȘTE</div>`;
+                }
+            });
+
+            // Test 4: Verificare Funcții JavaScript (need to load app.js)
+            fetch('app.js')
+                .then(response => response.text())
+                .then(jsCode => {
+                    const functionsTestDiv = document.getElementById('functions-test');
+                    const functions = [
+                        'editTeam',
+                        'deleteTeam',
+                        'editMatch',
+                        'deleteMatch',
+                        'updateMatchScore',
+                        'editMatchScore',
+                        'editPlayer',
+                        'deletePlayer',
+                        'setupPlayersSection',
+                        'setupGroupsEditing',
+                        'setupSettings',
+                        'exportData',
+                        'importData',
+                        'resetAllData'
+                    ];
+
+                    functions.forEach(func => {
+                        totalTests++;
+                        const pattern = new RegExp(`\\s+${func}\\s*\\(`);
+                        const exists = pattern.test(jsCode);
+                        
+                        if (exists) {
+                            passedTests++;
+                            functionsTestDiv.innerHTML += 
+                                `<div class="test-item pass">✅ Funcția ${func}()</div>`;
+                        } else {
+                            failedTests++;
+                            functionsTestDiv.innerHTML += 
+                                `<div class="test-item fail">❌ Funcția ${func}() - LIPSEȘTE</div>`;
+                        }
+                    });
+
+                    // Test 5: Verificare Event Listeners Setup
+                    const listenersTestDiv = document.getElementById('listeners-test');
+                    const listeners = [
+                        { name: 'Sport Selector', code: 'setupSportSelector' },
+                        { name: 'Navigation', code: 'setupNavigation' },
+                        { name: 'Teams Section', code: 'setupTeamsSection' },
+                        { name: 'Matches Section', code: 'setupMatchesSection' },
+                        { name: 'Groups Section', code: 'setupGroupsSection' },
+                        { name: 'Players Section', code: 'setupPlayersSection' },
+                        { name: 'Groups Editing', code: 'setupGroupsEditing' },
+                        { name: 'Settings', code: 'setupSettings' }
+                    ];
+
+                    listeners.forEach(listener => {
+                        totalTests++;
+                        const exists = jsCode.includes(listener.code);
+                        const isCalled = jsCode.includes(`this.${listener.code}()`) || 
+                                       jsCode.includes(`tournament.${listener.code}()`);
+                        
+                        if (exists && isCalled) {
+                            passedTests++;
+                            listenersTestDiv.innerHTML += 
+                                `<div class="test-item pass">✅ ${listener.name} - Definit și apelat</div>`;
+                        } else if (exists) {
+                            warnings++;
+                            listenersTestDiv.innerHTML += 
+                                `<div class="test-item warning">⚠️ ${listener.name} - Definit dar posibil neapelat</div>`;
+                        } else {
+                            failedTests++;
+                            listenersTestDiv.innerHTML += 
+                                `<div class="test-item fail">❌ ${listener.name} - LIPSEȘTE</div>`;
+                        }
+                    });
+
+                    // Update summary
+                    updateSummary(totalTests, passedTests, failedTests, warnings);
+                });
+        }
+
+        function updateSummary(total, passed, failed, warnings) {
+            const percentage = Math.round((passed / total) * 100);
+            const summaryContent = document.getElementById('summary-content');
+            
+            summaryContent.innerHTML = `
+                <div style="font-size: 1.2em; margin-bottom: 10px;">
+                    <strong>Total Teste:</strong> ${total} | 
+                    <strong>Trecute:</strong> ${passed} | 
+                    <strong>Eșuate:</strong> ${failed} | 
+                    <strong>Avertismente:</strong> ${warnings}
+                </div>
+                <div style="font-size: 1.5em; font-weight: bold;">
+                    ${percentage >= 90 ? '✅' : percentage >= 70 ? '⚠️' : '❌'} 
+                    Scor Final: ${percentage}%
+                </div>
+                ${failed > 0 ? '<div style="margin-top: 10px; color: #fee2e2;">⚠️ Verifică elementele eșuate!</div>' : ''}
+                ${failed === 0 && warnings === 0 ? '<div style="margin-top: 10px; color: #d1fae5;">🎉 Toate testele au trecut cu succes!</div>' : ''}
+            `;
+        }
+    </script>
+</body>
+</html>

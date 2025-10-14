@@ -945,10 +945,26 @@ class TournamentManager {
         this.players = this.loadData('players') || [];
         
         const addPlayerBtn = document.getElementById('add-player-btn');
+        const managePlayersBtn = document.getElementById('manage-players-btn');
         const playerModal = document.getElementById('player-modal');
         const closeBtn = playerModal.querySelector('.close');
         const cancelBtn = document.getElementById('cancel-player');
         const playerForm = document.getElementById('player-form');
+
+        // Navigate to players section
+        if (managePlayersBtn) {
+            managePlayersBtn.addEventListener('click', () => {
+                // Switch to players section
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+                
+                const playersNavBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.dataset.section === 'players');
+                if (playersNavBtn) playersNavBtn.classList.add('active');
+                
+                const playersSection = document.getElementById('players');
+                if (playersSection) playersSection.classList.add('active');
+            });
+        }
 
         addPlayerBtn.addEventListener('click', () => {
             this.currentPlayerId = null;
