@@ -19,6 +19,9 @@ class TournamentManager {
         this.setupTeamsSection();
         this.setupMatchesSection();
         this.setupGroupsSection();
+        this.setupPlayersSection();
+        this.setupGroupsEditing();
+        this.setupSettings();
         this.updateSportUI();
         this.updateDashboard();
         this.updateAllViews();
@@ -197,13 +200,26 @@ class TournamentManager {
         const city = document.getElementById('team-city').value;
         const coach = document.getElementById('team-coach').value;
 
+        if (!name.trim()) {
+            alert('Numele echipei este obligatoriu!');
+            return;
+        }
+
         const team = {
             id: this.currentTeamId || Date.now(),
-            name,
+            name: name.trim(),
             logo,
             city,
-            coach,
-            stats: { 
+            coach
+        };
+
+        if (this.currentTeamId) {
+            const index = this.teams.findIndex(t => t.id === this.currentTeamId);
+            // Keep existing stats when editing
+            this.teams[index] = { ...this.teams[index], ...team };
+        } else {
+            // Initialize stats for new team
+            team.stats = { 
                 played: 0, 
                 wins: 0, 
                 draws: 0, 
@@ -211,22 +227,17 @@ class TournamentManager {
                 goalsFor: 0, 
                 goalsAgainst: 0, 
                 points: 0,
-                setsWon: 0, // for volleyball
-                setsLost: 0  // for volleyball
-            }
-        };
-
-        if (this.currentTeamId) {
-            const index = this.teams.findIndex(t => t.id === this.currentTeamId);
-            this.teams[index] = { ...this.teams[index], ...team };
-        } else {
+                setsWon: 0,
+                setsLost: 0
+            };
             this.teams.push(team);
         }
 
         this.saveData('teams', this.teams);
-        this.renderTeams();
-        this.updateDashboard();
+        this.updateAllViews();
         document.getElementById('team-modal').classList.remove('active');
+        
+        alert(this.currentTeamId ? 'Echipa a fost actualizată!' : 'Echipa a fost adăugată cu succes!');
     }
 
     editTeam(id) {
@@ -245,10 +256,28 @@ class TournamentManager {
     deleteTeam(id) {
         if (!confirm('Sigur doriți să ștergeți această echipă?')) return;
         
+        // Remove team from groups
+        Object.keys(this.groups).forEach(groupName => {
+            this.groups[groupName] = this.groups[groupName].filter(teamId => teamId !== id);
+        });
+        
+        // Remove team's matches
+        this.matches = this.matches.filter(m => m.team1Id !== id && m.team2Id !== id);
+        
+        // Remove team's players
+        if (this.players) {
+            this.players = this.players.filter(p => p.teamId !== id);
+            this.saveData('players', this.players);
+        }
+        
         this.teams = this.teams.filter(t => t.id !== id);
         this.saveData('teams', this.teams);
-        this.renderTeams();
-        this.updateDashboard();
+        this.saveData('groups', this.groups);
+        this.saveData('matches', this.matches);
+        
+        this.updateAllViews();
+        
+        alert('Echipa și toate datele asociate au fost șterse!');
     }
 
     renderTeams() {
@@ -406,6 +435,12 @@ class TournamentManager {
         const match = this.matches.find(m => m.id === matchId);
         if (!match) return;
 
+        // Validate input
+        if (score1 === '' || score2 === '') {
+            alert('Te rog introdu scorurile pentru ambele echipe!');
+            return;
+        }
+
         if (this.currentSport === 'volleyball') {
             // For volleyball, scores represent sets won
             match.score1 = parseInt(score1) || 0;
@@ -435,8 +470,11 @@ class TournamentManager {
 
         this.saveData('matches', this.matches);
         this.saveData('teams', this.teams);
-        this.renderMatches();
-        this.updateDashboard();
+        
+        // Update all views to show new stats
+        this.updateAllViews();
+        
+        alert('Scorul a fost salvat cu succes!');
     }
 
     updateTeamStats(match) {
@@ -594,10 +632,17 @@ class TournamentManager {
     deleteMatch(id) {
         if (!confirm('Sigur doriți să ștergeți acest meci?')) return;
         
+        const match = this.matches.find(m => m.id === id);
+        
+        // If match was finished, reverse stats
+        if (match && match.status === 'finished') {
+            this.reverseTeamStats(match);
+            this.saveData('teams', this.teams);
+        }
+        
         this.matches = this.matches.filter(m => m.id !== id);
         this.saveData('matches', this.matches);
-        this.renderMatches();
-        this.updateDashboard();
+        this.updateAllViews();
     }
 
     // ========================================
@@ -616,6 +661,12 @@ class TournamentManager {
             return;
         }
 
+        if (Object.keys(this.groups).length > 0) {
+            if (!confirm('Grupele existente vor fi suprascrise! Continui?')) {
+                return;
+            }
+        }
+
         const numGroups = Math.ceil(this.teams.length / 4);
         const shuffled = [...this.teams].sort(() => Math.random() - 0.5);
         
@@ -628,8 +679,8 @@ class TournamentManager {
         }
 
         this.saveData('groups', this.groups);
-        this.renderGroups();
-        alert('Grupele au fost generate cu succes!');
+        this.updateAllViews();
+        alert(`Grupele au fost generate cu succes!\n\n${numGroups} grupe create cu ${this.teams.length} echipe.`);
     }
 
     renderGroups() {
@@ -932,6 +983,8 @@ class TournamentManager {
         this.renderTeams();
         this.renderMatches();
         this.renderGroups();
+        this.renderKnockoutStage();
+        this.renderStatistics();
         this.updateDashboard();
         this.renderPlayers();
         this.renderTournamentInfo();
@@ -947,9 +1000,12 @@ class TournamentManager {
         const addPlayerBtn = document.getElementById('add-player-btn');
         const managePlayersBtn = document.getElementById('manage-players-btn');
         const playerModal = document.getElementById('player-modal');
-        const closeBtn = playerModal.querySelector('.close');
         const cancelBtn = document.getElementById('cancel-player');
         const playerForm = document.getElementById('player-form');
+
+        if (!addPlayerBtn || !playerModal || !playerForm) return;
+
+        const closeBtn = playerModal.querySelector('.close');
 
         // Navigate to players section
         if (managePlayersBtn) {
@@ -974,13 +1030,17 @@ class TournamentManager {
             playerModal.classList.add('active');
         });
 
-        closeBtn.addEventListener('click', () => {
-            playerModal.classList.remove('active');
-        });
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                playerModal.classList.remove('active');
+            });
+        }
 
-        cancelBtn.addEventListener('click', () => {
-            playerModal.classList.remove('active');
-        });
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                playerModal.classList.remove('active');
+            });
+        }
 
         playerForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -1003,25 +1063,39 @@ class TournamentManager {
         const number = parseInt(document.getElementById('player-number').value) || null;
         const position = document.getElementById('player-position').value;
 
+        if (!name.trim()) {
+            alert('Numele jucătorului este obligatoriu!');
+            return;
+        }
+
+        if (!teamId) {
+            alert('Selectează o echipă!');
+            return;
+        }
+
         const player = {
             id: this.currentPlayerId || Date.now(),
-            name,
+            name: name.trim(),
             teamId,
             number,
-            position,
-            stats: { goals: 0, assists: 0, yellowCards: 0, redCards: 0 }
+            position
         };
 
         if (this.currentPlayerId) {
             const index = this.players.findIndex(p => p.id === this.currentPlayerId);
+            // Keep existing stats when editing
             this.players[index] = { ...this.players[index], ...player };
         } else {
+            // Initialize stats for new player
+            player.stats = { goals: 0, assists: 0, yellowCards: 0, redCards: 0 };
             this.players.push(player);
         }
 
         this.saveData('players', this.players);
         this.renderPlayers();
         document.getElementById('player-modal').classList.remove('active');
+        
+        alert(this.currentPlayerId ? 'Jucătorul a fost actualizat!' : 'Jucătorul a fost adăugat cu succes!');
     }
 
     editPlayer(id) {
@@ -1048,8 +1122,9 @@ class TournamentManager {
 
     renderPlayers(filterTeamId = null) {
         const container = document.getElementById('players-grid');
+        if (!container) return;
         
-        let filteredPlayers = this.players;
+        let filteredPlayers = this.players || [];
         if (filterTeamId) {
             filteredPlayers = this.players.filter(p => p.teamId === filterTeamId);
         }
@@ -1106,9 +1181,12 @@ class TournamentManager {
         const editGroupsBtn = document.getElementById('edit-groups-btn');
         const clearGroupsBtn = document.getElementById('clear-groups-btn');
         const editGroupsModal = document.getElementById('edit-groups-modal');
-        const closeBtn = editGroupsModal.querySelector('.close');
         const saveBtn = document.getElementById('save-groups-edit');
         const cancelBtn = document.getElementById('cancel-groups-edit');
+
+        if (!editGroupsBtn || !editGroupsModal) return;
+        
+        const closeBtn = editGroupsModal.querySelector('.close');
 
         editGroupsBtn.addEventListener('click', () => {
             if (Object.keys(this.groups).length === 0) {
@@ -1119,25 +1197,33 @@ class TournamentManager {
             editGroupsModal.classList.add('active');
         });
 
-        clearGroupsBtn.addEventListener('click', () => {
-            if (!confirm('Sigur doriți să ștergeți toate grupele?')) return;
-            this.groups = {};
-            this.saveData('groups', this.groups);
-            this.renderGroups();
-        });
+        if (clearGroupsBtn) {
+            clearGroupsBtn.addEventListener('click', () => {
+                if (!confirm('Sigur doriți să ștergeți toate grupele?')) return;
+                this.groups = {};
+                this.saveData('groups', this.groups);
+                this.renderGroups();
+            });
+        }
 
-        closeBtn.addEventListener('click', () => {
-            editGroupsModal.classList.remove('active');
-        });
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                editGroupsModal.classList.remove('active');
+            });
+        }
 
-        cancelBtn.addEventListener('click', () => {
-            editGroupsModal.classList.remove('active');
-        });
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                editGroupsModal.classList.remove('active');
+            });
+        }
 
-        saveBtn.addEventListener('click', () => {
-            this.saveGroupsFromEditor();
-            editGroupsModal.classList.remove('active');
-        });
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                this.saveGroupsFromEditor();
+                editGroupsModal.classList.remove('active');
+            });
+        }
     }
 
     renderGroupsEditor() {
@@ -1241,8 +1327,13 @@ class TournamentManager {
         const match = this.matches.find(m => m.id === id);
         if (!match || match.status !== 'finished') return;
 
-        const newScore1 = prompt(`Scor echipa 1 (${this.teams.find(t => t.id === match.team1Id).name}):`, match.score1);
-        const newScore2 = prompt(`Scor echipa 2 (${this.teams.find(t => t.id === match.team2Id).name}):`, match.score2);
+        const team1 = this.teams.find(t => t.id === match.team1Id);
+        const team2 = this.teams.find(t => t.id === match.team2Id);
+        
+        if (!team1 || !team2) return;
+
+        const newScore1 = prompt(`Scor echipa 1 (${team1.name}):`, match.score1);
+        const newScore2 = prompt(`Scor echipa 2 (${team2.name}):`, match.score2);
 
         if (newScore1 !== null && newScore2 !== null) {
             // Reverse old stats
@@ -1257,8 +1348,11 @@ class TournamentManager {
             
             this.saveData('matches', this.matches);
             this.saveData('teams', this.teams);
-            this.renderMatches();
-            this.updateDashboard();
+            
+            // Update all views
+            this.updateAllViews();
+            
+            alert('Scorul a fost actualizat! Statisticile au fost recalculate.');
         }
     }
 
@@ -1325,13 +1419,25 @@ class TournamentManager {
         const importBtn = document.getElementById('import-data');
         const importFile = document.getElementById('import-file');
 
-        resetAllBtn.addEventListener('click', () => this.resetAllData());
-        resetMatchesBtn.addEventListener('click', () => this.resetMatches());
-        resetStatsBtn.addEventListener('click', () => this.resetStats());
-        resetTournamentBtn.addEventListener('click', () => this.resetAllData());
-        exportBtn.addEventListener('click', () => this.exportData());
-        importBtn.addEventListener('click', () => importFile.click());
-        importFile.addEventListener('change', (e) => this.importData(e));
+        if (resetAllBtn) {
+            resetAllBtn.addEventListener('click', () => this.resetAllData());
+        }
+        if (resetMatchesBtn) {
+            resetMatchesBtn.addEventListener('click', () => this.resetMatches());
+        }
+        if (resetStatsBtn) {
+            resetStatsBtn.addEventListener('click', () => this.resetStats());
+        }
+        if (resetTournamentBtn) {
+            resetTournamentBtn.addEventListener('click', () => this.resetAllData());
+        }
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => this.exportData());
+        }
+        if (importBtn && importFile) {
+            importBtn.addEventListener('click', () => importFile.click());
+            importFile.addEventListener('change', (e) => this.importData(e));
+        }
 
         this.renderTournamentInfo();
     }
@@ -1354,17 +1460,27 @@ class TournamentManager {
     }
 
     resetMatches() {
-        if (!confirm('Sigur doriți să ștergeți toate meciurile?')) return;
+        if (!confirm('Sigur doriți să ștergeți toate meciurile?\n\nAcest lucru va reseta și toate statisticile echipelor!')) return;
         
         this.matches = [];
+        
+        // Reset all team statistics
+        this.teams.forEach(team => {
+            team.stats = { 
+                played: 0, wins: 0, draws: 0, losses: 0, 
+                goalsFor: 0, goalsAgainst: 0, points: 0,
+                setsWon: 0, setsLost: 0 
+            };
+        });
+        
         this.saveData('matches', this.matches);
-        this.resetStats();
-        this.renderMatches();
-        alert('Meciurile au fost șterse!');
+        this.saveData('teams', this.teams);
+        this.updateAllViews();
+        alert('Meciurile și statisticile au fost resetate!');
     }
 
     resetStats() {
-        if (!confirm('Sigur doriți să resetați statisticile echipelor?')) return;
+        if (!confirm('Sigur doriți să resetați statisticile echipelor?\n\nAcest lucru nu va șterge meciurile, doar statisticile!')) return;
         
         this.teams.forEach(team => {
             team.stats = { 
@@ -1456,10 +1572,3 @@ class TournamentManager {
 
 // Initialize the tournament manager
 const tournament = new TournamentManager();
-
-// Setup additional sections after initialization
-setTimeout(() => {
-    tournament.setupPlayersSection();
-    tournament.setupGroupsEditing();
-    tournament.setupSettings();
-}, 100);
