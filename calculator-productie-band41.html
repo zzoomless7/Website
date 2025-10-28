@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculator producție - Band 41</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --ant-primary: #1890ff;
+      --ant-success: #52c41a;
+      --ant-error: #ff4d4f;
+      --ant-border: #d9d9d9;
+      --ant-bg: #f0f2f5;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--ant-bg);
+      color: rgba(0, 0, 0, 0.85);
+      line-height: 1.5715;
+      font-size: 14px;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Ant Design Header */
+    .ant-header {
+      background: #001529;
+      color: white;
+      padding: 16px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .ant-header h1 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0 0 8px 0;
+    }
+    
+    .weather-info {
+      font-size: 15px;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .weather-loading {
+      opacity: 0.6;
+      font-size: 14px;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 24px 0;
+    }
+    
+    /* Ant Card */
+    .ant-card {
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      padding: 24px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 1px 6px -1px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.02);
+    }
+    
+    .ant-card-title {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    
+    /* Ant Input */
+    .ant-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--ant-border);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s;
+      font-family: 'Inter', sans-serif;
+      background: white;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    
+    .ant-input:hover {
+      border-color: var(--ant-primary);
+    }
+    
+    .ant-input:focus {
+      outline: none;
+      border-color: var(--ant-primary);
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    }
+    
+    /* Ant Button */
+    .ant-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--ant-border);
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: white;
+      font-family: 'Inter', sans-serif;
+      color: rgba(0, 0, 0, 0.85);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    
+    .ant-btn-primary {
+      background: var(--ant-primary);
+      color: white;
+      border-color: var(--ant-primary);
+    }
+    
+    .ant-btn-primary:hover {
+      background: #40a9ff;
+      border-color: #40a9ff;
+    }
+    
+    .ant-btn:hover {
+      color: var(--ant-primary);
+      border-color: var(--ant-primary);
+    }
+    
+    .ant-btn-danger {
+      background: var(--ant-error);
+      color: white;
+      border-color: var(--ant-error);
+    }
+    
+    .ant-btn-danger:hover {
+      background: #ff7875;
+      border-color: #ff7875;
+      color: white;
+    }
+    
+    /* Ant Tag */
+    .ant-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #e6f7ff;
+      color: var(--ant-primary);
+      border: 1px solid #91d5ff;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 8px;
+    }
+    
+    /* Grid */
+    .ant-row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .ant-col { flex: 1; min-width: 0; }
+    
+    /* Employee Box */
+    .employee-item {
+      background: #fafafa;
+      border: 1px solid var(--ant-border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+    
+    .employee-item:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .emp-name {
+      border: 1px solid transparent !important;
+      background: transparent !important;
+      padding: 4px 8px !important;
+      font-size: 16px;
+      font-weight: 500;
+      max-width: 200px;
+      color: rgba(0, 0, 0, 0.85);
+    }
+    
+    .emp-name:hover {
+      border-color: var(--ant-border) !important;
+      background: white !important;
+    }
+    
+    .emp-name:focus {
+      outline: none;
+      border-color: var(--ant-primary) !important;
+      background: white !important;
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    }
+    
+    /* Statistic */
+    .ant-statistic {
+      background: linear-gradient(135deg, #52c41a, #389e0d);
+      color: white;
+      border-radius: 8px;
+      padding: 32px;
+      text-align: center;
+    }
+    
+    .ant-statistic-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+    
+    .ant-statistic-value {
+      font-size: 4rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+    
+    .rate-box {
+      background: #e6f7ff;
+      border: 1px solid #91d5ff;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    
+    .rate-input-large {
+      font-size: 2.5rem;
+      font-weight: 600;
+      text-align: center;
+      border: none;
+      border-bottom: 2px solid var(--ant-primary);
+      background: transparent;
+      width: 100%;
+      color: var(--ant-primary);
+    }
+    
+    .rate-input-large:focus {
+      outline: none;
+    }
+    
+    .rate-unit {
+      margin-top: 8px;
+      color: rgba(0,0,0,0.65);
+      font-size: 14px;
+    }
+    
+    /* Input Group Text */
+    .input-group-text {
+      background: white;
+      border: 1px solid var(--ant-border);
+      padding: 8px 12px;
+      color: rgba(0, 0, 0, 0.45);
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+    }
+    
+    .input-group .ant-input {
+      border-left: none;
+      border-radius: 0 6px 6px 0;
+    }
+    
+    .input-group {
+      display: flex;
+      width: 100%;
+    }
+    
+    /* Labels */
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: rgba(0,0,0,0.85);
+      font-weight: 400;
+    }
+    
+    /* Footer */
+    .ant-footer {
+      background: white;
+      border-top: 1px solid #f0f0f0;
+      padding: 24px 0;
+      margin-top: auto;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.65);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.3s ease forwards;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .ant-statistic-value {
+        font-size: 3rem;
+      }
+      
+      .rate-input-large {
+        font-size: 2rem;
+      }
+      
+      .ant-btn {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+      
+      label {
+        font-size: 12px;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+      }
+      
+      .footer-left,
+      .footer-right {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="ant-header">
+    <div class="container">
+      <h1>🏭 Band 41 Calculator</h1>
+      <div id="weatherInfo" class="weather-info weather-loading">
+        📍 Se detectează locația...
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-content">
+    <div class="container">
+      
+      <!-- Rate Card -->
+      <div class="ant-card">
+        <div class="ant-card-title">Rată de Producție</div>
+        <div class="rate-box">
+          <input id="rateInput" class="rate-input-large" type="number" value="33.3" step="0.1" min="0" max="1000">
+          <p class="rate-unit">buc/oră</p>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <span class="ant-tag">WERK 1 = 33.3</span>
+          <span class="ant-tag">WERK 2 = 34.4</span>
+        </div>
+        <div class="ant-row">
+          <div class="ant-col">
+            <button id="werk1" class="ant-btn ant-btn-primary" style="width: 100%;">WERK 1</button>
+          </div>
+          <div class="ant-col">
+            <button id="werk2" class="ant-btn" style="width: 100%; color: var(--ant-primary); border-color: var(--ant-primary);">WERK 2</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shift Card -->
+      <div class="ant-card">
+        <div class="ant-card-title">Schimb de Lucru</div>
+        <div class="ant-row">
+          <div class="ant-col">
+            <button id="fruhBtn" class="ant-btn" style="width: 100%; background: var(--ant-success); color: white; border-color: var(--ant-success);">
+              ☀️ Frühschicht
+            </button>
+          </div>
+          <div class="ant-col">
+            <button id="spatBtn" class="ant-btn" style="width: 100%; color: var(--ant-success); border-color: var(--ant-success);">
+              🌙 Spätschicht
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employees Card -->
+      <div class="ant-card">
+        <div class="ant-card-title">Angajați</div>
+        
+        <div id="employeesList">
+          <!-- Employee cards will be inserted here -->
+        </div>
+
+        <button id="addEmp" class="ant-btn ant-btn-primary" style="width: 100%;">+ Adaugă Angajat</button>
+      </div>
+
+      <!-- Total Card -->
+      <div class="ant-statistic">
+        <div class="ant-statistic-title">📦 Total Bucăți Produse</div>
+        <div id="totalBox" class="ant-statistic-value">0</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="ant-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <span id="currentDateTime">-</span>
+        </div>
+        <div class="footer-right">
+          Calculator Producție v3.8 © <span id="currentYear"></span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // --- Config inițial ---
+    const werkRates = { werk1: 33.3, werk2: 34.4 };
+    
+    // Helper pentru prevenire XSS
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    const shifts = {
+      fruh: {
+        start: '05:45:00',
+        end:   '14:00:00',
+        pauses: [
+          ['07:30:00','07:45:00'],
+          ['09:30:00','09:45:00'],
+          ['11:45:00','12:00:00']
+        ]
+      },
+      spat: {
+        start: '14:00:00',
+        end:   '22:15:00',
+        pauses: [
+          ['16:00:00','16:15:00'],
+          ['18:15:00','18:30:00'],
+          ['20:30:00','20:45:00']
+        ]
+      }
+    };
+
+    let activeShift = 'fruh';
+    let activeWerk = 'werk1';
+    let saveStateTimeout = null;
+
+    // DOM refs
+    const rateInput = document.getElementById('rateInput');
+    const werk1Btn = document.getElementById('werk1');
+    const werk2Btn = document.getElementById('werk2');
+    const fruhBtn = document.getElementById('fruhBtn');
+    const spatBtn = document.getElementById('spatBtn');
+    const addEmpBtn = document.getElementById('addEmp');
+    const employeesList = document.getElementById('employeesList');
+    const totalBox = document.getElementById('totalBox');
+    const currentDateTimeEl = document.getElementById('currentDateTime');
+    const currentYearEl = document.getElementById('currentYear');
+    const weatherInfo = document.getElementById('weatherInfo');
+
+    // Weather code to emoji mapping (WMO Weather codes)
+    function getWeatherEmoji(code) {
+      if (code === 0) return '☀️'; // Clear sky
+      if (code <= 3) return '⛅'; // Partly cloudy
+      if (code <= 48) return '🌫️'; // Fog
+      if (code <= 57) return '🌦️'; // Drizzle
+      if (code <= 67) return '🌧️'; // Rain
+      if (code <= 77) return '❄️'; // Snow
+      if (code <= 82) return '🌧️'; // Rain showers
+      if (code <= 86) return '❄️'; // Snow showers
+      if (code <= 99) return '⛈️'; // Thunderstorm
+      return '🌤️';
+    }
+
+    // Get weather description in Romanian
+    function getWeatherDescription(code) {
+      const descriptions = {
+        0: 'senin',
+        1: 'predominant senin',
+        2: 'parțial înnorat',
+        3: 'înnorat',
+        45: 'ceață',
+        48: 'ceață cu chiciură',
+        51: 'burniță ușoară',
+        53: 'burniță moderată',
+        55: 'burniță densă',
+        61: 'ploaie ușoară',
+        63: 'ploaie moderată',
+        65: 'ploaie torențială',
+        71: 'ninsoare ușoară',
+        73: 'ninsoare moderată',
+        75: 'ninsoare abundentă',
+        77: 'fulgi de zăpadă',
+        80: 'averse ușoare',
+        81: 'averse moderate',
+        82: 'averse puternice',
+        85: 'ninsoare cu averse',
+        86: 'ninsoare cu averse puternice',
+        95: 'furtună',
+        96: 'furtună cu grindină',
+        99: 'furtună puternică cu grindină'
+      };
+      return descriptions[code] || 'vreme variabilă';
+    }
+
+    // Get weather based on GPS location (100% FREE - Open-Meteo API)
+    function getWeather() {
+      if (!navigator.geolocation) {
+        weatherInfo.textContent = '🌍 București, România';
+        weatherInfo.classList.remove('weather-loading');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        // Success callback
+        async (position) => {
+          const lat = position.coords.latitude.toFixed(2);
+          const lon = position.coords.longitude.toFixed(2);
+          
+          try {
+            // Open-Meteo API - 100% GRATUIT, fără API key, fără limită
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+            
+            const weatherResponse = await fetch(weatherUrl);
+            const weatherData = await weatherResponse.json();
+            
+            if (weatherData.current) {
+              const temp = Math.round(weatherData.current.temperature_2m);
+              const weatherCode = weatherData.current.weather_code;
+              const emoji = getWeatherEmoji(weatherCode);
+              const description = getWeatherDescription(weatherCode);
+              
+              // Nominatim API pentru numele orașului (gratuit OpenStreetMap)
+              const cityUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=ro`;
+              
+              fetch(cityUrl, {
+                headers: {
+                  'User-Agent': 'Band41Calculator/1.0'
+                }
+              })
+                .then(response => response.json())
+                .then(cityData => {
+                  const city = cityData.address?.city 
+                    || cityData.address?.town 
+                    || cityData.address?.village 
+                    || cityData.address?.county
+                    || 'Locația ta';
+                  
+                  weatherInfo.innerHTML = `${emoji} ${city}: ${temp}°C, ${description}`;
+                  weatherInfo.classList.remove('weather-loading');
+                })
+                .catch(() => {
+                  // Fără nume oraș, doar temp
+                  weatherInfo.innerHTML = `${emoji} ${temp}°C, ${description}`;
+                  weatherInfo.classList.remove('weather-loading');
+                });
+            }
+          } catch (error) {
+            console.error('Weather error:', error);
+            weatherInfo.innerHTML = '📍 Locația ta';
+            weatherInfo.classList.remove('weather-loading');
+          }
+        },
+        // Error callback
+        (error) => {
+          console.log('Geolocation error:', error);
+          // Fallback la București
+          weatherInfo.innerHTML = '🌍 București, România';
+          weatherInfo.classList.remove('weather-loading');
+        },
+        // Options
+        {
+          enableHighAccuracy: false,
+          timeout: 5000,
+          maximumAge: 600000 // Cache 10 minute
+        }
+      );
+    }
+
+    // Update date and time in footer
+    function updateDateTime() {
+      const now = new Date();
+      
+      const zile = ['duminică', 'luni', 'marți', 'miercuri', 'joi', 'vineri', 'sâmbătă'];
+      const luni = ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 
+                    'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'];
+      
+      const ziua = zile[now.getDay()];
+      const data = now.getDate();
+      const luna = luni[now.getMonth()];
+      const anul = now.getFullYear();
+      const ora = String(now.getHours()).padStart(2, '0');
+      const minute = String(now.getMinutes()).padStart(2, '0');
+      const secunde = String(now.getSeconds()).padStart(2, '0');
+      
+      currentDateTimeEl.textContent = `📅 ${ziua}, ${data} ${luna} ${anul} | ⏰ ${ora}:${minute}:${secunde} (București)`;
+      currentYearEl.textContent = anul;
+    }
+
+    // Helpers: time parsing & overlap
+    function timeToSec(t) {
+      if(!t) return 0;
+      const parts = t.split(':').map(p => parseInt(p,10) || 0);
+      if(parts.length === 2) parts.push(0);
+      const [h,m,s] = parts;
+      return (h||0)*3600 + (m||0)*60 + (s||0);
+    }
+    
+    function overlapSec(a1, a2, b1, b2) {
+      const s = Math.max(a1, b1);
+      const e = Math.min(a2, b2);
+      return Math.max(0, e - s);
+    }
+
+    function computeEmployeeWorkSeconds(empStartStr, empEndStr, shiftKey) {
+      const shift = shifts[shiftKey];
+      if (!shift) return 0;
+      
+      const shiftStart = timeToSec(shift.start);
+      const shiftEnd = timeToSec(shift.end);
+      const empStart = timeToSec(empStartStr);
+      const empEnd = timeToSec(empEndStr);
+      
+      if(empEnd <= empStart) return 0;
+      
+      let workSec = overlapSec(empStart, empEnd, shiftStart, shiftEnd);
+      
+      for(const p of shift.pauses) {
+        workSec -= overlapSec(empStart, empEnd, timeToSec(p[0]), timeToSec(p[1]));
+      }
+      
+      return Math.max(0, workSec);
+    }
+
+    function recalcTotal() {
+      const rate = Math.max(0, parseFloat(rateInput.value) || 0);
+      let totalPieces = 0;
+      const blocks = employeesList.querySelectorAll('.employee-item');
+      
+      blocks.forEach(block => {
+        const startEl = block.querySelector('.emp-start');
+        const endEl = block.querySelector('.emp-end');
+        
+        if (startEl && endEl) {
+          const start = startEl.value;
+          const end = endEl.value;
+          const sec = computeEmployeeWorkSeconds(start, end, activeShift);
+          totalPieces += (sec/3600) * rate;
+        }
+      });
+      
+      const rounded = Math.round(totalPieces * 100) / 100;
+      totalBox.textContent = rounded;
+    }
+
+    function attachTimeSanitizer(el) {
+      let lastValue = el.value || '';
+      
+      el.addEventListener('keypress', function(e) {
+        if (!/^[0-9]$/.test(e.key)) {
+          e.preventDefault();
+          return;
+        }
+      });
+      
+      el.addEventListener('input', function(e) {
+        let value = this.value;
+        let cursorPos = this.selectionStart;
+        
+        const isDeleting = value.length < lastValue.length;
+        value = value.replace(/[^0-9:]/g, '');
+        const digits = value.replace(/:/g, '');
+        
+        if (digits.length === 0) {
+          if (this.value !== '') {
+            this.value = '';
+          }
+          recalcTotal();
+          return;
+        }
+        
+        let validDigits = '';
+        
+        for (let i = 0; i < digits.length && i < 6; i++) {
+          const digit = parseInt(digits[i], 10);
+          
+          if (i === 0) {
+            if (digit <= 2) validDigits += digits[i];
+          } else if (i === 1) {
+            const h1 = parseInt(validDigits[0], 10);
+            if ((h1 === 2 && digit <= 3) || h1 < 2) {
+              validDigits += digits[i];
+            }
+          } else if (i === 2) {
+            if (digit <= 5) validDigits += digits[i];
+          } else if (i === 3) {
+            validDigits += digits[i];
+          } else if (i === 4) {
+            if (digit <= 5) validDigits += digits[i];
+          } else if (i === 5) {
+            validDigits += digits[i];
+          }
+        }
+        
+        let formatted = '';
+        let newCursorPos = cursorPos;
+        
+        if (validDigits.length === 1) {
+          formatted = validDigits;
+          newCursorPos = 1;
+        } else if (validDigits.length === 2) {
+          if (isDeleting) {
+            formatted = validDigits;
+            newCursorPos = 2;
+          } else {
+            formatted = validDigits + ':';
+            newCursorPos = 3;
+          }
+        } else if (validDigits.length === 3) {
+          formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2);
+          newCursorPos = 4;
+        } else if (validDigits.length === 4) {
+          if (isDeleting) {
+            formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2);
+            newCursorPos = 5;
+          } else {
+            formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2) + ':';
+            newCursorPos = 6;
+          }
+        } else if (validDigits.length === 5) {
+          formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2, 4) + ':' + validDigits.substring(4);
+          newCursorPos = 7;
+        } else if (validDigits.length >= 6) {
+          formatted = validDigits.substring(0, 2) + ':' + validDigits.substring(2, 4) + ':' + validDigits.substring(4, 6);
+          newCursorPos = 8;
+        }
+        
+        if (formatted.length > 8) {
+          formatted = formatted.substring(0, 8);
+          newCursorPos = 8;
+        }
+        
+        if (this.value !== formatted) {
+          this.value = formatted;
+          this.setSelectionRange(newCursorPos, newCursorPos);
+        }
+        
+        lastValue = formatted;
+        recalcTotal();
+      });
+
+      el.addEventListener('blur', function() {
+        const value = this.value.trim();
+        
+        if (value === '') {
+          this.value = '00:00:00';
+          recalcTotal();
+          debounceSaveState();
+          return;
+        }
+        
+        const parts = value.split(':');
+        const hours = (parts[0] || '00').padStart(2, '0');
+        const minutes = (parts[1] || '00').padStart(2, '0');
+        const seconds = (parts[2] || '00').padStart(2, '0');
+        
+        this.value = `${hours}:${minutes}:${seconds}`;
+        recalcTotal();
+        debounceSaveState();
+      });
+    }
+
+    // Create employee card
+    function createEmployeeBlock(defaultStart = null, defaultEnd = null, defaultName = null) {
+      const safeShift = shifts[activeShift] || shifts.fruh;
+      const finalStart = defaultStart || safeShift.start;
+      const finalEnd = defaultEnd || safeShift.end;
+      const currentEmployeeNumber = employeesList.querySelectorAll('.employee-item').length + 1;
+      
+      const wrap = document.createElement('div');
+      wrap.className = 'employee-item fade-in';
+      wrap.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center;">
+            <span style="margin-right: 8px;">👤</span>
+            <input type="text" class="ant-input emp-name" value="${escapeHtml(defaultName) || 'Angajat ' + currentEmployeeNumber}" 
+                   placeholder="Nume angajat" aria-label="Nume angajat">
+          </div>
+          <button class="ant-btn ant-btn-danger delete-btn" style="padding: 4px 12px;">
+            Șterge
+          </button>
+        </div>
+
+        <div class="ant-row">
+          <div class="ant-col">
+            <label>Ora început</label>
+            <input class="ant-input emp-start" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(finalStart)}" 
+                  placeholder="00:00:00" aria-label="Ora început">
+          </div>
+          <div class="ant-col">
+            <label>Ora sfârșit</label>
+            <input class="ant-input emp-end" type="text" inputmode="numeric" pattern="[0-9:]*" value="${escapeHtml(finalEnd)}" 
+                  placeholder="00:00:00" aria-label="Ora sfârșit">
+          </div>
+        </div>
+      `;
+
+      const delBtn = wrap.querySelector('.delete-btn');
+      delBtn.addEventListener('click', () => {
+        wrap.remove();
+        recalcTotal();
+        debounceSaveState();
+      });
+
+      const startInput = wrap.querySelector('.emp-start');
+      const endInput = wrap.querySelector('.emp-end');
+      attachTimeSanitizer(startInput);
+      attachTimeSanitizer(endInput);
+      
+      const nameInput = wrap.querySelector('.emp-name');
+      nameInput.addEventListener('input', () => {
+        debounceSaveState();
+      });
+
+      employeesList.appendChild(wrap);
+      recalcTotal();
+      debounceSaveState();
+      return wrap;
+    }
+
+    // Shift/werk UI handlers
+    function setActiveShiftUI(key) {
+      activeShift = key;
+      
+      if(key === 'fruh') {
+        fruhBtn.style.background = 'var(--ant-success)';
+        fruhBtn.style.color = 'white';
+        fruhBtn.style.borderColor = 'var(--ant-success)';
+        spatBtn.style.background = 'white';
+        spatBtn.style.color = 'var(--ant-success)';
+        spatBtn.style.borderColor = 'var(--ant-success)';
+      } else {
+        spatBtn.style.background = 'var(--ant-success)';
+        spatBtn.style.color = 'white';
+        spatBtn.style.borderColor = 'var(--ant-success)';
+        fruhBtn.style.background = 'white';
+        fruhBtn.style.color = 'var(--ant-success)';
+        fruhBtn.style.borderColor = 'var(--ant-success)';
+      }
+
+      const cards = document.querySelectorAll('.employee-item');
+      if (cards.length > 0 && shifts[key]) {
+        cards.forEach(card => {
+          const s = card.querySelector('.emp-start');
+          const e = card.querySelector('.emp-end');
+          if(s) s.value = shifts[key].start;
+          if(e) e.value = shifts[key].end;
+        });
+      }
+      
+      recalcTotal();
+      debounceSaveState();
+    }
+
+    function setActiveWerkUI(werk) {
+      activeWerk = werk;
+      
+      if(werk === 'werk1') {
+        rateInput.value = werkRates.werk1;
+        werk1Btn.classList.add('ant-btn-primary');
+        werk1Btn.style.color = 'white';
+        werk2Btn.classList.remove('ant-btn-primary');
+        werk2Btn.style.color = 'var(--ant-primary)';
+      } else {
+        rateInput.value = werkRates.werk2;
+        werk2Btn.classList.add('ant-btn-primary');
+        werk2Btn.style.color = 'white';
+        werk1Btn.classList.remove('ant-btn-primary');
+        werk1Btn.style.color = 'var(--ant-primary)';
+      }
+      
+      recalcTotal();
+      debounceSaveState();
+    }
+    
+    // LocalStorage management cu debounce
+    function debounceSaveState() {
+      if (saveStateTimeout) {
+        clearTimeout(saveStateTimeout);
+      }
+      saveStateTimeout = setTimeout(() => {
+        saveCalculatorState();
+      }, 500);
+    }
+    
+    function saveCalculatorState() {
+      const employees = [];
+      document.querySelectorAll('.employee-item').forEach(card => {
+        const nameEl = card.querySelector('.emp-name');
+        const startEl = card.querySelector('.emp-start');
+        const endEl = card.querySelector('.emp-end');
+        
+        if (nameEl && startEl && endEl) {
+          employees.push({
+            name: nameEl.value,
+            start: startEl.value,
+            end: endEl.value
+          });
+        }
+      });
+      
+      const state = {
+        rate: parseFloat(rateInput.value) || 0,
+        activeShift,
+        activeWerk,
+        employees
+      };
+      
+      try {
+        localStorage.setItem('calculatorState', JSON.stringify(state));
+      } catch (e) {
+        console.error('Eroare la salvarea în localStorage:', e);
+      }
+    }
+    
+    function loadCalculatorState() {
+      const savedState = localStorage.getItem('calculatorState');
+      if (!savedState) return false;
+      
+      try {
+        const state = JSON.parse(savedState);
+        
+        if (state.rate !== undefined && state.rate !== null) {
+          rateInput.value = state.rate;
+        }
+        
+        if (state.activeShift) {
+          if (!shifts[state.activeShift]) {
+            activeShift = 'fruh';
+          } else {
+            activeShift = state.activeShift;
+          }
+          
+          if(activeShift === 'fruh') {
+            fruhBtn.style.background = 'var(--ant-success)';
+            fruhBtn.style.color = 'white';
+            fruhBtn.style.borderColor = 'var(--ant-success)';
+            spatBtn.style.background = 'white';
+            spatBtn.style.color = 'var(--ant-success)';
+            spatBtn.style.borderColor = 'var(--ant-success)';
+          } else {
+            spatBtn.style.background = 'var(--ant-success)';
+            spatBtn.style.color = 'white';
+            spatBtn.style.borderColor = 'var(--ant-success)';
+            fruhBtn.style.background = 'white';
+            fruhBtn.style.color = 'var(--ant-success)';
+            fruhBtn.style.borderColor = 'var(--ant-success)';
+          }
+        }
+        
+        if (state.activeWerk) {
+          if (!werkRates[state.activeWerk]) {
+            activeWerk = 'werk1';
+          } else {
+            activeWerk = state.activeWerk;
+          }
+          
+          if(activeWerk === 'werk1') {
+            werk1Btn.classList.add('ant-btn-primary');
+            werk1Btn.style.color = 'white';
+            werk2Btn.classList.remove('ant-btn-primary');
+            werk2Btn.style.color = 'var(--ant-primary)';
+          } else {
+            werk2Btn.classList.add('ant-btn-primary');
+            werk2Btn.style.color = 'white';
+            werk1Btn.classList.remove('ant-btn-primary');
+            werk1Btn.style.color = 'var(--ant-primary)';
+          }
+        }
+        
+        return true;
+      } catch (e) {
+        console.error('Eroare la încărcarea stării salvate:', e);
+        return false;
+      }
+    }
+
+    // Bind events
+    werk1Btn.addEventListener('click', () => setActiveWerkUI('werk1'));
+    werk2Btn.addEventListener('click', () => setActiveWerkUI('werk2'));
+    fruhBtn.addEventListener('click', () => setActiveShiftUI('fruh'));
+    spatBtn.addEventListener('click', () => setActiveShiftUI('spat'));
+    rateInput.addEventListener('input', () => {
+      recalcTotal();
+      debounceSaveState();
+    });
+    addEmpBtn.addEventListener('click', () => createEmployeeBlock());
+
+    // Init
+    let dateTimeInterval = null;
+    
+    window.addEventListener('DOMContentLoaded', () => {
+      updateDateTime();
+      dateTimeInterval = setInterval(updateDateTime, 1000);
+      
+      // Get weather on load
+      getWeather();
+      
+      const stateLoaded = loadCalculatorState();
+      
+      if (!stateLoaded) {
+        setActiveWerkUI('werk1');
+        setActiveShiftUI('fruh');
+      }
+    });
+    
+    window.addEventListener('beforeunload', () => {
+      if (dateTimeInterval) {
+        clearInterval(dateTimeInterval);
+      }
+    });
+  </script>
+</body>
+</html>

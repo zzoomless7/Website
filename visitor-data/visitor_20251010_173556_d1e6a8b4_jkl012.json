@@ -1,0 +1,128 @@
+{
+    "timestamp": "2025-10-10T17:35:56.123Z",
+    "visitDate": "10.10.2025, 20:35:56",
+    "identitate": {
+        "fingerprint": "d1e6a8b42f9c3d5e",
+        "sessionId": "p8q2r6s1t5u9",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "vendor": "Google Inc.",
+        "platform": "Linux x86_64"
+    },
+    "locatie": {
+        "ip": "188.24.56.89",
+        "timezone": "Europe/Bucharest",
+        "timezoneOffset": -120,
+        "language": "ro-RO",
+        "languages": [
+            "ro-RO",
+            "ro",
+            "en"
+        ],
+        "country": "Romania",
+        "countryCode": "RO",
+        "region": "Brașov",
+        "city": "Brașov",
+        "latitude": 45.6427,
+        "longitude": 25.5887,
+        "isp": "Telekom Romania",
+        "org": "Telekom Romania Communications SA"
+    },
+    "device": {
+        "type": "Desktop",
+        "screenWidth": 1366,
+        "screenHeight": 768,
+        "screenColorDepth": 24,
+        "screenOrientation": "landscape-primary",
+        "devicePixelRatio": 1,
+        "windowWidth": 1350,
+        "windowHeight": 720,
+        "cpuCores": 4,
+        "deviceMemory": "4GB",
+        "maxTouchPoints": 0,
+        "gpu": {
+            "vendor": "Google Inc. (NVIDIA)",
+            "renderer": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1050 Ti Direct3D11 vs_5_0 ps_5_0)",
+            "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+            "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)"
+        },
+        "battery": {
+            "level": 100,
+            "charging": true,
+            "chargingTime": 0,
+            "dischargingTime": null
+        },
+        "connection": {
+            "effectiveType": "3g",
+            "downlink": 3.5,
+            "rtt": 120,
+            "saveData": true
+        }
+    },
+    "comportament": {
+        "referrer": "https://www.bing.com/search",
+        "currentPage": "https://resedintabudas.ro/index.html",
+        "urlParams": {
+            "q": "resedinta budas cacica"
+        },
+        "timeOnPage": 0,
+        "scrollDepth": 23,
+        "mouseMovements": [
+            {
+                "x": 683,
+                "y": 384,
+                "time": 1728570956123
+            },
+            {
+                "x": 695,
+                "y": 398,
+                "time": 1728570956140
+            }
+        ],
+        "clicks": [],
+        "historyLength": 5,
+        "cookiesEnabled": true,
+        "doNotTrack": "1",
+        "webdriver": false
+    },
+    "preferinte": {
+        "colorScheme": "light",
+        "reducedMotion": false,
+        "localStorage": true,
+        "sessionStorage": true,
+        "indexedDB": true,
+        "serviceWorker": true,
+        "plugins": [
+            "Chrome PDF Plugin",
+            "Chrome PDF Viewer"
+        ]
+    },
+    "unic": {
+        "canvasFingerprint": "d1e6a8b42f9c3d5e",
+        "webglFingerprint": "a9f3d2c8b4e7f1d6",
+        "audioFingerprint": "2b7d9f4c1a8e3d5f",
+        "fontsDetected": [
+            "Arial",
+            "Courier New",
+            "Georgia",
+            "Verdana",
+            "Calibri"
+        ],
+        "combinedFingerprint": "d1e6a8b42f9c3d5e"
+    },
+    "performance": {
+        "pageLoadTime": 456.7,
+        "memoryUsage": {
+            "usedJSHeapSize": "28MB",
+            "totalJSHeapSize": "41MB"
+        }
+    },
+    "headers": {
+        "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "accept_language": "ro-RO,ro;q=0.9,en;q=0.8",
+        "accept_encoding": "gzip, deflate, br",
+        "host": "resedintabudas.ro",
+        "referer": "https://www.bing.com/search",
+        "dnt": "1"
+    },
+    "serverTimestamp": "2025-10-10 20:35:56"
+}

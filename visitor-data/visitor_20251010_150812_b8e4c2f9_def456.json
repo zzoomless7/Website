@@ -1,0 +1,120 @@
+{
+    "timestamp": "2025-10-10T15:08:12.567Z",
+    "visitDate": "10.10.2025, 18:08:12",
+    "identitate": {
+        "fingerprint": "b8e4c2f93d5a6b7c",
+        "sessionId": "t4u8v2w6x9y3",
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+        "vendor": "Apple Computer, Inc.",
+        "platform": "iPhone"
+    },
+    "locatie": {
+        "ip": "86.123.45.78",
+        "timezone": "Europe/Bucharest",
+        "timezoneOffset": -120,
+        "language": "ro-RO",
+        "languages": [
+            "ro-RO",
+            "en-US"
+        ],
+        "country": "Romania",
+        "countryCode": "RO",
+        "region": "Cluj",
+        "city": "Cluj-Napoca",
+        "latitude": 46.7712,
+        "longitude": 23.6236,
+        "isp": "Orange Romania",
+        "org": "Orange Romania SA"
+    },
+    "device": {
+        "type": "Mobile",
+        "screenWidth": 390,
+        "screenHeight": 844,
+        "screenColorDepth": 32,
+        "screenOrientation": "portrait-primary",
+        "devicePixelRatio": 3,
+        "windowWidth": 390,
+        "windowHeight": 664,
+        "cpuCores": 6,
+        "deviceMemory": "N/A",
+        "maxTouchPoints": 5,
+        "gpu": {
+            "vendor": "Apple Inc.",
+            "renderer": "Apple GPU",
+            "version": "WebGL 2.0",
+            "shadingLanguage": "WebGL GLSL ES 3.00"
+        },
+        "battery": {
+            "level": 42,
+            "charging": false,
+            "chargingTime": null,
+            "dischargingTime": 18000
+        },
+        "connection": {
+            "effectiveType": "4g",
+            "downlink": 8.5,
+            "rtt": 65,
+            "saveData": false
+        }
+    },
+    "comportament": {
+        "referrer": "https://m.facebook.com/",
+        "currentPage": "https://resedintabudas.ro/index.html",
+        "urlParams": {
+            "fbclid": "IwAR1234567890"
+        },
+        "timeOnPage": 0,
+        "scrollDepth": 45,
+        "mouseMovements": [],
+        "clicks": [
+            {
+                "x": 195,
+                "y": 420,
+                "time": 1728568892567
+            },
+            {
+                "x": 210,
+                "y": 580,
+                "time": 1728568895123
+            }
+        ],
+        "historyLength": 1,
+        "cookiesEnabled": true,
+        "doNotTrack": "N/A",
+        "webdriver": false
+    },
+    "preferinte": {
+        "colorScheme": "dark",
+        "reducedMotion": false,
+        "localStorage": true,
+        "sessionStorage": true,
+        "indexedDB": true,
+        "serviceWorker": true,
+        "plugins": []
+    },
+    "unic": {
+        "canvasFingerprint": "b8e4c2f93d5a6b7c",
+        "webglFingerprint": "3c7a9f2d8b1e4f6a",
+        "audioFingerprint": "5d2b8c4f1a9e6d3b",
+        "fontsDetected": [
+            "Arial",
+            "Georgia",
+            "Times New Roman",
+            "Verdana"
+        ],
+        "combinedFingerprint": "b8e4c2f93d5a6b7c"
+    },
+    "performance": {
+        "pageLoadTime": 567.8,
+        "memoryUsage": null
+    },
+    "headers": {
+        "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+        "accept_language": "ro-RO,ro;q=0.9,en-US;q=0.8",
+        "accept_encoding": "gzip, deflate, br",
+        "host": "resedintabudas.ro",
+        "referer": "https://m.facebook.com/",
+        "dnt": "N/A"
+    },
+    "serverTimestamp": "2025-10-10 18:08:12"
+}

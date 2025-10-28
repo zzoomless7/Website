@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reședința Budaș - Site în construcție. Revenim curând cu un site nou!">
+  <title>Reședința Budaș - Site în Construcție</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #1e1b4b 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background particles */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: float 15s infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(50px);
+        opacity: 0;
+      }
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Logo / Icon */
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 30px;
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4);
+      }
+      50% {
+        box-shadow: 0 10px 60px rgba(59, 130, 246, 0.6);
+      }
+    }
+
+    /* Typography */
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 50px;
+      font-weight: 400;
+    }
+
+    /* Countdown */
+    .countdown-section {
+      margin: 50px 0;
+    }
+
+    .countdown-label {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .countdown-item {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 20px 25px;
+      min-width: 100px;
+      transition: transform 0.3s ease;
+    }
+
+    .countdown-item:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .countdown-value {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #60a5fa;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .countdown-label-small {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Progress Bar (Countdown sync) */
+    .progress-section {
+      margin: 50px 0;
+    }
+
+    .progress-label {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+      border-radius: 10px;
+      transition: width 1s ease;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    /* Redirect Section */
+    .redirect-section {
+      margin: 60px 0 40px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+    }
+
+    .redirect-text {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 20px;
+    }
+
+    .redirect-progress-container {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .redirect-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #34d399);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .redirect-button {
+      display: inline-block;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .redirect-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+
+    /* Contact Info */
+    .contact-section {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .contact-label {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.875rem;
+    }
+
+    .contact-item a {
+      color: #60a5fa;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-item a:hover {
+      color: #93c5fd;
+    }
+
+    .contact-icon {
+      font-size: 1.25rem;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      .countdown {
+        gap: 10px;
+      }
+
+      .countdown-item {
+        padding: 15px 20px;
+        min-width: 80px;
+      }
+
+      .countdown-value {
+        font-size: 2.5rem;
+      }
+
+      .contact-info {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .countdown {
+        gap: 8px;
+      }
+
+      .countdown-item {
+        padding: 12px 15px;
+        min-width: 70px;
+      }
+
+      .countdown-value {
+        font-size: 2rem;
+      }
+
+      .countdown-label-small {
+        font-size: 0.75rem;
+      }
+
+      .redirect-section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Logo -->
+    <div class="logo">🏠</div>
+
+    <!-- Title -->
+    <h1>Site în Construcție</h1>
+    <p class="subtitle">Revenim curând cu un site nou</p>
+
+    <!-- Countdown to 31 Dec 2026 -->
+    <div class="countdown-section">
+      <div class="countdown-label">Lansare în</div>
+      <div class="countdown" id="countdown">
+        <div class="countdown-item">
+          <div class="countdown-value" id="years">0</div>
+          <div class="countdown-label-small">Ani</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="months">0</div>
+          <div class="countdown-label-small">Luni</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="days">00</div>
+          <div class="countdown-label-small">Zile</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="hours">00</div>
+          <div class="countdown-label-small">Ore</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="minutes">00</div>
+          <div class="countdown-label-small">Minute</div>
+        </div>
+        <div class="countdown-item">
+          <div class="countdown-value" id="seconds">00</div>
+          <div class="countdown-label-small">Secunde</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar (synced with countdown) -->
+    <div class="progress-section">
+      <div class="progress-label">
+        <span>Progres dezvoltare</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- Redirect Section -->
+    <div class="redirect-section">
+      <div class="redirect-text">
+        Vei fi redirecționat automat în <strong><span id="redirectCounter">5</span> secunde</strong>...
+      </div>
+      <div class="redirect-progress-container">
+        <div class="redirect-progress-bar" id="redirectProgressBar"></div>
+      </div>
+      <a href="https://resedintabudas.ro" class="redirect-button">
+        👉 Apasă aici dacă nu ești redirecționat
+      </a>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="contact-section">
+      <div class="contact-label">Contact</div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-icon">📧</span>
+          <a href="mailto:info@resedintabudas.ro">info@resedintabudas.ro</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📱</span>
+          <a href="tel:+40758330929">+40 758 330 929</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🌐</span>
+          <a href="https://resedintabudas.ro" target="_blank">resedintabudas.ro</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <span>Str. Maidan 1149, Cacica, Suceava</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      &copy; <span id="currentYear"></span> Reședința Budaș. Toate drepturile rezervate.
+    </div>
+  </div>
+
+  <script>
+    // Target date: 31 December 2026, 23:59:59
+    const targetDate = new Date('December 31, 2026 23:59:59').getTime();
+    const startDate = new Date('January 1, 2025 00:00:00').getTime(); // Starting point for progress calculation
+    
+    // Elements
+    const yearsEl = document.getElementById('years');
+    const monthsEl = document.getElementById('months');
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+    const progressBar = document.getElementById('progressBar');
+    const progressPercent = document.getElementById('progressPercent');
+    const redirectCounter = document.getElementById('redirectCounter');
+    const redirectProgressBar = document.getElementById('redirectProgressBar');
+
+    // Update countdown and progress
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        yearsEl.textContent = '0';
+        monthsEl.textContent = '0';
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        secondsEl.textContent = '00';
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        return;
+      }
+
+      // Calculate time units
+      const totalSeconds = Math.floor(distance / 1000);
+      const totalMinutes = Math.floor(totalSeconds / 60);
+      const totalHours = Math.floor(totalMinutes / 60);
+      const totalDays = Math.floor(totalHours / 24);
+      
+      // Calculate years, months, days
+      const years = Math.floor(totalDays / 365);
+      const remainingDaysAfterYears = totalDays % 365;
+      const months = Math.floor(remainingDaysAfterYears / 30);
+      const days = remainingDaysAfterYears % 30;
+      
+      // Calculate hours, minutes, seconds
+      const hours = totalHours % 24;
+      const minutes = totalMinutes % 60;
+      const seconds = totalSeconds % 60;
+
+      // Update countdown display
+      yearsEl.textContent = String(years);
+      monthsEl.textContent = String(months);
+      daysEl.textContent = String(days).padStart(2, '0');
+      hoursEl.textContent = String(hours).padStart(2, '0');
+      minutesEl.textContent = String(minutes).padStart(2, '0');
+      secondsEl.textContent = String(seconds).padStart(2, '0');
+
+      // Calculate progress (from startDate to targetDate)
+      const totalDuration = targetDate - startDate;
+      const elapsed = now - startDate;
+      const progress = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
+
+      progressBar.style.width = progress.toFixed(2) + '%';
+      progressPercent.textContent = progress.toFixed(1) + '%';
+    }
+
+    // Redirect countdown (5 seconds)
+    let redirectTime = 5;
+    
+    function updateRedirectCountdown() {
+      redirectTime--;
+      redirectCounter.textContent = redirectTime;
+      redirectProgressBar.style.width = ((5 - redirectTime) / 5 * 100) + '%';
+
+      if (redirectTime <= 0) {
+        window.location.href = 'https://resedintabudas.ro';
+      }
+    }
+
+    // Create animated particles
+    function createParticles() {
+      const particles = document.getElementById('particles');
+      const particleCount = 50;
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particles.appendChild(particle);
+      }
+    }
+
+    // Set current year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Initialize
+    createParticles();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    setInterval(updateRedirectCountdown, 1000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+{
+    "timestamp": "2025-10-10T16:21:34.891Z",
+    "visitDate": "10.10.2025, 19:21:34",
+    "identitate": {
+        "fingerprint": "c9d5f7a34e8b1c2d",
+        "sessionId": "a5b9c3d7e1f4",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+        "vendor": "Google Inc.",
+        "platform": "MacIntel"
+    },
+    "locatie": {
+        "ip": "92.87.123.45",
+        "timezone": "Europe/Bucharest",
+        "timezoneOffset": -120,
+        "language": "en-US",
+        "languages": [
+            "en-US",
+            "en",
+            "ro-RO"
+        ],
+        "country": "Romania",
+        "countryCode": "RO",
+        "region": "Timiș",
+        "city": "Timișoara",
+        "latitude": 45.7489,
+        "longitude": 21.2087,
+        "isp": "Vodafone Romania",
+        "org": "Vodafone Romania SA"
+    },
+    "device": {
+        "type": "Desktop",
+        "screenWidth": 2560,
+        "screenHeight": 1440,
+        "screenColorDepth": 30,
+        "screenOrientation": "landscape-primary",
+        "devicePixelRatio": 2,
+        "windowWidth": 2540,
+        "windowHeight": 1320,
+        "cpuCores": 10,
+        "deviceMemory": "16GB",
+        "maxTouchPoints": 0,
+        "gpu": {
+            "vendor": "Google Inc. (Apple)",
+            "renderer": "ANGLE (Apple, Apple M1 Pro, OpenGL 4.1)",
+            "version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
+            "shadingLanguage": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)"
+        },
+        "battery": null,
+        "connection": {
+            "effectiveType": "4g",
+            "downlink": 15.2,
+            "rtt": 35,
+            "saveData": false
+        }
+    },
+    "comportament": {
+        "referrer": "Direct",
+        "currentPage": "https://resedintabudas.ro/index.html",
+        "urlParams": {},
+        "timeOnPage": 0,
+        "scrollDepth": 92,
+        "mouseMovements": [
+            {
+                "x": 1270,
+                "y": 680,
+                "time": 1728569494891
+            },
+            {
+                "x": 1305,
+                "y": 712,
+                "time": 1728569494908
+            },
+            {
+                "x": 1358,
+                "y": 765,
+                "time": 1728569494925
+            },
+            {
+                "x": 1420,
+                "y": 830,
+                "time": 1728569494942
+            }
+        ],
+        "clicks": [
+            {
+                "x": 1450,
+                "y": 850,
+                "time": 1728569496234
+            },
+            {
+                "x": 1280,
+                "y": 920,
+                "time": 1728569498567
+            },
+            {
+                "x": 960,
+                "y": 540,
+                "time": 1728569501890
+            }
+        ],
+        "historyLength": 1,
+        "cookiesEnabled": true,
+        "doNotTrack": "N/A",
+        "webdriver": false
+    },
+    "preferinte": {
+        "colorScheme": "dark",
+        "reducedMotion": false,
+        "localStorage": true,
+        "sessionStorage": true,
+        "indexedDB": true,
+        "serviceWorker": true,
+        "plugins": [
+            "Chrome PDF Plugin",
+            "Chrome PDF Viewer",
+            "Native Client"
+        ]
+    },
+    "unic": {
+        "canvasFingerprint": "c9d5f7a34e8b1c2d",
+        "webglFingerprint": "f4a2d8c9b7e3f1a5",
+        "audioFingerprint": "8c3d1f9a4b7e2d6f",
+        "fontsDetected": [
+            "Arial",
+            "Courier New",
+            "Georgia",
+            "Times New Roman",
+            "Verdana",
+            "Comic Sans MS",
+            "Impact",
+            "Trebuchet MS",
+            "Calibri",
+            "Cambria"
+        ],
+        "combinedFingerprint": "c9d5f7a34e8b1c2d"
+    },
+    "performance": {
+        "pageLoadTime": 189.3,
+        "memoryUsage": {
+            "usedJSHeapSize": "38MB",
+            "totalJSHeapSize": "52MB"
+        }
+    },
+    "headers": {
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+        "accept_language": "en-US,en;q=0.9,ro-RO;q=0.8",
+        "accept_encoding": "gzip, deflate, br",
+        "host": "resedintabudas.ro",
+        "referer": "N/A",
+        "dnt": "N/A"
+    },
+    "serverTimestamp": "2025-10-10 19:21:34"
+}
