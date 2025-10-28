@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turneu Multi-Sport - Sistem de Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="sport-selector">
+                <button class="sport-btn active" data-sport="football">
+                    <span class="sport-icon">⚽</span>
+                    <span>Fotbal</span>
+                </button>
+                <button class="sport-btn" data-sport="volleyball">
+                    <span class="sport-icon">🏐</span>
+                    <span>Volei</span>
+                </button>
+            </div>
+            <h1 id="header-title">⚽ Turneu de Fotbal</h1>
+            <p class="subtitle">Sistem complet de management turneu</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <button class="nav-btn active" data-section="dashboard">🏠 Dashboard</button>
+            <button class="nav-btn" data-section="teams">👥 Echipe</button>
+            <button class="nav-btn" data-section="players">👤 Jucători</button>
+            <button class="nav-btn" data-section="groups">📊 Grupe</button>
+            <button class="nav-btn" data-section="matches"><span id="nav-match-icon">⚽</span> Meciuri</button>
+            <button class="nav-btn" data-section="knockout">🏆 Faza Eliminatorie</button>
+            <button class="nav-btn" data-section="stats">📈 Statistici</button>
+            <button class="nav-btn" data-section="settings">⚙️ Setări</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <h2>Dashboard Turneu</h2>
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3 id="total-teams">0</h3>
+                        <p>Echipe Înscrise</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚽</div>
+                    <div class="stat-info">
+                        <h3 id="total-matches">0</h3>
+                        <p>Meciuri Jucate</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" id="stat-icon-points">🎯</div>
+                    <div class="stat-info">
+                        <h3 id="total-goals">0</h3>
+                        <p id="stat-label-points">Goluri Marcate</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <h3 id="tournament-phase">Faza Grupelor</h3>
+                        <p>Faza Curentă</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-matches">
+                <h3>Meciuri Recente</h3>
+                <div id="recent-matches-list"></div>
+            </div>
+
+            <div class="dashboard-actions" style="margin-top: 2rem; text-align: center;">
+                <button class="btn btn-danger" id="reset-tournament-btn">🔄 Resetează Turneu</button>
+            </div>
+        </section>
+
+        <!-- Teams Section -->
+        <section id="teams" class="section">
+            <div class="section-header">
+                <h2>Gestionare Echipe</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" id="add-team-btn">+ Adaugă Echipă</button>
+                    <button class="btn btn-secondary" id="manage-players-btn">👤 Jucători</button>
+                </div>
+            </div>
+
+            <div id="teams-grid" class="teams-grid"></div>
+
+            <!-- Add/Edit Team Modal -->
+            <div id="team-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3 id="team-modal-title">Adaugă Echipă Nouă</h3>
+                    <form id="team-form">
+                        <div class="form-group">
+                            <label for="team-name">Nume Echipă:</label>
+                            <input type="text" id="team-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="team-logo">Logo (Emoji sau URL):</label>
+                            <input type="text" id="team-logo" placeholder="🔵 sau https://...">
+                        </div>
+                        <div class="form-group">
+                            <label for="team-city">Oraș:</label>
+                            <input type="text" id="team-city">
+                        </div>
+                        <div class="form-group">
+                            <label for="team-coach">Antrenor:</label>
+                            <input type="text" id="team-coach">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Salvează</button>
+                            <button type="button" class="btn btn-secondary" id="cancel-team">Anulează</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Groups Section -->
+        <section id="groups" class="section">
+            <div class="section-header">
+                <h2>Faza Grupelor</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" id="generate-groups-btn">🔄 Generează Grupe</button>
+                    <button class="btn btn-secondary" id="edit-groups-btn">✏️ Editează Grupe</button>
+                    <button class="btn btn-danger" id="clear-groups-btn">🗑️ Șterge Grupe</button>
+                </div>
+            </div>
+
+            <div id="groups-container" class="groups-container"></div>
+        </section>
+
+        <!-- Matches Section -->
+        <section id="matches" class="section">
+            <div class="section-header">
+                <h2>Meciuri</h2>
+                <button class="btn btn-primary" id="add-match-btn">+ Adaugă Meci</button>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter="all">Toate</button>
+                <button class="filter-btn" data-filter="scheduled">Programate</button>
+                <button class="filter-btn" data-filter="finished">Finalizate</button>
+            </div>
+
+            <div id="matches-list" class="matches-list"></div>
+
+            <!-- Add Match Modal -->
+            <div id="match-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3>Adaugă Meci Nou</h3>
+                    <form id="match-form">
+                        <div class="form-group">
+                            <label for="match-team1">Echipa 1:</label>
+                            <select id="match-team1" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="match-team2">Echipa 2:</label>
+                            <select id="match-team2" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="match-date">Data:</label>
+                            <input type="datetime-local" id="match-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="match-stage">Faza:</label>
+                            <select id="match-stage" required>
+                                <option value="group">Faza Grupelor</option>
+                                <option value="r16">Optimi</option>
+                                <option value="quarter">Sferturi</option>
+                                <option value="semi">Semifinale</option>
+                                <option value="final">Finala</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="match-location">Locație:</label>
+                            <input type="text" id="match-location">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Salvează</button>
+                            <button type="button" class="btn btn-secondary" id="cancel-match">Anulează</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Knockout Stage Section -->
+        <section id="knockout" class="section">
+            <h2>Faza Eliminatorie</h2>
+            
+            <div class="knockout-bracket">
+                <div class="bracket-column">
+                    <h3>Optimi de Finală</h3>
+                    <div id="round-of-16" class="bracket-matches"></div>
+                </div>
+                <div class="bracket-column">
+                    <h3>Sferturi de Finală</h3>
+                    <div id="quarter-finals" class="bracket-matches"></div>
+                </div>
+                <div class="bracket-column">
+                    <h3>Semifinale</h3>
+                    <div id="semi-finals" class="bracket-matches"></div>
+                </div>
+                <div class="bracket-column">
+                    <h3>🏆 Finala</h3>
+                    <div id="final" class="bracket-matches"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="stats" class="section">
+            <h2>Statistici Turneu</h2>
+            
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <h3>🎯 Top Marcatori</h3>
+                    <div id="top-scorers" class="stats-list"></div>
+                </div>
+                
+                <div class="stats-card">
+                    <h3>🏆 Clasament Echipe</h3>
+                    <div id="teams-ranking" class="stats-list"></div>
+                </div>
+                
+                <div class="stats-card">
+                    <h3>📊 Statistici Generale</h3>
+                    <div id="general-stats" class="stats-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Players Section -->
+        <section id="players" class="section">
+            <div class="section-header">
+                <h2>Gestionare Jucători</h2>
+                <button class="btn btn-primary" id="add-player-btn">+ Adaugă Jucător</button>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-filter-team="all">Toate Echipele</button>
+                <div id="team-filter-buttons"></div>
+            </div>
+
+            <div id="players-grid" class="players-grid"></div>
+
+            <!-- Add/Edit Player Modal -->
+            <div id="player-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3 id="player-modal-title">Adaugă Jucător Nou</h3>
+                    <form id="player-form">
+                        <div class="form-group">
+                            <label for="player-name">Nume Jucător:</label>
+                            <input type="text" id="player-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="player-team">Echipa:</label>
+                            <select id="player-team" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="player-number">Număr Tricou:</label>
+                            <input type="number" id="player-number" min="1" max="99">
+                        </div>
+                        <div class="form-group">
+                            <label for="player-position">Poziție:</label>
+                            <select id="player-position" required>
+                                <option value="goalkeeper">Portar</option>
+                                <option value="defender">Fundaș</option>
+                                <option value="midfielder">Mijlocaș</option>
+                                <option value="forward">Atacant</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Salvează</button>
+                            <button type="button" class="btn btn-secondary" id="cancel-player">Anulează</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="section">
+            <h2>⚙️ Setări Turneu</h2>
+            
+            <div class="settings-container">
+                <!-- Tournament Configuration -->
+                <div class="settings-card">
+                    <h3>🏆 Configurare Turneu</h3>
+                    <p>Setări generale pentru turneu</p>
+                    <div class="form-group">
+                        <label for="tournament-name">Nume Turneu:</label>
+                        <input type="text" id="tournament-name" placeholder="Ex: Cupa României 2025">
+                    </div>
+                    <div class="form-group">
+                        <label for="tournament-location">Locație Principală:</label>
+                        <input type="text" id="tournament-location" placeholder="Ex: București">
+                    </div>
+                    <div class="form-group">
+                        <label for="tournament-start">Data Start:</label>
+                        <input type="date" id="tournament-start">
+                    </div>
+                    <div class="form-group">
+                        <label for="tournament-end">Data Sfârșit:</label>
+                        <input type="date" id="tournament-end">
+                    </div>
+                    <button class="btn btn-primary" id="save-tournament-config">💾 Salvează Configurare</button>
+                </div>
+
+                <!-- Team Settings -->
+                <div class="settings-card">
+                    <h3>👥 Setări Echipe</h3>
+                    <p>Configurare și limite pentru echipe</p>
+                    <div class="form-group">
+                        <label for="max-players-per-team">Nr. Maxim Jucători/Echipă:</label>
+                        <input type="number" id="max-players-per-team" min="5" max="50" value="25">
+                    </div>
+                    <div class="form-group">
+                        <label for="min-players-per-team">Nr. Minim Jucători/Echipă:</label>
+                        <input type="number" id="min-players-per-team" min="1" max="20" value="11">
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="require-team-logo">
+                        <label for="require-team-logo" style="margin: 0;">Logo obligatoriu pentru echipe</label>
+                    </div>
+                    <button class="btn btn-primary" id="save-team-settings">💾 Salvează Setări Echipe</button>
+                    <button class="btn btn-secondary" id="bulk-delete-teams">🗑️ Șterge Toate Echipele</button>
+                </div>
+
+                <!-- Player Settings -->
+                <div class="settings-card">
+                    <h3>👤 Setări Jucători</h3>
+                    <p>Configurare pentru jucători</p>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="allow-duplicate-numbers" checked>
+                        <label for="allow-duplicate-numbers" style="margin: 0;">Permite numere duplicate (între echipe)</label>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="require-player-number" checked>
+                        <label for="require-player-number" style="margin: 0;">Număr tricou obligatoriu</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="default-position">Poziție Implicită:</label>
+                        <select id="default-position">
+                            <option value="midfielder">Mijlocaș</option>
+                            <option value="forward">Atacant</option>
+                            <option value="defender">Fundaș</option>
+                            <option value="goalkeeper">Portar</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="save-player-settings">💾 Salvează Setări Jucători</button>
+                    <button class="btn btn-secondary" id="bulk-delete-players">🗑️ Șterge Toți Jucătorii</button>
+                </div>
+
+                <!-- Match Settings -->
+                <div class="settings-card">
+                    <h3>⚽ Setări Meciuri</h3>
+                    <p>Configurare pentru meciuri</p>
+                    <div class="form-group">
+                        <label for="match-duration">Durata Meci (minute):</label>
+                        <input type="number" id="match-duration" min="30" max="120" value="90">
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="allow-overtime">
+                        <label for="allow-overtime" style="margin: 0;">Permite prelungiri</label>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="allow-penalties">
+                        <label for="allow-penalties" style="margin: 0;">Permite loviturile de departajare</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="default-match-location">Locație Implicită Meciuri:</label>
+                        <input type="text" id="default-match-location" placeholder="Ex: Stadionul Național">
+                    </div>
+                    <button class="btn btn-primary" id="save-match-settings">💾 Salvează Setări Meciuri</button>
+                    <button class="btn btn-danger" id="bulk-delete-matches">🗑️ Șterge Toate Meciurile</button>
+                </div>
+
+                <!-- Data Management -->
+                <div class="settings-card">
+                    <h3>📥 Export/Import Date</h3>
+                    <p>Salvează sau încarcă datele turneului</p>
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <button class="btn btn-primary" id="export-data">📥 Exportă Tot (JSON)</button>
+                        <button class="btn btn-secondary" id="export-teams-only">📥 Exportă doar Echipe</button>
+                        <button class="btn btn-secondary" id="export-players-only">📥 Exportă doar Jucători</button>
+                        <button class="btn btn-primary" id="import-data">📤 Importă Date</button>
+                        <input type="file" id="import-file" accept=".json" style="display: none;">
+                    </div>
+                </div>
+
+                <!-- Reset Options -->
+                <div class="settings-card">
+                    <h3>🗑️ Resetare Selectivă</h3>
+                    <p>Șterge date specifice pentru sportul curent</p>
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <button class="btn btn-danger" id="reset-all-data">🔄 Resetează Tot</button>
+                        <button class="btn btn-secondary" id="reset-matches-only">Resetează Meciuri + Statistici</button>
+                        <button class="btn btn-secondary" id="reset-stats-only">Resetează doar Statistici</button>
+                        <button class="btn btn-secondary" id="reset-groups-only">Resetează doar Grupe</button>
+                        <button class="btn btn-secondary" id="reset-players-only">Resetează doar Jucători</button>
+                    </div>
+                </div>
+
+                <!-- Sample Data -->
+                <div class="settings-card">
+                    <h3>🎲 Date Demo</h3>
+                    <p>Generează date de test pentru demonstrație</p>
+                    <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <button class="btn btn-success" id="generate-sample-teams">👥 Generează 8 Echipe Demo</button>
+                        <button class="btn btn-success" id="generate-sample-players">👤 Generează Jucători Demo</button>
+                        <button class="btn btn-success" id="generate-sample-matches">⚽ Generează Meciuri Demo</button>
+                        <button class="btn btn-primary" id="generate-full-tournament">🏆 Generează Turneu Complet</button>
+                    </div>
+                </div>
+
+                <!-- Tournament Info -->
+                <div class="settings-card">
+                    <h3>📊 Informații Turneu</h3>
+                    <div id="tournament-info"></div>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="settings-card">
+                    <h3>🔧 Setări Avansate</h3>
+                    <p>Opțiuni suplimentare de configurare</p>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="auto-save" checked>
+                        <label for="auto-save" style="margin: 0;">Salvare automată în LocalStorage</label>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="show-confirmations" checked>
+                        <label for="show-confirmations" style="margin: 0;">Arată mesaje de confirmare</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="teams-per-group">Echipe per Grupă:</label>
+                        <select id="teams-per-group">
+                            <option value="3">3 echipe</option>
+                            <option value="4" selected>4 echipe</option>
+                            <option value="5">5 echipe</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="save-advanced-settings">💾 Salvează Setări Avansate</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Edit Groups Modal -->
+    <div id="edit-groups-modal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close">&times;</span>
+            <h3>✏️ Editează Grupe</h3>
+            <p style="color: #6b7280; margin-bottom: 1rem;">Drag & drop echipe între grupe sau click pentru a muta</p>
+            <div id="edit-groups-container" class="edit-groups-grid"></div>
+            <div class="form-actions">
+                <button class="btn btn-primary" id="save-groups-edit">Salvează Modificări</button>
+                <button class="btn btn-secondary" id="cancel-groups-edit">Anulează</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Turneu Multi-Sport - Sistem de Management Complet</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
